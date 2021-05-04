@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BNBCheckInServer", "BNBCheckInServer\BNBCheckInServer.csproj", "{F818E063-8D9E-442F-97CE-01F70A11D454}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F818E063-8D9E-442F-97CE-01F70A11D454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F818E063-8D9E-442F-97CE-01F70A11D454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F818E063-8D9E-442F-97CE-01F70A11D454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F818E063-8D9E-442F-97CE-01F70A11D454}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30757C63-AF42-4D5A-A90E-0AEB0E9AF9F1}
+	EndGlobalSection
+EndGlobal
