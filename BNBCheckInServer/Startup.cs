@@ -26,6 +26,12 @@ namespace BNBCheckInServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(option => {
+                option.AddPolicy("AllowAll", builder =>
+                    builder.WithOrigins("http://localhost:32072", "https://localhost:5001", "http://localhost:5000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
@@ -46,6 +52,9 @@ namespace BNBCheckInServer
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowAll");
+
             app.UseStaticFiles();
 
             app.UseRouting();
