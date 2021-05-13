@@ -1,12 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    class Image
+    public class Image
     {
+        [Key]
+        public int ImageId { get; set; }
+        public string ImageName { get; set; }
+        [Required]
+        public string ImageSourceUrl { get; set; } 
+        public string ImageDescription { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedOn { get; set; }
+
+
+
+        [ForeignKey(nameof(BnB))]
+        public int? BnBId { get; set; }
+        public BnB BnB { get; set; }
+
+        [ForeignKey(nameof(Room))]
+        public int? RoomId { get; set; }
+        public Room Room { get; set; }
+
     }
 }
