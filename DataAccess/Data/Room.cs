@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    class Room
+    public class Room
     {
         [Key]
         public int RoomId { get; set; }
