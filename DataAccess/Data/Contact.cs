@@ -24,12 +24,6 @@ namespace DataAccess.Data
         public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
 
-
-
-        [ForeignKey(nameof(BnB))]
-        public int BnBId { get; set; }
-        public BnB BnB { get; set; }
-
         //public IList<Reservation> Reservations { get; set; }
 
     }
