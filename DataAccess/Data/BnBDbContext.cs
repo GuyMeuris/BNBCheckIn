@@ -19,7 +19,7 @@ namespace DataAccess.Data
 
         public DbSet<Room> Rooms { get; set; }   // -->  At least 1 per B&B to start 
 
-        public DbSet<BnB> BnBs { get; set; }     // -->   1 per province to start
+        public DbSet<BnB> BnBs { get; set; }     // -->   1 per province to start   *
 
         public DbSet<Image> Images { get; set; }   //  -->  At least 1 per B&B AND 1 per room to start 
 

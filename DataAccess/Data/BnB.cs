@@ -17,7 +17,7 @@ namespace DataAccess.Data
         [Required]
         public string StreetName { get; set; }
         [Required]
-        public string StreetNumber { get; set; }
+        public string HouseNumber { get; set; }
         [Required]
         public int PostalCode { get; set; }
         [Required]

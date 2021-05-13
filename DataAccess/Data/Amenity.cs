@@ -14,6 +14,8 @@ namespace DataAccess.Data
         public int AmenityId { get; set; }
         [Required]
         public string AmenityName { get; set; }
+        [Required]
+        public double AmenityRate { get; set; }
         public string AmenityIcon { get; set; }
         public string AmenityDescription { get; set; }
         public string CreatedBy { get; set; }
