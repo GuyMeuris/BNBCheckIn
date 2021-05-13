@@ -30,7 +30,7 @@ namespace DataAccess.Data
 
         public string CreatedBy { get; set; }
 
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         public string UpdatedBy { get; set; }
 
