@@ -22,8 +22,8 @@ namespace DataAccess.Data
         public DateTime UpdatedOn { get; set; }
 
 
-        public IList<BnB> BnBsWithAmenities { get; set; }
-        public IList<Room> RoomsWithAmenities{ get; set; }
+        public IList<BnB> BnBs { get; set; }
+        public IList<Room> Rooms{ get; set; }
 
     }
 }

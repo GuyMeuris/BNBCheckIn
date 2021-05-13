@@ -39,7 +39,7 @@ namespace DataAccess.Data
         public Contact Contacts { get; set; }
         public virtual IList<Room> Rooms { get; set; }
         public virtual IList<Image> Images { get; set; }
-
+        public virtual IList<Amenity> Amenities { get; set; }
 
     }
 }

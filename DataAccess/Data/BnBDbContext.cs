@@ -27,11 +27,11 @@ namespace DataAccess.Data
 
         public DbSet<Contact> Contacts { get; set; }    //  -->  At least 1 owner per B&B and 2 users to start
                                                           
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new RoomConfiguration());
-        }
+        //    modelBuilder.ApplyConfiguration(new RoomConfiguration());
+        //}
     }
 }
