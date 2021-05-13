@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    class BnB
+    public class BnB
     {
         [Key]
         public int BnBId { get; set; }
@@ -28,13 +28,13 @@ namespace DataAccess.Data
         public string VATnr { get; set; }
         [Required]
         public string BankAccountNr { get; set; }
-        public string CreatedByContact { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public string UpdatedByContact { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
 
 
-        [ForeignKey]
+        [ForeignKey(nameof(Contact))]
         public int ContactId { get; set; }
         public Contact Contacts { get; set; }
         public virtual IList<Room> Rooms { get; set; }
