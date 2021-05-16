@@ -39,8 +39,6 @@ namespace DataAccess.Data
 
             modelBuilder.ApplyConfiguration(new RoomConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ImageConfiguration());
-
             modelBuilder.SharedTypeEntity<Dictionary<string, object>>("AmenityBnB")
                 .HasData(
                     new { AmenitiesAmenityId = 1, BnBsBnBId = 1 },
