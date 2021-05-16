@@ -38,7 +38,7 @@ namespace DataAccess.Data
         // we would like to attach each room to multiple amenities and images
         // --> 'one-to-many'-relationship!
         // We do this by adding a 'virtual' collections.
-        public virtual ICollection<Amenity> Amenities { get; set; }
+        public virtual IList<Amenity> Amenities { get; set; }
 
         public virtual ICollection<Image> Images { get; set; }
     }
