@@ -12,10 +12,8 @@ namespace DataAccess.Data
     {
         [Key]
         public int ImageId { get; set; }
-        public string ImageName { get; set; }
         [Required]
         public string ImageSourceUrl { get; set; } 
-        public string ImageDescription { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public string UpdatedBy { get; set; }
