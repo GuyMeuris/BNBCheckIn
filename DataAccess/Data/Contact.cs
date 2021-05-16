@@ -23,7 +23,8 @@ namespace DataAccess.Data
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
-
+      
+        public virtual BnB bnb { get; set; }
 
     }
 }
