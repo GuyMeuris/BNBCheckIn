@@ -37,9 +37,9 @@ namespace DataAccess.Data
         [ForeignKey(nameof(Contact))]
         public int ContactId { get; set; }
         public Contact Contacts { get; set; }
-        public virtual IList<Room> Rooms { get; set; }
-        public virtual IList<Image> Images { get; set; }
-        public virtual IList<Amenity> Amenities { get; set; }
+        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<Amenity> Amenities { get; set; }
 
     }
 }
