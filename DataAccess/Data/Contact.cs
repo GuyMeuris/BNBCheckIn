@@ -24,7 +24,7 @@ namespace DataAccess.Data
         public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
       
-        public virtual BnB bnb { get; set; }
+        //public virtual BnB bnb { get; set; }
 
     }
 }
