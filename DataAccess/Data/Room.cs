@@ -41,7 +41,7 @@ namespace DataAccess.Data
         [ForeignKey(nameof(BnB))]
         public int BnBId { get; set; }
 
-        public BnB BnB { get; set; }
+        public virtual BnB BnB { get; set; }
 
         // We will also need a link to our 'Amenity' and 'Image'-classes, because
         // we would like to attach each room to multiple amenities and images

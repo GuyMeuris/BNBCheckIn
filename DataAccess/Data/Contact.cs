@@ -24,7 +24,6 @@ namespace DataAccess.Data
         public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
 
-        //public IList<Reservation> Reservations { get; set; }
 
     }
 }
