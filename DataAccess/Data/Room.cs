@@ -21,6 +21,7 @@ namespace DataAccess.Data
         [Required]
         public bool IsVacant { get; set; }
         public bool PetsAllowed { get; set; } = false;
+        public string RoomDetails { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public string UpdatedBy { get; set; }
