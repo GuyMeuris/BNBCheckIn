@@ -1,0 +1,74 @@
+﻿@page "/bnb-room/creëer"
+@using ModelsDTO
+@using BNBCheckInServer.ServerRepository.IServerRepository
+@inject IRoomRepository roomRepository 
+@inject NavigationManager navManager
+
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title B&ampB kamer</h3>
+    <div class="col-md-6">
+        <div class="card p-3">
+            <div card="card-body">
+                <EditForm Model="@RoomModel" OnValidSubmit="HandleBnBRoomUpsert">
+                    <DataAnnotationsValidator/>
+                    <div class="form-group">
+                        <label>Naam kamer</label>
+                        <InputText @bind-Value="RoomModel.RoomName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bezetting</label>
+                        <InputNumber @bind-Value="RoomModel.Occupancy" class="form-control" />
+                        <ValidationMessage For="()=>RoomModel.Occupancy" />
+                    </div>
+                    <div class="form-group">
+                        <label>Prijs per nacht</label>
+                        <InputNumber @bind-Value="RoomModel.Rate" class="form-control" />
+                        <ValidationMessage For="()=>RoomModel.Rate" />
+                    </div>
+                    <div class="form-group">
+                        <label>Oppervlakte kamer</label>
+                        <InputNumber @bind-Value="RoomModel.RoomSize" class="form-control" />
+                        <ValidationMessage For="()=>RoomModel.RoomSize" />
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-right: 10px">Dieren toegelaten?</label>
+                        <InputCheckbox @bind-Value="RoomModel.PetsAllowed" class="form-check-inline" />
+                    </div>
+                    <div class="form-group">
+                        <label>Beschrijving kamer</label>
+                        <InputTextArea @bind-Value="RoomModel.RoomDetails" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">@Title kamer</button>
+                        <NavLink href="bnb-room" class="btn btn-secondary">Terug naar overzicht kamers</NavLink>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-----------------------------------------------------------------------------------------------------------------------*@
+
+@code {
+
+    private RoomDTO RoomModel { get; set; } = new RoomDTO();
+
+    private string Title { get; set; } = "Creëer";
+
+    //-----------------------------------------------------------------------------------------------------------------------
+
+    private async Task HandleBnBRoomUpsert()
+    {
+        var roomDetailsByName = await roomRepository.IsRoomUnique(RoomModel.RoomName);
+        if (roomDetailsByName is not null)
+        {
+            //There is a duplicate room. Show error.
+            return;
+        }
+        var createdResult = await roomRepository.CreateRoom(RoomModel);
+        navManager.NavigateTo("bnb-room");
+    }
+
+}

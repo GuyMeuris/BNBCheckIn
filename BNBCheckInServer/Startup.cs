@@ -12,6 +12,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess;
 using DataAccess.Data;
+using Business.UnitOfWorkPattern.IUnitOfWorkPattern;
+using Business.UnitOfWorkPattern;
+using Business.Mapper;
+using BNBCheckInServer.ServerRepository.IServerRepository;
+using BNBCheckInServer.ServerRepository;
 
 namespace BNBCheckInServer
 {
@@ -37,6 +42,8 @@ namespace BNBCheckInServer
             services.AddDbContext<BnBDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
         }

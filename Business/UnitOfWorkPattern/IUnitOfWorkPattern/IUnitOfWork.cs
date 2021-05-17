@@ -26,5 +26,7 @@ namespace Business.UnitOfWorkPattern.IUnitOfWorkPattern
         IGenericRepository<Image> ImageRepository { get; }
 
         Task Save();         // Before this method all the changes will only be staged and not affected yet.
+
+        Task<int> SaveOnDelete();   // Customized for the delete-method
     }
 }

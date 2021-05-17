@@ -28,6 +28,7 @@ namespace ModelsDTO
         public string VATnr { get; set; }
         [Required(ErrorMessage = "Bankrekeningnr. is een verplicht veld.")]
         public string BankAccountNr { get; set; }
+        public string BnBDetails { get; set; }
         public virtual ICollection<ImageDTO> BnBImages { get; set; }
     }
     public class BnBDTO : CreateBnBDTO

@@ -62,5 +62,10 @@ namespace Business.UnitOfWorkPattern
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<int> SaveOnDelete()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }
