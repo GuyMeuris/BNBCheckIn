@@ -1,0 +1,78 @@
+﻿@page "/bnb-room"
+@using ModelsDTO
+@using Business.Repository.IRepository
+@inject IRoomRepository roomRepository
+@inject IJSRuntime jsRuntime
+
+<div class="row mt-4">
+    <div class="col-8">
+        <h4 class="card-title text-info">B&ampB kamers</h4>
+    </div>
+    <div class="col-3 offset-1">
+        <NavLink href="bnb-room/create" class="btn btn-info form-control">Voeg kamer toe</NavLink>
+    </div>
+</div>
+<br />
+<div class="row mt-4">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Naam kamer</th>
+                    <th>Bezetting</th>
+                    <th>Prijs per nacht</th>
+                    <th>Oppervlakte kamer</th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Rooms.Any())
+                {
+                    foreach (var room in Rooms)
+                    {
+                        <tr>
+                            <td>@room.RoomName</td>
+                            <td>@room.Occupancy</td>
+                            <td>@room.Rate.ToString("C")</td>
+                            <td>@room.RoomSize</td>
+                            <td>
+                                <NavLink href="@($"bnb-room/edit/{room.RoomId}")" class="btn btn-primary">Wijzigen</NavLink>
+                                <button class="btn btn-danger" @onclick="()=>HandleDelete(room.RoomId)">Verwijderen</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">Geen kamers gevonden in de lijst.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@*-----------------------------------------------------------------------------------------------------------------------*@
+
+@code {
+
+    private IEnumerable<RoomDTO> Rooms { get; set; } = new List<RoomDTO>();
+
+    private int? DeleteRoomId { get; set; } = null;
+
+    //-----------------------------------------------------------------------------------------------------------------------
+
+    protected async override Task OnInitializedAsync()
+    {
+        Rooms = await roomRepository.GetAllRooms();
+    }
+
+    private async Task HandleDelete(int roomId)
+    {
+        DeleteRoomId = roomId;
+        await jsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+}

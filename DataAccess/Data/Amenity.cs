@@ -25,7 +25,7 @@ namespace DataAccess.Data
 
 
         public virtual IList<BnB> BnBs { get; set; }
-        public virtual IList<Room> Rooms{ get; set; }
+        public virtual IList<Room> Rooms { get; set; }
 
     }
 }

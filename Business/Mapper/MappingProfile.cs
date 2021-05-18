@@ -9,15 +9,20 @@ using ModelsDTO;
 
 namespace Business.Mapper
 {
-    class MappingProfile : Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
             CreateMap<BnBDTO, BnB>().ReverseMap();
+            CreateMap<CreateBnBDTO, BnB>().ReverseMap();
             CreateMap<RoomDTO, Room>().ReverseMap();
+            CreateMap<CreateRoomDTO, Room>().ReverseMap();
             CreateMap<ContactDTO, Contact>().ReverseMap();
+            CreateMap<CreateContactDTO, Contact>().ReverseMap();
             CreateMap<AmenityDTO, Amenity>().ReverseMap();
+            CreateMap<CreateAmenityDTO, Amenity>().ReverseMap();
             CreateMap<ImageDTO, Image>().ReverseMap();
+            CreateMap<CreateImageDTO, Image>().ReverseMap();
         }
     }
 }

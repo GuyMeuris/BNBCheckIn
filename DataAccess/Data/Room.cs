@@ -20,7 +20,7 @@ namespace DataAccess.Data
         public int RoomSize { get; set; }
         [Required]
         public bool IsVacant { get; set; }
-        public bool PetsAllowed { get; set; } = false;
+        public bool PetsAllowed { get; set; } 
         public string RoomDetails { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;

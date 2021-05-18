@@ -12,6 +12,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess;
 using DataAccess.Data;
+using System.Reflection;
+using Business.Repository.IRepository;
+using Business.Repository;
 
 namespace BNBCheckInServer
 {
@@ -28,17 +31,19 @@ namespace BNBCheckInServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddDbContext<BnBDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
             services.AddCors(option => {
                 option.AddPolicy("AllowAll", builder =>
                     builder.WithOrigins("http://localhost:32072", "https://localhost:5001", "http://localhost:5000")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
-            services.AddDbContext<BnBDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,181 @@
+﻿@page "/bnb-room/create"
+@page "/bnb-room/edit/{Id:int}"
+@using ModelsDTO
+@using DataAccess.Data
+@using Business.Repository.IRepository
+@using Serilog
+@inject IRoomRepository roomRepository
+@inject NavigationManager navManager
+@inject IJSRuntime jsRuntime
+
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title B&ampB kamer</h3>
+    <div class="col-md-6">
+        <div class="card p-3">
+            <div card="card-body">
+                <EditForm Model="@RoomModel" OnValidSubmit="HandleBnBRoomUpsert">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Naam kamer</label>
+                        <InputText @bind-Value="RoomModel.RoomName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bezetting</label>
+                        <InputNumber @bind-Value="RoomModel.Occupancy" class="form-control" />
+                        <ValidationMessage For="()=>RoomModel.Occupancy" />
+                    </div>
+                    <div class="form-group">
+                        <label>Prijs per nacht</label>
+                        <InputNumber @bind-Value="RoomModel.Rate" class="form-control" />
+                        <ValidationMessage For="()=>RoomModel.Rate" />
+                    </div>
+                    <div class="form-group">
+                        <label>Oppervlakte kamer</label>
+                        <InputNumber @bind-Value="RoomModel.RoomSize" class="form-control" />
+                        <ValidationMessage For="()=>RoomModel.RoomSize" />
+                    </div>
+                    <div class="form-group mt-3">
+                        <label style="margin-right: 10px">Dieren toegelaten?</label>
+                        <InputCheckbox @bind-Value="RoomModel.PetsAllowed" class="form-check-inline" />
+                    </div>
+                    <div class="form-group">
+                        <label>Beschrijving kamer</label>
+                        <InputTextArea @bind-Value="RoomModel.RoomDetails" class="form-control" />
+                    </div>
+                    @if (Title == "Maak nieuwe")
+                    {
+                        <div class="form-group">
+                            <label>Hoort bij deze B&ampB:</label>
+                            <select class="selectpicker" @bind="RoomModel.BnBId">
+                                <option>--select--</option>
+                                @foreach (var item in BnBDTOs)
+                                {
+                                    <option value="@item.BnBId">@item.BnBName</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    <div class="form-group">
+                        <button class="btn btn-primary">@Title kamer</button>
+                        <NavLink href="bnb-room" class="btn btn-secondary">Terug naar overzicht kamers</NavLink>
+                    </div>
+
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-----------------------------------------------------------------------------------------------------------------------*@
+
+@code {
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    private RoomDTO RoomModel { get; set; } = new RoomDTO();
+
+    private string Title { get; set; } = "Maak nieuwe";
+
+
+    // Dit is voorlopig tot de BnB-repository klaar is.
+    private List<BnB> BnBDTOs = new List<BnB> {
+          new BnB
+                {
+                    BnBId = 2,
+                    BnBName = "Boskant",
+                    StreetName = "Terrillstraat",
+                    HouseNumber = "8",
+                    PostalCode = 3530,
+                    Municipality = "Helchteren",
+                    Province = "Limburg",
+                    VATnr = "BE3526654diefstal",
+                    BankAccountNr = "BE59654nogmeerdiefstal",
+                    ContactId = 2
+                },
+                new BnB
+                {
+                    BnBId = 3,
+                    BnBName = "Scheldezicht",
+                    StreetName = "Bollekeslei",
+                    HouseNumber = "88",
+                    PostalCode = 2100,
+                    Municipality = "Linkeroever",
+                    Province = "Antwerpen",
+                    VATnr = "BE3524987diefstal",
+                    BankAccountNr = "BE59987nogmeerdiefstal",
+                    ContactId = 2
+                },
+                new BnB
+                {
+                    BnBId = 4,
+                    BnBName = "De Wieg",
+                    StreetName = "Beschavingsstraat",
+                    HouseNumber = "44",
+                    PostalCode = 1730,
+                    Municipality = "Kester",
+                    Province = "Vlaams-Brabant",
+                    VATnr = "BE3524123diefstal",
+                    BankAccountNr = "BE59123nogmeerdiefstal",
+                    ContactId = 3
+                }};
+
+
+
+    //-----------------------------------------------------------------------------------------------------------------------
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            //Updating
+            Title = "Wijzig";
+            RoomModel = await roomRepository.GetRoom(Id.Value);
+            //if (RoomModel.)
+            //{
+            //    HotelRoomModel.ImageUrls = HotelRoomModel.HotelRoomImages.Select(u => u.RoomImageUrl).ToList();
+            //}
+
+        }
+        else
+        {
+            //Creating
+            RoomModel = new RoomDTO();
+        }
+    }
+
+    private async Task HandleBnBRoomUpsert()
+    {
+        try
+        {
+            var roomDetailsByName = await roomRepository.IsRoomUnique(RoomModel.RoomName, RoomModel.RoomId);
+            if (roomDetailsByName is not null)
+            {
+                await jsRuntime.SweetAlertError("Deze kamer bestaat al! Maak een andere.");
+                return;
+            }
+
+            if (RoomModel.RoomId != 0 && Title == "Wijzig")
+            {
+                //Update
+                var updatedRoomresult = await roomRepository.UpdateRoom(RoomModel.RoomId, RoomModel);
+                await jsRuntime.SweetAlertSuccess("Deze kamer is gewijzigd!");
+            }
+            else
+            {
+                //Create
+                var createdResult = await roomRepository.CreateRoom(RoomModel);
+                await jsRuntime.SweetAlertSuccess("Deze kamer is succesvol aangemaakt en werd toegevoegd aan de lijst!");
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Log.Error(ex, "The room failed to load when invoking the 'HandleBnBRoomUpsert'-method.");
+        }
+
+        navManager.NavigateTo("bnb-room");
+    }
+
+}
