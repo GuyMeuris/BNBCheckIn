@@ -29,8 +29,6 @@ namespace Business.Repository
         //*************************************************************************************
 
         // Here we can start detailing our 'CRUD'-operations in the form of actions (= methods).
-        // We use the 'Generic Repository Pattern' with the 'UnityOfWork' framework on top,
-        // that we already created for our data models.
 
         public async Task<RoomDTO> CreateRoom(CreateRoomDTO roomDTO)
         {

@@ -25,7 +25,7 @@ namespace ModelsDTO
         public string RoomDetails { get; set; }
 
         public int BnBId { get; set; }
-        public virtual ICollection<ImageDTO> BnBImages { get; set; }   
+        public virtual ICollection<ImageDTO> RoomImages { get; set; }   
     }
 
     public class RoomDTO : CreateRoomDTO
