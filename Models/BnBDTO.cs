@@ -31,14 +31,15 @@ namespace ModelsDTO
         public string BnBDetails { get; set; }
 
         public virtual ICollection<ImageDTO> BnBImages { get; set; }
-    }
-    public class BnBDTO : CreateBnBDTO
-    {
-        public int BnBId { get; set; }
-        public int ContactId { get; set; }
-        public ContactDTO Contacts { get; set; }
-        public virtual IList<string> ImageUrl { get; set; }
-        public virtual ICollection<RoomDTO> Rooms { get; set; }
-        public virtual ICollection<AmenityDTO> Amenities { get; set; }
-    }
+        }
+
+        public class BnBDTO : CreateBnBDTO
+        {
+            public int BnBId { get; set; }
+            public int ContactId { get; set; }
+            public ContactDTO Contacts { get; set; }
+            public virtual IList<string> ImageUrl { get; set; }
+            public virtual ICollection<RoomDTO> Rooms { get; set; }
+            public virtual ICollection<AmenityDTO> Amenities { get; set; }
+        }
 }
