@@ -1,0 +1,135 @@
+﻿@page "/bnbs/create"
+@page "/bnbs/edit/{Id:int}"
+@using ModelsDTO
+@using DataAccess.Data
+@using Business.Repository.IRepository
+@using Serilog
+@inject IBnBRepository BnBRepository
+@inject NavigationManager navManager
+@inject IJSRuntime jsRuntime
+
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title B&B</h3>
+    <div class="col-md-6">
+        <div class="card p-3">
+            <div card="card-body">
+                <EditForm Model="@bnbModel" OnValidSubmit="HandleBnBUpsert">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Naam B&B</label>
+                        <InputText @bind-Value="bnbModel.BnBName" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Straatnaam</label>
+                        <InputText @bind-Value="bnbModel.StreetName" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.StreetName" />
+                    </div>
+                    <div class="form-group">
+                        <label>Huisnummer</label>
+                        <InputText @bind-Value="bnbModel.HouseNumber" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.HouseNumber" />
+                    </div>
+                    <div class="form-group">
+                        <label>Postcode</label>
+                        <InputNumber @bind-Value="bnbModel.PostalCode" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.PostalCode" />
+                    </div>
+                    <div class="form-group">
+                        <label>Gemeente</label>
+                        <InputText @bind-Value="bnbModel.Municipality" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Provincie</label>
+                        <InputText @bind-Value="bnbModel.Province" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>BTW-nummer</label>
+                        <InputText @bind-Value="bnbModel.VATnr" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bankrekeningnummer</label>
+                        <InputText @bind-Value="bnbModel.BankAccountNr" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Beschrijving B&B</label>
+                        <InputTextArea @bind-Value="bnbModel.BnBDetails" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary">@Title B&B</button>
+                        <NavLink href="bnb-room" class="btn btn-secondary">Terug naar overzicht B&B's</NavLink>
+                    </div>
+
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-----------------------------------------------------------------------------------------------------------------------*@
+
+@code {
+
+    [Parameter]
+    public int? Id { get; set; }
+
+    private BnBDTO bnbModel { get; set; } = new BnBDTO();
+
+    private string Title { get; set; } = "Maak nieuwe";
+
+
+    
+
+
+    //-----------------------------------------------------------------------------------------------------------------------
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            //Updating
+            Title = "Wijzig";
+            bnbModel = await BnBRepository.GetBnB(Id.Value);
+        }
+        else
+        {
+            //Creating
+            bnbModel = new BnBDTO();
+        }
+    }
+
+    private async Task HandleBnBUpsert()
+    {
+        try
+        {
+            var bnbDetailsByName = await BnBRepository.IsBnBUnique(bnbModel.BnBName, bnbModel.BnBId);
+            if (bnbDetailsByName != null)
+            {
+                await jsRuntime.SweetAlertError("Een B&B met deze naam bestaat al! Wijzig de naam.");
+                return;
+            }
+
+            if (bnbModel.BnBId != 0 && Title == "Wijzig")
+            {
+                //Update
+                var updatedBnBresult = await BnBRepository.UpdateBnB(bnbModel.BnBId, bnbModel);
+                await jsRuntime.SweetAlertSuccess("Deze B&B is gewijzigd!");
+            }
+            else
+            {
+                //Create
+                var createdResult = await BnBRepository.CreateBnB(bnbModel);
+                await jsRuntime.SweetAlertSuccess("Deze B&B is succesvol aangemaakt en werd toegevoegd aan de lijst!");
+            }
+        }
+        catch (Exception ex)
+        {
+
+            Log.Error(ex, "The room failed to load when invoking the 'HandleBnBRoomUpsert'-method.");
+        }
+
+        navManager.NavigateTo("bnbs");
+    }
+
+}

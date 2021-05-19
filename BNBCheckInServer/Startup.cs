@@ -37,6 +37,7 @@ namespace BNBCheckInServer
             services.AddDbContext<BnBDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IBnBRepository, BnBRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IFileUpload, FileUpload>();
