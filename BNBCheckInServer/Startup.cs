@@ -15,6 +15,8 @@ using DataAccess.Data;
 using System.Reflection;
 using Business.Repository.IRepository;
 using Business.Repository;
+using BNBCheckInServer.Service;
+using BNBCheckInServer.Service.IService;
 
 namespace BNBCheckInServer
 {
@@ -36,7 +38,10 @@ namespace BNBCheckInServer
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IFileUpload, FileUpload>();
             services.AddRazorPages();
+            services.AddHttpContextAccessor();
             services.AddServerSideBlazor();
             services.AddCors(option => {
                 option.AddPolicy("AllowAll", builder =>

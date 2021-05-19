@@ -8,7 +8,7 @@ namespace Business.Repository.IRepository
 {
     public interface IRoomRepository
     {
-        public Task<RoomDTO> CreateRoom(CreateRoomDTO roomDTO);
+        public Task<RoomDTO> CreateRoom(RoomDTO roomDTO);
 
         public Task<RoomDTO> UpdateRoom(int roomId, RoomDTO roomDTO);
 

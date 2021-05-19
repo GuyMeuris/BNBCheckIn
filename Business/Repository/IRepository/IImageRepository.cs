@@ -16,7 +16,7 @@ namespace Business.Repository.IRepository
         //  - Delete all the images from a certain hotel room
         //  - Get all the images from a specific hotel room
 
-        public Task<int> CreateImage(CreateImageDTO imageDTO);
+        public Task<int> CreateImage(ImageDTO imageDTO);
 
         public Task<int> DeleteImageByImageId(int imageId);
 

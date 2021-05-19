@@ -1,8 +1,11 @@
 ﻿@page "/bnb-room"
 @using ModelsDTO
 @using Business.Repository.IRepository
+@using BNBCheckInServer.Components
 @inject IRoomRepository roomRepository
 @inject IJSRuntime jsRuntime
+@inject Service.IService.IFileUpload fileUpload
+@inject NavigationManager navManager
 
 <div class="row mt-4">
     <div class="col-8">
@@ -55,6 +58,8 @@
     </div>
 </div>
 
+<DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
+
 @*-----------------------------------------------------------------------------------------------------------------------*@
 
 @code {
@@ -62,6 +67,8 @@
     private IEnumerable<RoomDTO> Rooms { get; set; } = new List<RoomDTO>();
 
     private int? DeleteRoomId { get; set; } = null;
+
+    public bool IsProcessing { get; set; } = false;
 
     //-----------------------------------------------------------------------------------------------------------------------
 
@@ -74,5 +81,24 @@
     {
         DeleteRoomId = roomId;
         await jsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+        if (isConfirmed && DeleteRoomId is not null)
+        {
+            RoomDTO hotelRoom = await roomRepository.GetRoom(DeleteRoomId.Value);
+            foreach (var image in hotelRoom.Images)
+            {
+                var imageName = image.ImageSourceUrl.Replace($"{navManager.BaseUri}images/", "");
+                fileUpload.DeleteFile(imageName);
+            }
+            await roomRepository.DeleteRoom(DeleteRoomId.Value);
+            await jsRuntime.SweetAlertSuccess("De kamer werd succesvol verwijderd!");
+            Rooms = await roomRepository.GetAllRooms();
+        }
+        await jsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+        IsProcessing = false;
     }
 }
