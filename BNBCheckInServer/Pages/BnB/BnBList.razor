@@ -1,0 +1,88 @@
+﻿@page "/bnbs"
+@using ModelsDTO
+@using Business.Repository.IRepository
+@inject IBnBRepository bnbRepository 
+@inject IJSRuntime jsRuntime
+
+<div class="row mt-4">
+    <div class="col-8">
+        <h4 class="card-title text-info">B&B's</h4>
+    </div>
+    <div class="col-3 offset-1">
+        <NavLink href="bnbs/create" class="btn btn-info form-control">Voeg een B&B toe</NavLink>
+    </div>
+</div>
+<br />
+<div class="row mt-4">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Naam B&B</th>
+                    @*<th>Straatnaam</th>
+                    <th>Huisnummer</th>
+                    <th>Postcode</th>*@
+                    <th>Gemeente</th>
+                    <th>Provincie</th>
+                    @*<th>BTW-nummer</th>
+                    <th>Bankrekeningnummer</th>
+                    <th>B&B Beschrijving</th>*@
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (BnBs.Any())
+                {
+                    foreach (var bnb in BnBs)
+                    {
+                        <tr>
+                            <td>@bnb.BnBName</td>
+                            @*<td>@bnb.StreetName</td>
+                            <td>@bnb.HouseNumber</td>
+                            <td>@bnb.PostalCode</td>*@
+                            <td>@bnb.Municipality</td>
+                            <td>@bnb.Province</td>
+                            @*<td>@bnb.VATnr</td>
+                            <td>@bnb.BankAccountNr</td>
+                            <td>@bnb.BnBDetails</td>*@
+                            <td>
+                                <NavLink href="@($"bnbs/edit/{bnb.BnBId}")" class="btn btn-primary">Wijzigen</NavLink>
+                                <button class="btn btn-danger" @onclick="()=>HandleDelete(bnb.BnBId)">Verwijderen</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">Geen B&B's gevonden in de lijst.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@*-----------------------------------------------------------------------------------------------------------------------*@
+
+@code {
+
+    private IEnumerable<BnBDTO> BnBs { get; set; } = new List<BnBDTO>();
+
+    private int? DeleteBnBId { get; set; } = null;
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+    protected async override Task OnInitializedAsync()
+    {
+        BnBs = await bnbRepository.GetAllBnBs();
+    }
+
+    private async Task HandleDelete(int bnbId)
+    {
+        DeleteBnBId = bnbId;
+        await jsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+}
