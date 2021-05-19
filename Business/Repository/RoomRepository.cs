@@ -133,9 +133,8 @@ namespace Business.Repository
                     return room;
                 }              
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Log.Error(ex, "An error occured when invoking the 'IsRoomUnique'-method.");
                 return null;
             }
         }
