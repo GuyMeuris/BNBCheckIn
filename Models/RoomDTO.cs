@@ -9,7 +9,6 @@ namespace ModelsDTO
 {
     public class CreateRoomDTO
     {
-        
         public string RoomName { get; set; }
         [Range(1, 6, ErrorMessage = "De kamercapaciteit moet min. 1 en mag max. 6 personen bedragen.")]
         [Required(ErrorMessage = "De capaciteit van de kamer is een verplicht veld.")]
@@ -25,15 +24,17 @@ namespace ModelsDTO
         public string RoomDetails { get; set; }
 
         public int BnBId { get; set; }
-        public virtual ICollection<ImageDTO> RoomImages { get; set; }   
+       
     }
 
     public class RoomDTO : CreateRoomDTO
     {
         public int RoomId { get; set; }
-        
+
         public BnBDTO BnB { get; set; }
+        public virtual ICollection<ImageDTO> Images { get; set; }
         public virtual ICollection<AmenityDTO> Amenities { get; set; }
-        public virtual IList<string> ImageUrls { get; set; }
+        public virtual List<string> ImageUrls { get; set; }
     }
+
 }

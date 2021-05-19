@@ -16,6 +16,7 @@ namespace BNBCheckInServer.Service
         // In order to find the relative path for 'wwwroot'-folder we have to
         // use 'IWebHostEnvironment' with Dependency Injection.
         private readonly IWebHostEnvironment _webHostEnvironment;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public FileUpload(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
@@ -28,7 +29,7 @@ namespace BNBCheckInServer.Service
         {
             try
             {
-                var path = $"{_webHostEnvironment.WebRootPath}\\Images\\{fileName}";
+                var path = $"{_webHostEnvironment.WebRootPath}\\images\\{fileName}";
                 if (File.Exists(path))
                 {
                     File.Delete(path);
@@ -49,8 +50,8 @@ namespace BNBCheckInServer.Service
             {
                 FileInfo fileInfo = new FileInfo(file.Name);
                 var fileName = Guid.NewGuid().ToString() + fileInfo.Extension;
-                var folderDirectory = $"{_webHostEnvironment.WebRootPath}\\Images";
-                var path = Path.Combine(_webHostEnvironment.WebRootPath, "Images", fileName);
+                var folderDirectory = $"{_webHostEnvironment.WebRootPath}\\images";
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
 
                 var memoryStream = new MemoryStream();
                 await file.OpenReadStream().CopyToAsync(memoryStream);
@@ -65,9 +66,8 @@ namespace BNBCheckInServer.Service
                     memoryStream.WriteTo(fs);
                 }
 
-                var url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://" +
-                            $"{_httpContextAccessor.HttpContext.Request.Host.Value}/";
-                var fullPath = $"{url}Images/{fileName}";
+                var url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}/";
+                var fullPath = $"{url}images/{fileName}";
 
                 return fullPath;
             }

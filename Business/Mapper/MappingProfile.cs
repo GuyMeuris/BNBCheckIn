@@ -22,7 +22,6 @@ namespace Business.Mapper
             CreateMap<AmenityDTO, Amenity>().ReverseMap();
             CreateMap<CreateAmenityDTO, Amenity>().ReverseMap();
             CreateMap<ImageDTO, Image>().ReverseMap();
-            CreateMap<CreateImageDTO, Image>().ReverseMap();
         }
     }
 }

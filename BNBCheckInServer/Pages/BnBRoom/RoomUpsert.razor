@@ -1,10 +1,14 @@
 ﻿@page "/bnb-room/create"
 @page "/bnb-room/edit/{Id:int}"
 @using ModelsDTO
+@using System.IO
 @using DataAccess.Data
 @using Business.Repository.IRepository
+@using BNBCheckInServer.Service.IService
 @using Serilog
 @inject IRoomRepository roomRepository
+@inject IImageRepository imageRepository
+@inject IFileUpload fileUpload
 @inject NavigationManager navManager
 @inject IJSRuntime jsRuntime
 
@@ -39,9 +43,41 @@
                         <label style="margin-right: 10px">Dieren toegelaten?</label>
                         <InputCheckbox @bind-Value="RoomModel.PetsAllowed" class="form-check-inline" />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="height:250px;">
                         <label>Beschrijving kamer</label>
-                        <InputTextArea @bind-Value="RoomModel.RoomDetails" class="form-control" />
+                        @*<InputTextArea @bind-Value="RoomModel.RoomDetails" class="form-control" />*@
+                        <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Plaats hier een korte beschrijving van de kamer">
+                            <ToolbarContent>
+                                <select class="ql-header">
+                                    <option selected=""></option>
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                </select>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                </span>
+                            </ToolbarContent>
+                            <EditorContent>
+
+                            </EditorContent>
+                        </BlazoredTextEditor>
                     </div>
                     @if (Title == "Maak nieuwe")
                     {
@@ -63,24 +99,32 @@
                         <InputFile OnChange="HandleImageUpload" multiple></InputFile>
                         <div class="row">
 
-                            @*@if (RoomModel.ImageUrls is not null && RoomModel.ImageUrls.Count > 0)
+                            @if (IsImageUploadProcesStarted)
+                            {
+                            <div class="col-md-12">
+                                <span><i class="fa fa-spin fa-spinner"></i> Even geduld... afbeeldingen zijn aan het uploaden...</span>
+                            </div>
+                            }
+
+                            @if (RoomModel.ImageUrls is not null && RoomModel.ImageUrls.Count > 0)
                             {
                                 int serial = 1;
                                 foreach (var img in RoomModel.ImageUrls)
                                 {
-                                    <div class="col-md-2 mt-3">
+                                    <div class="col-md-3 mt-3">
                                         <div class="room-image" style="background: url('@img') 50% 50%">
                                             <span class="room-image-title">@serial</span>
                                         </div>
 
                                         <button type="button" class="btn btn-outline-danger btn-block mt-4"
-                                                @onclick="() => DeletePhoto(img)">
-                                            delete
+                                            @onclick="()=>DeleteImage(img)">
+                                            verwijder
                                         </button>
+
                                     </div>
                                     serial++;
                                 }
-                            }*@
+                            }
                         </div>
                     </div>
                     <div class="form-group">
@@ -103,8 +147,15 @@
 
     private RoomDTO RoomModel { get; set; } = new RoomDTO();
 
+    private ImageDTO RoomImage { get; set; } = new ImageDTO();
+
     private string Title { get; set; } = "Maak nieuwe";
 
+    private List<string> DeletedImageNames { get; set; } = new List<string>();
+
+    private bool IsImageUploadProcesStarted { get; set; } = false;
+
+    public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
     // Dit is voorlopig tot de BnB-repository klaar is.
     private List<BnB> BnBDTOs = new List<BnB> {
@@ -148,8 +199,6 @@
                     ContactId = 3
                 }};
 
-
-
     //-----------------------------------------------------------------------------------------------------------------------
 
     protected async override Task OnInitializedAsync()
@@ -159,16 +208,39 @@
             //Updating
             Title = "Wijzig";
             RoomModel = await roomRepository.GetRoom(Id.Value);
-            //if (RoomModel.)
-            //{
-            //    HotelRoomModel.ImageUrls = HotelRoomModel.HotelRoomImages.Select(u => u.RoomImageUrl).ToList();
-            //}
-
+            if (RoomModel?.Images is not null)
+            {
+                RoomModel.ImageUrls = RoomModel.Images.Select(u => u.ImageSourceUrl).ToList();
+            }
         }
         else
         {
             //Creating
             RoomModel = new RoomDTO();
+        }
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+        bool loading = true;
+        while (loading)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(RoomModel.RoomDetails))
+                {
+                    await this.QuillHtml.LoadHTMLContent(RoomModel.RoomDetails);
+                }
+                loading = false;
+            }
+            catch
+            {
+
+                await Task.Delay(10);
+                loading = true;
+            }
         }
     }
 
@@ -186,13 +258,33 @@
             if (RoomModel.RoomId != 0 && Title == "Wijzig")
             {
                 //Update
-                var updatedRoomresult = await roomRepository.UpdateRoom(RoomModel.RoomId, RoomModel);
+                var updatedRoomResult = await roomRepository.UpdateRoom(RoomModel.RoomId, RoomModel);
+                //if (RoomModel.ImageUrls is not null && (RoomModel.ImageUrls.Any() || RoomModel.Images.Any()))
+                if (RoomModel.ImageUrls is not null && (RoomModel.ImageUrls.Any()))
+                {
+                    if (DeletedImageNames is not null && DeletedImageNames.Any())
+                    {
+                        foreach (var deletedImageName in DeletedImageNames)
+                        {
+                            var imageName = deletedImageName.Replace($"{navManager.BaseUri}images/", "");
+                            var result = fileUpload.DeleteFile(imageName);
+                            await imageRepository.DeleteImageByImageUrl(deletedImageName);
+                        }
+                    }
+
+                    await AddRoomImages(updatedRoomResult);
+                }
                 await jsRuntime.SweetAlertSuccess("Deze kamer is gewijzigd!");
             }
             else
             {
                 //Create
+                RoomModel.RoomDetails = await QuillHtml.GetHTML();
                 var createdResult = await roomRepository.CreateRoom(RoomModel);
+                if (RoomModel.ImageUrls is not null)
+                {
+                    await AddRoomImages(createdResult);
+                }
                 await jsRuntime.SweetAlertSuccess("Deze kamer is succesvol aangemaakt en werd toegevoegd aan de lijst!");
             }
         }
@@ -205,9 +297,100 @@
         navManager.NavigateTo("bnb-room");
     }
 
-    private async Task HandleImageUpload()
+    private async Task HandleImageUpload(InputFileChangeEventArgs e)
     {
+        IsImageUploadProcesStarted = true;
+        try
+        {
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Count > 0)
+            {
+                foreach (var file in e.GetMultipleFiles())
+                {
+                    FileInfo fileInfo = new FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" ||
+                           fileInfo.Extension.ToLower() == ".jpeg" ||
+                              fileInfo.Extension.ToLower() == ".png")
+                    {
+                        var uploadedImagePath = await fileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
+                    }
+                    else
+                    {
+                        await jsRuntime.SweetAlertError("Enkel .jpg/.jpeg/.png bestanden zijn toegelaten!");
+                        return;
+                    }
+                }
 
+                if (images.Any())
+                {
+                    if (RoomModel.ImageUrls is not null && RoomModel.ImageUrls.Any())
+                    {
+                        RoomModel.ImageUrls.AddRange(images);
+                    }
+                    else
+                    {
+                        RoomModel.ImageUrls = new List<string>();
+                        RoomModel.ImageUrls.AddRange(images);
+                    }
+                }
+                else
+                {
+                    await jsRuntime.SweetAlertError("Het uploaden van de afbeeldingen is niet gelukt. Probeer opnieuw.");
+                    return;
+                }
+            }
+            IsImageUploadProcesStarted = false;
+        }
+
+        catch (Exception ex)
+        {
+            Log.Error(ex, "The image failed to upload when invoking the 'HandleImageUpload'-method.");
+        }
     }
 
+    private async Task AddRoomImages(RoomDTO roomDetails)
+    {
+        foreach (var imageUrl in RoomModel.ImageUrls)
+        {
+            if (RoomModel.Images is null ||
+                    RoomModel.Images.Where(x => x.ImageSourceUrl == imageUrl).Count() == 0)
+            {
+                RoomImage = new ImageDTO()
+                {
+                    RoomId = roomDetails.RoomId,
+                    ImageSourceUrl = imageUrl
+                };
+                await imageRepository.CreateImage(RoomImage);
+            }
+
+        }
+    }
+
+    private async Task DeleteImage(string imageUrl)
+    {
+        try
+        {
+            var imageIndex = RoomModel.ImageUrls.FindIndex(x => x == imageUrl);
+            var imageName = imageUrl.Replace($"{navManager.BaseUri}images/", "");
+            if (RoomModel.RoomId == 0 && Title == "Maak nieuwe")
+            {
+                //create
+                var result = fileUpload.DeleteFile(imageName);
+            }
+            else
+            {
+                //update
+                DeletedImageNames ??= new List<string>();
+                DeletedImageNames.Add(imageUrl);
+            }
+            RoomModel.ImageUrls.RemoveAt(imageIndex);
+        }
+
+        catch (Exception ex)
+        {
+            Log.Error(ex, "The image was not deleted when invoking the 'DeleteIamge'-method.");
+            await jsRuntime.SweetAlertError("Het verwijderen van de afbeelding is niet gelukt. Probeer opnieuw.");
+        }
+    }
 }

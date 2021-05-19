@@ -29,18 +29,23 @@ namespace Business.Repository
 
         // Here we can start detailing our 'CRUD'-operations in the form of actions (= methods).
 
-        public async Task<int> CreateImage(CreateImageDTO imageDTO)
+        public async Task<int> CreateImage(ImageDTO imageDTO)
         {
-            var image = _mapper.Map<CreateImageDTO, Image>(imageDTO);
+            var image = _mapper.Map<ImageDTO, Image>(imageDTO);
             await _context.Images.AddAsync(image);
             return await _context.SaveChangesAsync();
         }
 
         public async Task<int> DeleteImageByImageId(int imageId)
         {
-            var image = await _context.Images.FindAsync(imageId);
-            _context.Images.Remove(image);
-            return await _context.SaveChangesAsync();
+            var imageDetails = await _context.Images.FindAsync(imageId);
+            if (imageDetails is not null)
+            {
+                var image = await _context.Images.FindAsync(imageId);
+                _context.Images.Remove(image);
+                return await _context.SaveChangesAsync();
+            }
+            return 0;
         }
 
         public async Task<int> DeleteImageByImageUrl(string imageUrl)

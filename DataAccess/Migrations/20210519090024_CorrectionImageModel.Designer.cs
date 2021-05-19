@@ -4,14 +4,16 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BnBDbContext))]
-    partial class BnBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210519090024_CorrectionImageModel")]
+    partial class CorrectionImageModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,9 +228,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "We don't charge you for using our wifi.",
                             AmenityName = "free wifi",
                             AmenityRate = 0.0,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 63, DateTimeKind.Local).AddTicks(4640),
-
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -237,9 +237,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "We don't swim in your toilet, so please don't pee in our pool.",
                             AmenityName = "pool",
                             AmenityRate = 20.0,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 65, DateTimeKind.Local).AddTicks(6616),
-
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -248,9 +246,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "For people who like to sweat",
                             AmenityName = "sauna",
                             AmenityRate = 25.0,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 65, DateTimeKind.Local).AddTicks(6647),
-
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -259,9 +255,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "The relaxing kind, not the Japanese maffia.",
                             AmenityName = "jacuzzi",
                             AmenityRate = 33.0,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 65, DateTimeKind.Local).AddTicks(6652),
-
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -270,9 +264,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "For rainy days.",
                             AmenityName = "pingpongtafelke",
                             AmenityRate = 0.0,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 65, DateTimeKind.Local).AddTicks(6655),
-
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -346,9 +338,7 @@ namespace DataAccess.Migrations
                             BankAccountNr = "BE59889nogmeerdiefstal",
                             BnBName = "Boerenhol",
                             ContactId = 1,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 67, DateTimeKind.Local).AddTicks(7758),
-
                             HouseNumber = "4",
                             Municipality = "Reningelst",
                             PostalCode = 8970,
@@ -363,9 +353,7 @@ namespace DataAccess.Migrations
                             BankAccountNr = "BE59654nogmeerdiefstal",
                             BnBName = "Boskant",
                             ContactId = 2,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 68, DateTimeKind.Local).AddTicks(1828),
-
                             HouseNumber = "8",
                             Municipality = "Helchteren",
                             PostalCode = 3530,
@@ -380,9 +368,7 @@ namespace DataAccess.Migrations
                             BankAccountNr = "BE59987nogmeerdiefstal",
                             BnBName = "Scheldezicht",
                             ContactId = 2,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 68, DateTimeKind.Local).AddTicks(1841),
-
                             HouseNumber = "88",
                             Municipality = "Linkeroever",
                             PostalCode = 2100,
@@ -397,9 +383,7 @@ namespace DataAccess.Migrations
                             BankAccountNr = "BE59123nogmeerdiefstal",
                             BnBName = "De Wieg",
                             ContactId = 3,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 68, DateTimeKind.Local).AddTicks(1846),
-
                             HouseNumber = "44",
                             Municipality = "Kester",
                             PostalCode = 1730,
@@ -414,9 +398,7 @@ namespace DataAccess.Migrations
                             BankAccountNr = "BE59789nogmeerdiefstal",
                             BnBName = "Nie Neute",
                             ContactId = 4,
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 68, DateTimeKind.Local).AddTicks(1849),
-
                             HouseNumber = "24",
                             Municipality = "Merelbeke",
                             PostalCode = 9300,
@@ -472,9 +454,7 @@ namespace DataAccess.Migrations
                         {
                             ContactId = 1,
                             ContactName = "Arthur Blanckaert",
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 67, DateTimeKind.Local).AddTicks(883),
-
                             Email = "tuur@zanger.be",
                             PhoneNumber = "016/026.754",
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -483,9 +463,7 @@ namespace DataAccess.Migrations
                         {
                             ContactId = 2,
                             ContactName = "Eddy Wally",
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 67, DateTimeKind.Local).AddTicks(2668),
-
                             Email = "wally@zanger.be",
                             PhoneNumber = "09/657.237",
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -494,9 +472,7 @@ namespace DataAccess.Migrations
                         {
                             ContactId = 3,
                             ContactName = "Rocking Moustache",
-
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 67, DateTimeKind.Local).AddTicks(2682),
-
                             Email = "moustache@zanger.be",
                             PhoneNumber = "016/981.247",
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -506,7 +482,6 @@ namespace DataAccess.Migrations
                             ContactId = 4,
                             ContactName = "Koen Crucke",
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 67, DateTimeKind.Local).AddTicks(2685),
-
                             Email = "crucke@zanger.be",
                             PhoneNumber = "03/026.754",
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -516,7 +491,6 @@ namespace DataAccess.Migrations
                             ContactId = 5,
                             ContactName = "Bart Kaëll",
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 67, DateTimeKind.Local).AddTicks(2688),
-
                             Email = "kajell@zanger.be",
                             Password = "123",
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -527,7 +501,6 @@ namespace DataAccess.Migrations
                             ContactId = 6,
                             ContactName = "Luk Steeno",
                             CreatedOn = new DateTime(2021, 5, 19, 11, 0, 24, 67, DateTimeKind.Local).AddTicks(3475),
-
                             Email = "steeno@zanger.be",
                             Password = "123",
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -622,7 +595,6 @@ namespace DataAccess.Migrations
                             RoomId = 1,
                             BnBId = 1,
                             CreatedDate = new DateTime(2021, 5, 19, 11, 0, 24, 68, DateTimeKind.Local).AddTicks(7866),
-
                             IsVacant = true,
                             Occupancy = 2,
                             PetsAllowed = false,
@@ -636,7 +608,6 @@ namespace DataAccess.Migrations
                             RoomId = 2,
                             BnBId = 1,
                             CreatedDate = new DateTime(2021, 5, 19, 11, 0, 24, 69, DateTimeKind.Local).AddTicks(777),
-
                             IsVacant = true,
                             Occupancy = 2,
                             PetsAllowed = false,
@@ -650,7 +621,6 @@ namespace DataAccess.Migrations
                             RoomId = 3,
                             BnBId = 1,
                             CreatedDate = new DateTime(2021, 5, 19, 11, 0, 24, 69, DateTimeKind.Local).AddTicks(791),
-
                             IsVacant = false,
                             Occupancy = 3,
                             PetsAllowed = false,
@@ -703,7 +673,6 @@ namespace DataAccess.Migrations
                             RoomId = 7,
                             BnBId = 3,
                             CreatedDate = new DateTime(2021, 5, 19, 11, 0, 24, 69, DateTimeKind.Local).AddTicks(803),
-
                             IsVacant = true,
                             Occupancy = 2,
                             PetsAllowed = false,
@@ -730,7 +699,6 @@ namespace DataAccess.Migrations
                             RoomId = 9,
                             BnBId = 4,
                             CreatedDate = new DateTime(2021, 5, 19, 11, 0, 24, 69, DateTimeKind.Local).AddTicks(808),
-
                             IsVacant = true,
                             Occupancy = 2,
                             PetsAllowed = false,
@@ -744,7 +712,6 @@ namespace DataAccess.Migrations
                             RoomId = 10,
                             BnBId = 4,
                             CreatedDate = new DateTime(2021, 5, 19, 11, 0, 24, 69, DateTimeKind.Local).AddTicks(810),
-
                             IsVacant = true,
                             Occupancy = 1,
                             PetsAllowed = false,

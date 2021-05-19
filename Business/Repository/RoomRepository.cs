@@ -6,6 +6,7 @@ using ModelsDTO;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,9 +31,9 @@ namespace Business.Repository
 
         // Here we can start detailing our 'CRUD'-operations in the form of actions (= methods).
 
-        public async Task<RoomDTO> CreateRoom(CreateRoomDTO roomDTO)
+        public async Task<RoomDTO> CreateRoom(RoomDTO roomDTO)
         {
-            Room room = _mapper.Map<CreateRoomDTO, Room>(roomDTO);
+            Room room = _mapper.Map<RoomDTO, Room>(roomDTO);
             room.CreatedDate = DateTime.Now;
             room.CreatedBy = "";
             var addedRoom = await _context.Rooms.AddAsync(room);
@@ -44,7 +45,8 @@ namespace Business.Repository
         {
             try
             {
-                IEnumerable<RoomDTO> roomDTOs = _mapper.Map<IEnumerable<Room>, IEnumerable<RoomDTO>>(_context.Rooms);
+                IEnumerable<RoomDTO> roomDTOs = _mapper.Map<IEnumerable<Room>, IEnumerable<RoomDTO>>
+                    (_context.Rooms.Include(x => x.Images));
                 return roomDTOs;
             }
             catch (Exception ex)
@@ -59,7 +61,7 @@ namespace Business.Repository
             try
             {
                 RoomDTO room = _mapper.Map < Room, RoomDTO>(
-                      await _context.Rooms.FirstOrDefaultAsync(x => x.RoomId == roomId));
+                      await _context.Rooms.Include(x => x.Images).FirstOrDefaultAsync(x => x.RoomId == roomId));
                 return room;
             }
             catch (Exception ex)
@@ -103,9 +105,11 @@ namespace Business.Repository
             var roomDetails = await _context.Rooms.FindAsync(roomId);
             if (roomDetails is not null)
             {
+                var allImages = await _context.Images.Where(x => x.RoomId == roomId).ToListAsync();
+                _context.Images.RemoveRange(allImages);
+
                 _context.Rooms.Remove(roomDetails);
                 return await _context.SaveChangesAsync();
-
             }
             return 0;
         }
