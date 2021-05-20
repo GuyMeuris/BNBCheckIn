@@ -7,6 +7,7 @@
 @using BNBCheckInServer.Service.IService
 @using Serilog
 @inject IRoomRepository roomRepository
+@inject IBnBRepository bnbRepository 
 @inject IImageRepository imageRepository
 @inject IFileUpload fileUpload
 @inject NavigationManager navManager
@@ -81,9 +82,8 @@
                     </div>
                     @if (Title == "Maak nieuwe")
                     {
-                        <div class="form-group">
+                        <div class="form-group" style="padding-top:70px;">
                             <label>Hoort bij deze B&ampB:</label>
-                            <br />
                             <select class="selectpicker" @bind="RoomModel.BnBId">
                                 @*<option>--select--</option>*@
                                 @foreach (var item in BnBDTOs)
@@ -157,52 +157,15 @@
 
     public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
-    // Dit is voorlopig tot de BnB-repository klaar is.
-    private List<BnB> BnBDTOs = new List<BnB> {
-          new BnB
-                {
-                    BnBId = 2,
-                    BnBName = "Boskant",
-                    StreetName = "Terrillstraat",
-                    HouseNumber = "8",
-                    PostalCode = 3530,
-                    Municipality = "Helchteren",
-                    Province = "Limburg",
-                    VATnr = "BE3526654diefstal",
-                    BankAccountNr = "BE59654nogmeerdiefstal",
-                    ContactId = 2
-                },
-                new BnB
-                {
-                    BnBId = 3,
-                    BnBName = "Scheldezicht",
-                    StreetName = "Bollekeslei",
-                    HouseNumber = "88",
-                    PostalCode = 2100,
-                    Municipality = "Linkeroever",
-                    Province = "Antwerpen",
-                    VATnr = "BE3524987diefstal",
-                    BankAccountNr = "BE59987nogmeerdiefstal",
-                    ContactId = 2
-                },
-                new BnB
-                {
-                    BnBId = 4,
-                    BnBName = "De Wieg",
-                    StreetName = "Beschavingsstraat",
-                    HouseNumber = "44",
-                    PostalCode = 1730,
-                    Municipality = "Kester",
-                    Province = "Vlaams-Brabant",
-                    VATnr = "BE3524123diefstal",
-                    BankAccountNr = "BE59123nogmeerdiefstal",
-                    ContactId = 3
-                }};
+    //Dit is voorlopig tot de BnB-repository klaar is.
+    private List<BnBDTO> BnBDTOs = new List<BnBDTO>();
+
 
     //-----------------------------------------------------------------------------------------------------------------------
 
     protected async override Task OnInitializedAsync()
     {
+        BnBDTOs = (await bnbRepository.GetAllBnBs()).ToList();
         if (Id != null)
         {
             //Updating
