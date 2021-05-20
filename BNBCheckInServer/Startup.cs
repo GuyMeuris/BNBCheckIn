@@ -40,6 +40,7 @@ namespace BNBCheckInServer
             services.AddScoped<IBnBRepository, BnBRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IAmenityRepository, AmenityRepository>();
             services.AddScoped<IFileUpload, FileUpload>();
             services.AddRazorPages();
             services.AddHttpContextAccessor();
