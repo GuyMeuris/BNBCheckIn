@@ -1,0 +1,107 @@
+﻿@page "/bnb-amenity"
+@using ModelsDTO
+@using Business.Repository.IRepository
+@using BNBCheckInServer.Components
+@inject IAmenityRepository amenityRepository
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navManager
+
+<div class="row mt-4">
+    <div class="col-6">
+        <h4 class="card-title text-info">B&ampB- en kamerfaciliteiten</h4>
+    </div>
+    <div class="col-5 offset-1">
+        <NavLink href="@($"bnb-amenity/create")" class="btn btn-info form-control">Voeg faciliteit toe</NavLink>
+    </div>
+</div>
+<div class="row mt-4">
+
+    <div class="col-md-12">
+
+
+        <table class="table table-bordered table-hover" id="tblBnBAmenity">
+            <thead>
+                <tr>
+
+                    <th>Naam faciliteit</th>
+                    <th>Prijs per persoon</th>
+                    <th>Icon</th>
+                    <th>Beschrijving</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (HotelAmenities.Any())
+                {
+                    foreach (var amenity in HotelAmenities)
+                    {
+                        <tr>
+                            <td>@amenity.AmenityName</td>
+                            <td>@amenity.AmenityRate</td>
+                            <td><i class="@amenity.AmenityIcon"></i></td>
+                            <td>
+                                <NavLink href="@($"bnb-amenity/edit/{amenity.AmenityId}")" class="btn btn-primary">Wijzigen</NavLink>
+                                <button class="btn btn-danger" @onclick="() => HandleDelete(amenity.AmenityId)">Verwijderen</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9">Geen faciliteiten gevonden in de lijst.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
+
+@*-----------------------------------------------------------------------------------------------------------------------*@
+
+@code {
+    internal IEnumerable<AmenityDTO> HotelAmenities { get; set; } = new List<AmenityDTO>();
+
+    internal int? DeleteAmenityId { get; set; } = null;
+
+    private bool IsProcessing { get; set; } = false;
+
+//------------------------------------------------------------------------------------------------------------------------------
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        HotelAmenities = await amenityRepository.GetAllAmenities();
+    }
+
+    public async Task HandleDelete(int amenityId)
+    {
+        DeleteAmenityId = amenityId;
+        await jsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+        if (isConfirmed && DeleteAmenityId != null)
+        {
+            try
+            {
+                var result = await amenityRepository.DeleteAmenity(DeleteAmenityId.Value, "");
+                await jsRuntime.InvokeVoidAsync("Window.ShowSwal", "success", "The hotel amenity was deleted successfully!");
+            }
+            catch (Exception ex)
+            {
+                await jsRuntime.InvokeVoidAsync("Window.ShowSwal", "error", ex.Message);
+            }
+            HotelAmenities = await amenityRepository.GetAllAmenities();
+
+        }
+
+        await jsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+        IsProcessing = false;
+    }
+}
+

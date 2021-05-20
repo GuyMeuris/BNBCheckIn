@@ -3,6 +3,7 @@ using Business.Repository.IRepository;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using ModelsDTO;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,13 +93,22 @@ namespace Business.Repository
 
         public async Task<AmenityDTO> UpdateAmenity(int amenityId, AmenityDTO amenityDTO)
         {
-            var amenityDetails = await _context.Amenities.FindAsync(amenityId);
-            var amenity = _mapper.Map<AmenityDTO, Amenity>(amenityDTO, amenityDetails);
-            amenity.UpdatedOn = DateTime.Now;
-            amenity.UpdatedBy = "";
-            var updatedAmenity = _context.Amenities.Update(amenity);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<Amenity, AmenityDTO>(updatedAmenity.Entity);
+            if (amenityId == amenityDTO.AmenityId)
+            {
+                var amenityDetails = await _context.Amenities.FindAsync(amenityId);
+                var amenity = _mapper.Map<AmenityDTO, Amenity>(amenityDTO, amenityDetails);
+                amenity.UpdatedOn = DateTime.Now;
+                amenity.UpdatedBy = "";
+                var updatedAmenity = _context.Amenities.Update(amenity);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<Amenity, AmenityDTO>(updatedAmenity.Entity);
+            }
+            else
+            {
+                Log.Error("The room failed to update when invoking the 'UpdateRoom'-method.");
+                return null;
+            }
+
         }
     }
 }

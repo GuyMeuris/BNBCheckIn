@@ -1,0 +1,127 @@
+﻿@page "/bnb-amenity/create"
+@page "/bnb-amenity/edit/{Id:int}"
+@using Business.Repository.IRepository
+@using ModelsDTO
+@using Serilog
+@inject IAmenityRepository amenityRepository
+@inject NavigationManager navManager
+@inject IJSRuntime jsRuntime
+
+<div class="row mt-2 mb-5">
+    <h3 class="card-title text-info mb-3 ml-3">@Title faciliteit</h3>
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <EditForm Model="@AmenityModel" OnValidSubmit="HandleAmenityCreate">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Naam voorziening</label>
+                        <InputText @bind-Value="AmenityModel.AmenityName" class="form-control"></InputText>
+                        <ValidationMessage For="()=>AmenityModel.AmenityName"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Prijs per persoon</label>
+                        <InputNumber @bind-Value="AmenityModel.AmenityRate" class="form-control"></InputNumber>
+                        <ValidationMessage For="()=>AmenityModel.AmenityRate"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Icon</label>
+                        <InputText @bind-Value="AmenityModel.AmenityIcon" class="form-control"></InputText>
+                        <ValidationMessage For="()=>AmenityModel.AmenityIcon"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Beschrijving</label>
+                        <InputText @bind-Value="AmenityModel.AmenityDescription" class="form-control"></InputText>
+                        <ValidationMessage For="()=>AmenityModel.AmenityDescription"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary"> @Title faciliteit </button>
+                        <NavLink href="@($"bnb-amenity")" class="btn btn-secondary">Terug naar overzicht faciliteiten</NavLink>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*-----------------------------------------------------------------------------------------------------------------------*@
+
+@code
+{
+    [Parameter]
+    public int? Id { get; set; }
+
+    internal AmenityDTO AmenityModel { get; set; } = new AmenityDTO();
+
+    internal string Title { get; set; } = "Maak nieuwe";
+
+    internal bool IsProcessingStart { get; set; } = false;
+
+    //-----------------------------------------------------------------------------------------------------------------------------
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            //Update
+            Title = "Wijzig";
+
+            AmenityModel = await amenityRepository.GetAmenity(Id.Value);
+        }
+        else
+        {
+            AmenityModel = new AmenityDTO();
+        }
+    }
+
+    internal async Task HandleAmenityCreate()
+    {
+        try
+        {
+            IsProcessingStart = true;
+
+            if (AmenityModel.AmenityId != 0 && Title == "Wijzig")
+            {
+                var amenityDetailsByName = await amenityRepository.IsAmenityUnique(AmenityModel.AmenityName);
+                if (amenityDetailsByName != null && amenityDetailsByName.AmenityId != AmenityModel.AmenityId)
+                {
+                    await jsRuntime.SweetAlertError("Deze B&B- of kamervoorziening bestaat reeds!");
+                    return;
+                }
+                //Update the bnb amenity here
+                var updateAmenityResult = await amenityRepository.UpdateAmenity(AmenityModel.AmenityId, AmenityModel);
+
+                await jsRuntime.SweetAlertSuccess("De voorziening werd aangepast!");
+            }
+            else
+            {
+
+                var amenityDetailsByName = await amenityRepository.IsAmenityUnique(AmenityModel.AmenityName);
+                if (amenityDetailsByName != null)
+                {
+                    await jsRuntime.SweetAlertError("Deze B&B- of kamervoorziening bestaat reeds!");
+                }
+
+
+                //Create new Hotel Amenity here
+                var createdResult = await amenityRepository.CreateAmenity(AmenityModel);
+                AmenityModel = new AmenityDTO();
+                await jsRuntime.SweetAlertSuccess("Deze voorziening werd aangemaakt en aan de lijst toegevoegd!");
+
+            }
+            navManager.NavigateTo("bnb-amenity");
+            IsProcessingStart = false;
+
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "An error occured when invoking the 'HandleBnBRoomUpsert'-method.");
+            IsProcessingStart = false;
+        }
+    }
+
+
+}
+
