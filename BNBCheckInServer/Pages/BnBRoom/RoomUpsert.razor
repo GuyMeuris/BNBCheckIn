@@ -47,7 +47,7 @@
                     <div class="form-group" style="height:250px;">
                         <label>Beschrijving kamer</label>
                         @*<InputTextArea @bind-Value="RoomModel.RoomDetails" class="form-control" />*@
-                        <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Plaats hier een korte beschrijving van de kamer">
+                        <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Plaats hier een korte beschrijving van de kamer.">
                             <ToolbarContent>
                                 <select class="ql-header">
                                     <option selected=""></option>
@@ -352,7 +352,7 @@
 
         catch (Exception ex)
         {
-            Log.Error(ex, "The image was not deleted when invoking the 'DeleteIamge'-method.");
+            Log.Error(ex, "The image was not deleted when invoking the 'DeleteImage'-method.");
             await jsRuntime.SweetAlertError("Het verwijderen van de afbeelding is niet gelukt. Probeer opnieuw.");
         }
     }

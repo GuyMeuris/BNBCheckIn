@@ -22,6 +22,8 @@ namespace Business.Repository.IRepository
 
         public Task<int> DeleteImagesByRoomId(int roomId);
 
+        public Task<int> DeleteImagesByBnBId(int bnbId);
+
         public Task<int> DeleteImageByImageUrl(string imageUrl);
 
         public Task<IEnumerable<ImageDTO>> GetHotelRoomImages(int roomId);

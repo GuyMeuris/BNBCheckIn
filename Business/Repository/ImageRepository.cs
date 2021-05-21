@@ -61,6 +61,12 @@ namespace Business.Repository
             _context.Images.RemoveRange(imageList);
             return await _context.SaveChangesAsync();
         }
+        public async Task<int> DeleteImagesByBnBId(int bnbId)
+        {
+            var imageList = await _context.Images.Where(x => x.BnBId == bnbId).ToListAsync();
+            _context.Images.RemoveRange(imageList);
+            return await _context.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<ImageDTO>> GetHotelRoomImages(int roomId)
         {
