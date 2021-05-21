@@ -50,7 +50,7 @@ namespace BNBCheckInServer.Service
             {
                 FileInfo fileInfo = new FileInfo(file.Name);
                 var fileName = Guid.NewGuid().ToString() + fileInfo.Extension;
-                var folderDirectory = $"{_webHostEnvironment.WebRootPath}\\images";
+                var folderDirectory = $"{_webHostEnvironment.WebRootPath}\\images";//todo: moet dit het algemene "images" blijven of splitsen we het beter op in B&B images en Kamer images?
                 var path = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
 
                 var memoryStream = new MemoryStream();

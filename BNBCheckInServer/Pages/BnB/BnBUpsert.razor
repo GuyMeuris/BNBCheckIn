@@ -1,12 +1,17 @@
 ﻿@page "/bnbs/create"
 @page "/bnbs/edit/{Id:int}"
 @using ModelsDTO
+@using System.IO
 @using DataAccess.Data
+@using BNBCheckInServer.Service.IService
 @using Business.Repository.IRepository
 @using Serilog
 @inject IBnBRepository BnBRepository
+@inject IImageRepository imageRepository
 @inject NavigationManager navManager
 @inject IJSRuntime jsRuntime
+@inject IFileUpload fileUpload
+
 
 
 <div class="row mt-2 mb-5">
@@ -51,11 +56,80 @@
                         <label>Bankrekeningnummer</label>
                         <InputText @bind-Value="bnbModel.BankAccountNr" class="form-control" />
                     </div>
-                    <div class="form-group">
-                        <label>Beschrijving B&B</label>
-                        <InputTextArea @bind-Value="bnbModel.BnBDetails" class="form-control" />
-                    </div>
+                    @*<div class="form-group">
+            <label>Beschrijving B&B</label>
+            <InputTextArea @bind-Value="bnbModel.BnBDetails" class="form-control" />
+        </div>*@
+                    <div class="form-group" style="height:250px;">
+                        <label>Beschrijving kamer</label>
+                        @*<InputTextArea @bind-Value="RoomModel.RoomDetails" class="form-control" />*@
+                        <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Plaats hier een korte beschrijving van de B&B.">
+                            <ToolbarContent>
+                                <select class="ql-header">
+                                    <option selected=""></option>
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                </select>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                </span>
+                            </ToolbarContent>
+                            <EditorContent>
 
+                            </EditorContent>
+                        </BlazoredTextEditor>
+                    </div>
+                    <div class="form-group" style="padding-top:70px;">
+                        <label>Foto's van de kamer:</label>
+                        <br />
+                        <InputFile OnChange="HandleImageUpload" multiple></InputFile>
+                        <div class="row">
+
+                            @if (IsImageUploadProcesStarted)
+                            {
+                                <div class="col-md-12">
+                                    <span><i class="fa fa-spin fa-spinner"></i> Even geduld... afbeeldingen zijn aan het uploaden...</span>
+                                </div>
+                            }
+
+                            @if (bnbModel.ImageUrls is not null && bnbModel.ImageUrls.Count > 0)
+                            {
+                                int serial = 1;
+                                foreach (var img in bnbModel.ImageUrls)
+                                {
+                                    <div class="col-md-3 mt-3">
+                                        <div class="room-image" style="background: url('@img') 50% 50%">
+                                            <span class="room-image-title">@serial</span>
+                                        </div>
+
+                                        <button type="button" class="btn btn-outline-danger btn-block mt-4"
+                                                @onclick="()=>DeleteImage(img)">
+                                            verwijder
+                                        </button>
+
+                                    </div>
+                                    serial++;
+                                }
+                            }
+                        </div>
+                    </div>
                     <div class="form-group">
                         <button class="btn btn-primary">@Title B&B</button>
                         <NavLink href="bnbs" class="btn btn-secondary">Terug naar overzicht B&B's</NavLink>
@@ -78,8 +152,12 @@
 
     private string Title { get; set; } = "Maak nieuwe";
 
+    private List<string> DeletedImageNames { get; set; } = new List<string>();
 
-    
+    private bool IsImageUploadProcesStarted { get; set; } = false;
+
+    public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
+
 
 
     //-----------------------------------------------------------------------------------------------------------------------
@@ -128,8 +206,84 @@
 
             Log.Error(ex, "The room failed to load when invoking the 'HandleBnBRoomUpsert'-method.");
         }
-
         navManager.NavigateTo("bnbs");
     }
+    private async Task HandleImageUpload(InputFileChangeEventArgs e)
+    {
+        IsImageUploadProcesStarted = true;
+        try
+        {
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Count > 0)
+            {
+                foreach (var file in e.GetMultipleFiles())
+                {
+                    FileInfo fileInfo = new FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" ||
+                           fileInfo.Extension.ToLower() == ".jpeg" ||
+                              fileInfo.Extension.ToLower() == ".png")
+                    {
+                        var uploadedImagePath = await fileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
+                    }
+                    else
+                    {
+                        await jsRuntime.SweetAlertError("Enkel .jpg/.jpeg/.png bestanden zijn toegelaten!");
+                        return;
+                    }
+                }
 
+                if (images.Any())
+                {
+                    if (bnbModel.ImageUrls is not null && bnbModel.ImageUrls.Any())
+                    {
+                        bnbModel.ImageUrls.AddRange(images);
+                    }
+                    else
+                    {
+                        bnbModel.ImageUrls = new List<string>();
+                        bnbModel.ImageUrls.AddRange(images);
+                    }
+                }
+                else
+                {
+                    await jsRuntime.SweetAlertError("Het uploaden van de afbeeldingen is niet gelukt. Probeer opnieuw.");
+                    return;
+                }
+            }
+            IsImageUploadProcesStarted = false;
+        }
+
+        catch (Exception ex)
+        {
+            Log.Error(ex, "The image failed to upload when invoking the 'HandleImageUpload'-method.");
+        }
+
+    }
+    private async Task DeleteImage(string imageUrl)
+    {
+        try
+        {
+            var imageIndex = bnbModel.ImageUrls.FindIndex(x => x == imageUrl);
+            var imageName = imageUrl.Replace($"{navManager.BaseUri}images/", "");
+            if (bnbModel.BnBId == 0 && Title == "Maak nieuwe")
+            {
+                //create
+                var result = fileUpload.DeleteFile(imageName);
+            }
+            else
+            {
+                //update
+                DeletedImageNames ??= new List<string>();
+                DeletedImageNames.Add(imageUrl);
+            }
+            bnbModel.ImageUrls.RemoveAt(imageIndex);
+        }
+
+        catch (Exception ex)
+        {
+            Log.Error(ex, "The image was not deleted when invoking the 'DeleteImage'-method.");
+            await jsRuntime.SweetAlertError("Het verwijderen van de afbeelding is niet gelukt. Probeer opnieuw.");
+        }
+    }
 }

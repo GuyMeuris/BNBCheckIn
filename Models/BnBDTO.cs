@@ -38,7 +38,7 @@ namespace ModelsDTO
             public int BnBId { get; set; }
             public int ContactId { get; set; }
             public ContactDTO Contacts { get; set; }
-            public virtual IList<string> ImageUrl { get; set; }
+            public virtual List<string> ImageUrls { get; set; }
             public virtual ICollection<RoomDTO> Rooms { get; set; }
             public virtual ICollection<AmenityDTO> Amenities { get; set; }
         }

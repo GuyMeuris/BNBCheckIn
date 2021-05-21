@@ -1,8 +1,10 @@
 ﻿@page "/bnbs"
 @using ModelsDTO
 @using Business.Repository.IRepository
+@inject Service.IService.IFileUpload fileUpload 
 @inject IBnBRepository bnbRepository 
 @inject IJSRuntime jsRuntime
+@inject NavigationManager  navManager
 
 <div class="row mt-4">
     <div class="col-8">
@@ -72,8 +74,9 @@
     private IEnumerable<BnBDTO> BnBs { get; set; } = new List<BnBDTO>();
 
     private int? DeleteBnBId { get; set; } = null;
+    public bool IsProcessing { get; set; } = false;
 
-//-----------------------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------------------
 
     protected async override Task OnInitializedAsync()
     {
@@ -84,5 +87,23 @@
     {
         DeleteBnBId = bnbId;
         await jsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+    public async Task ConfirmDelete_Click(bool isConfirmed)
+    {
+        IsProcessing = true;
+        if (isConfirmed && DeleteBnBId != null)
+        {
+            BnBDTO bnbDTO = await bnbRepository.GetBnB(DeleteBnBId.Value);
+            foreach (var image in bnbDTO.BnBImages)
+            {
+                var imageName = image.ImageSourceUrl.Replace($"{navManager.BaseUri}images/", "");
+                fileUpload.DeleteFile(imageName);
+            }
+            await bnbRepository.DeleteBnB(DeleteBnBId.Value);
+            await jsRuntime.SweetAlertSuccess("De kamer werd succesvol verwijderd!");
+            BnBs = await bnbRepository.GetAllBnBs();
+        }
+        await jsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+        IsProcessing = false;
     }
 }
