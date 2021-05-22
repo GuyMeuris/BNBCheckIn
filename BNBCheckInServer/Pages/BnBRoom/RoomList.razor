@@ -89,9 +89,9 @@
         if (isConfirmed && DeleteRoomId is not null)
         {
             RoomDTO hotelRoom = await roomRepository.GetRoom(DeleteRoomId.Value);
-            foreach (var image in hotelRoom.Images)
+            foreach (var image in hotelRoom.RoomImages)
             {
-                var imageName = image.ImageSourceUrl.Replace($"{navManager.BaseUri}images/", "");
+                var imageName = image.RoomImageSourceUrl.Replace($"{navManager.BaseUri}images/", "");
                 fileUpload.DeleteFile(imageName);
             }
             await roomRepository.DeleteRoom(DeleteRoomId.Value);

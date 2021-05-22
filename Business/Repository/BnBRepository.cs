@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Business.Repository.IRepository;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using ModelsDTO;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Business.Repository
 {
@@ -20,7 +21,7 @@ namespace Business.Repository
             _mapper = mapper;
             _context = context;
         }
-        public async Task<BnBDTO> CreateBnB(CreateBnBDTO createBnBDTO)//todo: Errorhandling and logging.
+        public async Task<BnBDTO> CreateBnB(CreateBnBDTO createBnBDTO) 
         {
             BnB bnb = _mapper.Map<CreateBnBDTO, BnB>(createBnBDTO);
             bnb.CreatedBy = "";
@@ -33,7 +34,8 @@ namespace Business.Repository
         {
             try
             {
-                BnBDTO bnb = _mapper.Map<BnB, BnBDTO>(await _context.BnBs.FindAsync(bnbId));//todo: change selection?
+                BnBDTO bnb = _mapper.Map<BnB, BnBDTO>(
+                    await _context.BnBs.Include(x => x.BnBImages).FirstOrDefaultAsync(x => x.BnBId == bnbId));
                 return bnb;
             }
             catch (Exception ex)
@@ -47,7 +49,7 @@ namespace Business.Repository
             try
             {
                 IEnumerable<BnBDTO> bnbDTOs = 
-                     _mapper.Map<IEnumerable<BnB>, IEnumerable< BnBDTO>>(_context.BnBs);
+                     _mapper.Map<IEnumerable<BnB>, IEnumerable< BnBDTO>>(_context.BnBs.Include(x => x.BnBImages));
                 return bnbDTOs;
             }
             catch (Exception ex)
@@ -56,11 +58,7 @@ namespace Business.Repository
                 return null;
             }
         }
-        //public async Task<IEnumerable<BnBDTO>> GetBnBsByProvince(string province)//todo: Errorhandling and logging.
-        //{
-        //    return _mapper.Map< IEnumerable<BnB>, IEnumerable <BnBDTO>> (
-        //        await _context.BnBs.Where(x => x.Province == province).ToListAsync());
-        //}
+
         public async Task<BnBDTO> UpdateBnB(int bnbId, BnBDTO bnbDTO)
         {
             try
@@ -92,6 +90,9 @@ namespace Business.Repository
             var bnbDetails = await _context.BnBs.FindAsync(bnbId);
             if (bnbDetails != null)
             {
+                var allImages = await _context.BnBImages.Where(x => x.BnBId == bnbId).ToListAsync();
+                _context.BnBImages.RemoveRange(allImages);
+
                 _context.BnBs.Remove(bnbDetails);
                 return await _context.SaveChangesAsync();
             }

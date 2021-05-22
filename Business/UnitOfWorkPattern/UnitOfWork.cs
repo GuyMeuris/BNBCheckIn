@@ -26,7 +26,9 @@ namespace Business.UnitOfWorkPattern
 
         private IGenericRepository<Contact> _contacts;
 
-        private IGenericRepository<Image> _images;
+        private IGenericRepository<RoomImage> _roomimages;
+        
+        private IGenericRepository<BnBImage> _bnbimages;
 
         public UnitOfWork(BnBDbContext context)
         {
@@ -49,8 +51,11 @@ namespace Business.UnitOfWorkPattern
         public IGenericRepository.IGenericRepository<Contact> ContactRepository =>
                                                     _contacts ??= new GenericRepository<Contact>(_context);
 
-        public IGenericRepository.IGenericRepository<Image> ImageRepository =>
-                                                    _images ??= new GenericRepository<Image>(_context);
+        public IGenericRepository.IGenericRepository<RoomImage> RoomImageRepository =>
+                                                    _roomimages ??= new GenericRepository<RoomImage>(_context);
+
+        public IGenericRepository.IGenericRepository<BnBImage> BnBImageRepository =>
+                                                    _bnbimages ??= new GenericRepository<BnBImage>(_context);
 
         public void Dispose()
         {

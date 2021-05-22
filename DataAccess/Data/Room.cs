@@ -12,19 +12,30 @@ namespace DataAccess.Data
     {
         [Key]
         public int RoomId { get; set; }
+
         public string RoomName { get; set; } 
+
         [Required]
         public int Occupancy { get; set; }
+
         [Required]
         public double Rate { get; set; }
+
         public int RoomSize { get; set; }
+
         [Required]
         public bool IsVacant { get; set; }
+
         public bool PetsAllowed { get; set; } 
+
         public string RoomDetails { get; set; }
+
         public string CreatedBy { get; set; }
+
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+
         public string UpdatedBy { get; set; }
+
         public DateTime UpdatedDate { get; set; }
 
 
@@ -41,6 +52,6 @@ namespace DataAccess.Data
         // We do this by adding a 'virtual' collections.
         public virtual IList<Amenity> Amenities { get; set; }
 
-        public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<RoomImage> RoomImages { get; set; }
     }
 }

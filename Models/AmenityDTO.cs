@@ -26,6 +26,7 @@ namespace ModelsDTO
         public int AmenityId { get; set; }
 
         public virtual ICollection<BnBDTO> BnBs { get; set; }
+
         public virtual ICollection<RoomDTO> Rooms { get; set; }
     }
 }

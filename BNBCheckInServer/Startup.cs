@@ -39,7 +39,8 @@ namespace BNBCheckInServer
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IBnBRepository, BnBRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IRoomImageRepository, RoomImageRepository>();
+            services.AddScoped<IBnBImageRepository, BnBImageRepository>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
             services.AddScoped<IFileUpload, FileUpload>();
             services.AddRazorPages();

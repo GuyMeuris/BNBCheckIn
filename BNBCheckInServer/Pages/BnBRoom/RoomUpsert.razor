@@ -8,7 +8,7 @@
 @using Serilog
 @inject IRoomRepository roomRepository
 @inject IBnBRepository bnbRepository 
-@inject IImageRepository imageRepository
+@inject IRoomImageRepository imageRepository
 @inject IFileUpload fileUpload
 @inject NavigationManager navManager
 @inject IJSRuntime jsRuntime
@@ -16,7 +16,7 @@
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title B&ampB kamer</h3>
-    <div class="col-md-6">
+    <div class="col-md-10">
         <div class="card p-3">
             <div card="card-body">
                 <EditForm Model="@RoomModel" OnValidSubmit="HandleBnBRoomUpsert">
@@ -46,7 +46,6 @@
                     </div>
                     <div class="form-group" style="height:250px;">
                         <label>Beschrijving kamer</label>
-                        @*<InputTextArea @bind-Value="RoomModel.RoomDetails" class="form-control" />*@
                         <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Plaats hier een korte beschrijving van de kamer.">
                             <ToolbarContent>
                                 <select class="ql-header">
@@ -85,7 +84,6 @@
                         <div class="form-group" style="padding-top:70px;">
                             <label>Hoort bij deze B&ampB:</label>
                             <select class="selectpicker" @bind="RoomModel.BnBId">
-                                @*<option>--select--</option>*@
                                 @foreach (var item in BnBDTOs)
                                 {
                                     <option value="@item.BnBId">@item.BnBName</option>
@@ -106,10 +104,10 @@
                             </div>
                             }
 
-                            @if (RoomModel.ImageUrls is not null && RoomModel.ImageUrls.Count > 0)
+                            @if (RoomModel.RoomImageUrls is not null && RoomModel.RoomImageUrls.Count > 0)
                             {
                                 int serial = 1;
-                                foreach (var img in RoomModel.ImageUrls)
+                                foreach (var img in RoomModel.RoomImageUrls)
                                 {
                                     <div class="col-md-3 mt-3">
                                         <div class="room-image" style="background: url('@img') 50% 50%">
@@ -147,7 +145,7 @@
 
     private RoomDTO RoomModel { get; set; } = new RoomDTO();
 
-    private ImageDTO RoomImage { get; set; } = new ImageDTO();
+    private RoomImageDTO RoomImage { get; set; } = new RoomImageDTO();
 
     private string Title { get; set; } = "Maak nieuwe";
 
@@ -157,7 +155,6 @@
 
     public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
-    //Dit is voorlopig tot de BnB-repository klaar is.
     private List<BnBDTO> BnBDTOs = new List<BnBDTO>();
 
 
@@ -165,15 +162,18 @@
 
     protected async override Task OnInitializedAsync()
     {
+        // Filling up the dropdownlist with all the possible BnBDTOs
         BnBDTOs = (await bnbRepository.GetAllBnBs()).ToList();
+
+
         if (Id != null)
         {
             //Updating
             Title = "Wijzig";
             RoomModel = await roomRepository.GetRoom(Id.Value);
-            if (RoomModel?.Images is not null)
+            if (RoomModel?.RoomImages is not null)
             {
-                RoomModel.ImageUrls = RoomModel.Images.Select(u => u.ImageSourceUrl).ToList();
+                RoomModel.RoomImageUrls = RoomModel.RoomImages.Select(u => u.RoomImageSourceUrl).ToList();
             }
         }
         else
@@ -222,8 +222,8 @@
             {
                 //Update
                 var updatedRoomResult = await roomRepository.UpdateRoom(RoomModel.RoomId, RoomModel);
-                //if (RoomModel.ImageUrls is not null && (RoomModel.ImageUrls.Any() || RoomModel.Images.Any()))
-                if (RoomModel.ImageUrls is not null && (RoomModel.ImageUrls.Any()))
+                //if (RoomModel.RoomImageUrls is not null && (RoomModel.RoomImageUrls.Any() || RoomModel.RoomImages.Any()))
+                if (RoomModel.RoomImageUrls is not null && (RoomModel.RoomImageUrls.Any()))
                 {
                     if (DeletedImageNames is not null && DeletedImageNames.Any())
                     {
@@ -244,7 +244,7 @@
                 //Create
                 RoomModel.RoomDetails = await QuillHtml.GetHTML();
                 var createdResult = await roomRepository.CreateRoom(RoomModel);
-                if (RoomModel.ImageUrls is not null)
+                if (RoomModel.RoomImageUrls is not null)
                 {
                     await AddRoomImages(createdResult);
                 }
@@ -287,14 +287,14 @@
 
                 if (images.Any())
                 {
-                    if (RoomModel.ImageUrls is not null && RoomModel.ImageUrls.Any())
+                    if (RoomModel.RoomImageUrls is not null && RoomModel.RoomImageUrls.Any())
                     {
-                        RoomModel.ImageUrls.AddRange(images);
+                        RoomModel.RoomImageUrls.AddRange(images);
                     }
                     else
                     {
-                        RoomModel.ImageUrls = new List<string>();
-                        RoomModel.ImageUrls.AddRange(images);
+                        RoomModel.RoomImageUrls = new List<string>();
+                        RoomModel.RoomImageUrls.AddRange(images);
                     }
                 }
                 else
@@ -314,15 +314,15 @@
 
     private async Task AddRoomImages(RoomDTO roomDetails)
     {
-        foreach (var imageUrl in RoomModel.ImageUrls)
+        foreach (var imageUrl in RoomModel.RoomImageUrls)
         {
-            if (RoomModel.Images is null ||
-                    RoomModel.Images.Where(x => x.ImageSourceUrl == imageUrl).Count() == 0)
+            if (RoomModel.RoomImages is null ||
+                    RoomModel.RoomImages.Where(x => x.RoomImageSourceUrl == imageUrl).Count() == 0)
             {
-                RoomImage = new ImageDTO()
+                RoomImage = new RoomImageDTO()
                 {
                     RoomId = roomDetails.RoomId,
-                    ImageSourceUrl = imageUrl
+                    RoomImageSourceUrl = imageUrl
                 };
                 await imageRepository.CreateImage(RoomImage);
             }
@@ -334,7 +334,7 @@
     {
         try
         {
-            var imageIndex = RoomModel.ImageUrls.FindIndex(x => x == imageUrl);
+            var imageIndex = RoomModel.RoomImageUrls.FindIndex(x => x == imageUrl);
             var imageName = imageUrl.Replace($"{navManager.BaseUri}images/", "");
             if (RoomModel.RoomId == 0 && Title == "Maak nieuwe")
             {
@@ -347,7 +347,7 @@
                 DeletedImageNames ??= new List<string>();
                 DeletedImageNames.Add(imageUrl);
             }
-            RoomModel.ImageUrls.RemoveAt(imageIndex);
+            RoomModel.RoomImageUrls.RemoveAt(imageIndex);
         }
 
         catch (Exception ex)

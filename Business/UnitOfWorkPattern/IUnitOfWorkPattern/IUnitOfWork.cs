@@ -23,7 +23,9 @@ namespace Business.UnitOfWorkPattern.IUnitOfWorkPattern
 
         IGenericRepository<Contact> ContactRepository { get; }
 
-        IGenericRepository<Image> ImageRepository { get; }
+        IGenericRepository<RoomImage> RoomImageRepository { get; }
+
+        IGenericRepository<BnBImage> BnBImageRepository { get; }
 
         Task Save();         // Before this method all the changes will only be staged and not affected yet.
     }

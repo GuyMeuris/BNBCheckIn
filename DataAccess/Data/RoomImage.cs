@@ -8,22 +8,23 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    public class Image
+    public class RoomImage
     {
         [Key]
-        public int ImageId { get; set; }
+        public int RoomImageId { get; set; }
+
         [Required]
-        public string ImageSourceUrl { get; set; } 
+        public string RoomImageSourceUrl { get; set; } 
+
         public string CreatedBy { get; set; }
+
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
-        [ForeignKey(nameof(BnB))]
-        public int? BnBId { get; set; }
-        public virtual BnB BnB { get; set; }
-
         [ForeignKey(nameof(Room))]
-        public int? RoomId { get; set; }
+        public int RoomId { get; set; }
+
         public virtual Room Room { get; set; }
+        
 
     }
 }
