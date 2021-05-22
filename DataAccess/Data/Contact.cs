@@ -12,16 +12,25 @@ namespace DataAccess.Data
     {
         [Key]
         public int ContactId { get; set; }
+
         [Required]
         public string ContactName { get; set; }
+
         [Required]
         public string Email { get; set; }
+
         public string PhoneNumber { get; set; }
+
         public string UserName { get; set; }
+
         public string Password { get; set; }
+
         public string CreatedBy { get; set; }
+
         public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public string UpdatedBy { get; set; }
+
+        public string UpdatedBy { get; set; } 
+
         public DateTime UpdatedOn { get; set; }
       
         //public virtual BnB bnb { get; set; }

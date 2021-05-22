@@ -21,7 +21,9 @@ namespace DataAccess.Data
 
         public DbSet<BnB> BnBs { get; set; }     // -->   1 per province to start   *
 
-        public DbSet<Image> Images { get; set; }   //  -->  At least 1 per B&B AND 1 per room to start 
+        public DbSet<RoomImage> RoomImages { get; set; }  
+        
+        public DbSet<BnBImage> BnBImages { get; set; }  
 
         public DbSet<Amenity> Amenities { get; set; }   // --> 5 to start
 
@@ -72,6 +74,7 @@ namespace DataAccess.Data
                     new { AmenitiesAmenityId = 4, RoomsRoomId = 11 },
                     new { AmenitiesAmenityId = 4, RoomsRoomId = 5 }
                 );
+   
         }
     }
 }

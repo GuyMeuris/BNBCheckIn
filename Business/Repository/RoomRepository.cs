@@ -46,7 +46,7 @@ namespace Business.Repository
             try
             {
                 IEnumerable<RoomDTO> roomDTOs = _mapper.Map<IEnumerable<Room>, IEnumerable<RoomDTO>>
-                    (_context.Rooms.Include(x => x.Images));
+                    (_context.Rooms.Include(x => x.RoomImages));
                 return roomDTOs;
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace Business.Repository
             try
             {
                 RoomDTO room = _mapper.Map < Room, RoomDTO>(
-                      await _context.Rooms.Include(x => x.Images).FirstOrDefaultAsync(x => x.RoomId == roomId));
+                      await _context.Rooms.Include(x => x.RoomImages).FirstOrDefaultAsync(x => x.RoomId == roomId));
                 return room;
             }
             catch (Exception ex)
@@ -105,8 +105,8 @@ namespace Business.Repository
             var roomDetails = await _context.Rooms.FindAsync(roomId);
             if (roomDetails is not null)
             {
-                var allImages = await _context.Images.Where(x => x.RoomId == roomId).ToListAsync();
-                _context.Images.RemoveRange(allImages);
+                var allImages = await _context.RoomImages.Where(x => x.RoomId == roomId).ToListAsync();
+                _context.RoomImages.RemoveRange(allImages);
 
                 _context.Rooms.Remove(roomDetails);
                 return await _context.SaveChangesAsync();

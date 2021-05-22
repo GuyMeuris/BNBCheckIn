@@ -21,7 +21,8 @@ namespace Business.Mapper
             CreateMap<CreateContactDTO, Contact>().ReverseMap();
             CreateMap<AmenityDTO, Amenity>().ReverseMap();
             CreateMap<CreateAmenityDTO, Amenity>().ReverseMap();
-            CreateMap<ImageDTO, Image>().ReverseMap();
+            CreateMap<RoomImageDTO, RoomImage>().ReverseMap();
+            CreateMap<BnBImageDTO, BnBImage>().ReverseMap();
         }
     }
 }

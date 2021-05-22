@@ -28,18 +28,25 @@ namespace DataAccess.Data
         public string VATnr { get; set; }
         [Required]
         public string BankAccountNr { get; set; }
-        public string BnBDetails { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public string UpdatedBy { get; set; }
-        public DateTime UpdatedOn { get; set; }
 
+        public string BnBDetails { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+
+        public string UpdatedBy { get; set; }
+
+        public DateTime UpdatedOn { get; set; }
 
         [ForeignKey(nameof(Contact))]
         public int ContactId { get; set; }
+
         public Contact Contacts { get; set; }
+
         public virtual ICollection<Room> Rooms { get; set; }
-        public virtual ICollection<Image> Images { get; set; }
+
+        public virtual ICollection<BnBImage> BnBImages { get; set; }
 
         public virtual IList<Amenity> Amenities { get; set; }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business.Repository.IRepository
 {
-    public interface IImageRepository
+    public interface IRoomImageRepository
     {
         // In dealing with images we mostly need 1 of the following methods:
         //  - Create (upload) a new image
@@ -16,16 +16,14 @@ namespace Business.Repository.IRepository
         //  - Delete all the images from a certain hotel room
         //  - Get all the images from a specific hotel room
 
-        public Task<int> CreateImage(ImageDTO imageDTO);
+        public Task<int> CreateImage(RoomImageDTO imageDTO);
 
         public Task<int> DeleteImageByImageId(int imageId);
 
         public Task<int> DeleteImagesByRoomId(int roomId);
 
-        public Task<int> DeleteImagesByBnBId(int bnbId);
-
         public Task<int> DeleteImageByImageUrl(string imageUrl);
 
-        public Task<IEnumerable<ImageDTO>> GetHotelRoomImages(int roomId);
+        public Task<IEnumerable<RoomImageDTO>> GetHotelRoomImages(int roomId);
     }
 }
