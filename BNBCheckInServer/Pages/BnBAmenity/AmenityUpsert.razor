@@ -13,7 +13,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <EditForm Model="@AmenityModel" OnValidSubmit="HandleAmenityCreate">
+                <EditForm Model="@AmenityModel" OnValidSubmit="HandleAmenityUpsert">
                     <DataAnnotationsValidator />
                     <div class="form-group">
                         <label>Naam voorziening</label>
@@ -30,12 +30,43 @@
                         <InputText @bind-Value="AmenityModel.AmenityIcon" class="form-control"></InputText>
                         <ValidationMessage For="()=>AmenityModel.AmenityIcon"></ValidationMessage>
                     </div>
-                    <div class="form-group">
-                        <label>Beschrijving</label>
-                        <InputText @bind-Value="AmenityModel.AmenityDescription" class="form-control"></InputText>
+                    <div class="form-group" style="height:200px;">
+                        <label>Beschrijving van de voorziening</label>
+                        <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Plaats hier een korte beschrijving van de voorziening.">
+                            <ToolbarContent>
+                                <select class="ql-header">
+                                    <option selected=""></option>
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                </select>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                </span>
+                            </ToolbarContent>
+                            <EditorContent>
+
+                            </EditorContent>
+                        </BlazoredTextEditor>
                         <ValidationMessage For="()=>AmenityModel.AmenityDescription"></ValidationMessage>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="padding-top:70px;">
                         <button class="btn btn-primary"> @Title faciliteit </button>
                         <NavLink href="@($"bnb-amenity")" class="btn btn-secondary">Terug naar overzicht faciliteiten</NavLink>
                     </div>
@@ -59,6 +90,8 @@
 
     internal bool IsProcessingStart { get; set; } = false;
 
+    public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
+
     //-----------------------------------------------------------------------------------------------------------------------------
 
     protected override async Task OnInitializedAsync()
@@ -76,7 +109,30 @@
         }
     }
 
-    internal async Task HandleAmenityCreate()
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+        bool loading = true;
+        while (loading)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(AmenityModel.AmenityDescription))
+                {
+                    await this.QuillHtml.LoadHTMLContent(AmenityModel.AmenityDescription);
+                }
+                loading = false;
+            }
+            catch
+            {
+                await Task.Delay(10);
+                loading = true;
+            }
+        }
+    }
+
+    internal async Task HandleAmenityUpsert()
     {
         try
         {
@@ -90,7 +146,9 @@
                     await jsRuntime.SweetAlertError("Deze B&B- of kamervoorziening bestaat reeds!");
                     return;
                 }
+
                 //Update the bnb amenity here
+                AmenityModel.AmenityDescription = await QuillHtml.GetHTML();
                 var updateAmenityResult = await amenityRepository.UpdateAmenity(AmenityModel.AmenityId, AmenityModel);
 
                 await jsRuntime.SweetAlertSuccess("De voorziening werd aangepast!");
@@ -106,6 +164,7 @@
 
 
                 //Create new Hotel Amenity here
+                AmenityModel.AmenityDescription = await QuillHtml.GetHTML();
                 var createdResult = await amenityRepository.CreateAmenity(AmenityModel);
                 AmenityModel = new AmenityDTO();
                 await jsRuntime.SweetAlertSuccess("Deze voorziening werd aangemaakt en aan de lijst toegevoegd!");
@@ -121,7 +180,5 @@
             IsProcessingStart = false;
         }
     }
-
-
 }
 

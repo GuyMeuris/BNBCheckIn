@@ -44,7 +44,7 @@
                         <label style="margin-right: 10px">Dieren toegelaten?</label>
                         <InputCheckbox @bind-Value="RoomModel.PetsAllowed" class="form-check-inline" />
                     </div>
-                    <div class="form-group" style="height:250px;">
+                    <div class="form-group" style="height:200px;">
                         <label>Beschrijving kamer</label>
                         <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Plaats hier een korte beschrijving van de kamer.">
                             <ToolbarContent>
@@ -153,10 +153,11 @@
 
     private bool IsImageUploadProcesStarted { get; set; } = false;
 
+    internal bool IsProcessingStart { get; set; } = false;
+
     public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
     private List<BnBDTO> BnBDTOs = new List<BnBDTO>();
-
 
     //-----------------------------------------------------------------------------------------------------------------------
 
@@ -211,6 +212,8 @@
     {
         try
         {
+            IsProcessingStart = true;
+
             var roomDetailsByName = await roomRepository.IsRoomUnique(RoomModel.RoomName, RoomModel.RoomId);
             if (roomDetailsByName is not null)
             {
@@ -221,8 +224,8 @@
             if (RoomModel.RoomId != 0 && Title == "Wijzig")
             {
                 //Update
+                RoomModel.RoomDetails = await QuillHtml.GetHTML();
                 var updatedRoomResult = await roomRepository.UpdateRoom(RoomModel.RoomId, RoomModel);
-                //if (RoomModel.RoomImageUrls is not null && (RoomModel.RoomImageUrls.Any() || RoomModel.RoomImages.Any()))
                 if (RoomModel.RoomImageUrls is not null && (RoomModel.RoomImageUrls.Any()))
                 {
                     if (DeletedImageNames is not null && DeletedImageNames.Any())
@@ -258,6 +261,7 @@
         }
 
         navManager.NavigateTo("bnb-room");
+        IsProcessingStart = false;
     }
 
     private async Task HandleImageUpload(InputFileChangeEventArgs e)
