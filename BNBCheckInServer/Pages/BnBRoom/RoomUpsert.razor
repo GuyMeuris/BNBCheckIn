@@ -163,10 +163,6 @@
 
     protected async override Task OnInitializedAsync()
     {
-        // Filling up the dropdownlist with all the possible BnBDTOs
-        BnBDTOs = (await bnbRepository.GetAllBnBs()).ToList();
-
-
         if (Id != null)
         {
             //Updating
@@ -175,10 +171,14 @@
             if (RoomModel?.RoomImages is not null)
             {
                 RoomModel.RoomImageUrls = RoomModel.RoomImages.Select(u => u.RoomImageSourceUrl).ToList();
+
             }
         }
         else
         {
+            // Filling up the dropdownlist with all the possible BnBDTOs
+            BnBDTOs = (await bnbRepository.GetAllBnBs()).ToList();
+
             //Creating
             RoomModel = new RoomDTO();
         }
@@ -186,6 +186,8 @@
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
+        Log.Information($"OnAfterRender  -->  firstRender value: {firstRender}");
+
         if (!firstRender)
             return;
         bool loading = true;
@@ -210,10 +212,10 @@
 
     private async Task HandleBnBRoomUpsert()
     {
+        IsProcessingStart = true;
+
         try
         {
-            IsProcessingStart = true;
-
             var roomDetailsByName = await roomRepository.IsRoomUnique(RoomModel.RoomName, RoomModel.RoomId);
             if (roomDetailsByName is not null)
             {

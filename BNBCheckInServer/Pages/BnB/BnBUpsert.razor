@@ -204,10 +204,10 @@
 
     private async Task HandleBnBUpsert()
     {
+        IsProcessingStart = true;
+
         try
         {
-            IsProcessingStart = true;
-
             var bnbDetailsByName = await BnBRepository.IsBnBUnique(bnbModel.BnBName, bnbModel.BnBId);
             if (bnbDetailsByName != null)
             {

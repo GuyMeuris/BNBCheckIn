@@ -113,6 +113,7 @@
     {
         if (!firstRender)
             return;
+
         bool loading = true;
         while (loading)
         {
@@ -134,10 +135,10 @@
 
     internal async Task HandleAmenityUpsert()
     {
+        IsProcessingStart = true;
+
         try
         {
-            IsProcessingStart = true;
-
             if (AmenityModel.AmenityId != 0 && Title == "Wijzig")
             {
                 var amenityDetailsByName = await amenityRepository.IsAmenityUnique(AmenityModel.AmenityName);
