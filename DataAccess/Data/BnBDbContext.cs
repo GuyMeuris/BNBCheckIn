@@ -1,4 +1,5 @@
 ﻿using DataAccess.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    public class BnBDbContext : DbContext
+    public class BnBDbContext : IdentityDbContext
     {
         public BnBDbContext(DbContextOptions<BnBDbContext> options) : base(options)
         {
