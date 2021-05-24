@@ -17,6 +17,7 @@ using Business.Repository.IRepository;
 using Business.Repository;
 using BNBCheckInServer.Service;
 using BNBCheckInServer.Service.IService;
+using Microsoft.AspNetCore.Identity;
 
 namespace BNBCheckInServer
 {
@@ -36,6 +37,7 @@ namespace BNBCheckInServer
             
             services.AddDbContext<BnBDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BnBDbContext>().AddDefaultTokenProviders().AddDefaultUI();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IBnBRepository, BnBRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
@@ -76,8 +78,12 @@ namespace BNBCheckInServer
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
