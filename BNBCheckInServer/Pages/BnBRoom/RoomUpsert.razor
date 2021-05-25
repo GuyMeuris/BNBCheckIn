@@ -170,7 +170,7 @@
         if (!authenticationState.User.Identity.IsAuthenticated)
         {
             var uri = new Uri(navManager.Uri);
-            navManager.NavigateTo($"/identity/account/login?returnUrl{uri.LocalPath}");
+            navManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}");
         }
 
         if (Id != null)
