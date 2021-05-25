@@ -49,7 +49,7 @@ namespace Business.Repository
             try
             {
                 IEnumerable<BnBDTO> bnbDTOs = 
-                     _mapper.Map<IEnumerable<BnB>, IEnumerable< BnBDTO>>(_context.BnBs.Include(x => x.BnBImages));
+                     _mapper.Map<IEnumerable<BnB>, IEnumerable< BnBDTO>>(_context.BnBs.Include(x => x.BnBImages).Include(x => x.Rooms));
                 return bnbDTOs;
             }
             catch (Exception ex)

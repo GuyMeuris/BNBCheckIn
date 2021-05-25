@@ -24,6 +24,7 @@
                     <th>Naam B&B</th>
                     <th>Gemeente</th>
                     <th>Provincie</th>
+                    <th>Alle kamers</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,9 +36,24 @@
                             <td>@bnb.BnBName</td>
                             <td>@bnb.Municipality</td>
                             <td>@bnb.Province</td>
+                            @if (bnb.Rooms.Any())
+                            {
+                            <td>
+                                @foreach (var room in bnb.Rooms)
+                                {
+                                    @room.RoomName;
+                                    <br />
+                                }
+                            </td>
+                            }
+                            else
+                            {
+                                <td>Nog geen kamers toegevoegd.</td>
+                            }
                             <td>
                                 <NavLink href="@($"bnbs/edit/{bnb.BnBId}")" class="btn btn-primary">Wijzigen</NavLink>
                                 <button class="btn btn-danger" @onclick="()=>HandleDelete(bnb.BnBId)">Verwijderen</button>
+                                <NavLink href="@($"bnb-roomsinbnb/{bnb.BnBId}")" class="btn btn-success">Bekijk alle kamers</NavLink>
                             </td>
                         </tr>
                     }

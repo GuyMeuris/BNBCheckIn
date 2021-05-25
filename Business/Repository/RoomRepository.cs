@@ -56,6 +56,12 @@ namespace Business.Repository
             }
         }
 
+        public async Task<IEnumerable<RoomDTO>> GetRoomsbyBnBId(int bnbId)
+        {
+            return _mapper.Map<IEnumerable<Room>, IEnumerable<RoomDTO>>(
+            await _context.Rooms.Where(x => x.BnBId == bnbId).ToListAsync());
+        }
+
         public async Task<RoomDTO> GetRoom(int roomId)
         {
             try
