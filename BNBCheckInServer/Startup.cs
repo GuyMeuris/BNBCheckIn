@@ -37,7 +37,10 @@ namespace BNBCheckInServer
             
             services.AddDbContext<BnBDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BnBDbContext>().AddDefaultTokenProviders().AddDefaultUI();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<BnBDbContext>()
+                    .AddDefaultTokenProviders()
+                    .AddDefaultUI();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IBnBRepository, BnBRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
@@ -48,12 +51,6 @@ namespace BNBCheckInServer
             services.AddRazorPages();
             services.AddHttpContextAccessor();
             services.AddServerSideBlazor();
-            services.AddCors(option => {
-                option.AddPolicy("AllowAll", builder =>
-                    builder.WithOrigins("http://localhost:32072", "https://localhost:5001", "http://localhost:5000")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,13 +69,12 @@ namespace BNBCheckInServer
 
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowAll");
-
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
