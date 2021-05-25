@@ -1,4 +1,4 @@
-﻿@page "/bnb-room"
+﻿@page "/bnb-roomsinbnb/{Id:int}"
 @using ModelsDTO
 @using Business.Repository.IRepository
 @using BNBCheckInServer.Components
@@ -53,7 +53,10 @@
                 }
             </tbody>
         </table>
+
+        <NavLink href="@("bnbs")" class="btn btn-success" style="margin-top:16px">Terug naar lijst B&B's</NavLink>
     </div>
+    
 </div>
 
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
@@ -62,17 +65,20 @@
 
 @code {
 
+    [Parameter]
+    public int Id { get; set; }
+
     private IEnumerable<RoomDTO> Rooms { get; set; } = new List<RoomDTO>();
 
     private int? DeleteRoomId { get; set; } = null;
 
     public bool IsProcessing { get; set; } = false;
 
-    //-----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
 
     protected async override Task OnInitializedAsync()
     {
-        Rooms = await roomRepository.GetAllRooms();
+        Rooms = await roomRepository.GetRoomsbyBnBId(Id);
     }
 
     private async Task HandleDelete(int roomId)
@@ -99,4 +105,5 @@
         await jsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
         IsProcessing = false;
     }
+
 }
