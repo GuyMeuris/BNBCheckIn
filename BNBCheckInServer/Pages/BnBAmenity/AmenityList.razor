@@ -5,6 +5,7 @@
 @inject IAmenityRepository amenityRepository
 @inject IJSRuntime jsRuntime
 @inject NavigationManager navManager
+@attribute [Authorize]
 
 <div class="row mt-4">
     <div class="col-6">
@@ -67,7 +68,7 @@
 
     private bool IsProcessing { get; set; } = false;
 
-//------------------------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------------------
 
 
     protected override async Task OnInitializedAsync()
@@ -99,6 +100,7 @@
             HotelAmenities = await amenityRepository.GetAllAmenities();
 
         }
+
 
         await jsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
         IsProcessing = false;
