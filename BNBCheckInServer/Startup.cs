@@ -47,6 +47,7 @@ namespace BNBCheckInServer
             services.AddScoped<IRoomImageRepository, RoomImageRepository>();
             services.AddScoped<IBnBImageRepository, BnBImageRepository>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
+            services.AddScoped<IUserRolesConfiguration, UserRolesConfiguration>();
             services.AddScoped<IFileUpload, FileUpload>();
             services.AddRazorPages();
             services.AddHttpContextAccessor();
@@ -54,7 +55,7 @@ namespace BNBCheckInServer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUserRolesConfiguration urc)
         {
             if (env.IsDevelopment())
             {
@@ -76,6 +77,8 @@ namespace BNBCheckInServer
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            urc.InitializeUserRoles();
 
             app.UseEndpoints(endpoints =>
             {

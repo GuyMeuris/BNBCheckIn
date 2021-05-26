@@ -1,5 +1,6 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
+@using Serilog
 @attribute [IgnoreAntiforgeryToken]
 @inject SignInManager<IdentityUser> SignInManager
 
@@ -10,6 +11,7 @@
         if (SignInManager.IsSignedIn(User))
         {
             await SignInManager.SignOutAsync();
+            Log.Information("User logged out.");
         }
         return Redirect("~/");
     }

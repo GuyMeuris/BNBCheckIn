@@ -82,7 +82,7 @@
     protected async override Task OnInitializedAsync()
     {
         var authenticationState = await AuthenticationState;
-        if (!authenticationState.User.Identity.IsAuthenticated)
+        if (!authenticationState.User.IsInRole(Common.RoleDefinition.Role_Admin))
         {
             var uri = new Uri(navManager.Uri);
             navManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}", forceLoad: true);
