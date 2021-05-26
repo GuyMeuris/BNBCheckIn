@@ -1,3 +1,6 @@
+@using BNBCheckInServer.Components
+@inject NavigationManager navManager
+
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
         <Found Context="routeData">
@@ -10,6 +13,11 @@
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
                 <p>Sorry, de pagina die u zoekt kon niet worden gevonden.</p>
+                @*@{
+                    var returnUrl = navManager.ToBaseRelativePath(navManager.Uri);
+                    <RedirectToLogin ReturnUrl="@returnUrl" />
+
+                }*@
             </LayoutView>
         </NotFound>
     </Router>

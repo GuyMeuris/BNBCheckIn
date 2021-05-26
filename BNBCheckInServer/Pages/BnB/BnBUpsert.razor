@@ -154,6 +154,7 @@
     internal bool IsProcessingStart { get; set; } = false;
 
     public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
+
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationState { get; set; }
 
