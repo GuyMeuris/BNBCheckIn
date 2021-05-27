@@ -28,12 +28,19 @@ namespace Business.Repository.IRepository
             Task<IList<T>> GetAll(
                 Expression<Func<T, bool>> expression = null,
                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-                List<string> includes = null
+                List<string> includes = null,
+                List<string> includes2 = null,
+                List<string> includes3 = null,
+                List<string> includes4 = null
             );
 
             // Then we will have a follow up function 'Get', where only the second parameter
             // is optional. This action will only get ONE instance!
-            Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null);
+            Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null,
+                List<string> includes2 = null,
+                List<string> includes3 = null,
+                List<string> includes4 = null
+            );
 
             //****************************************************************************************
 
