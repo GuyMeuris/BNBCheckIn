@@ -25,5 +25,6 @@ namespace BnBCheckIn_Api.Controllers
             this._roleManager = _roleManager;
         }
         
+
     }
 }
