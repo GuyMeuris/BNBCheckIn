@@ -1,8 +1,9 @@
 ﻿@page
 @using Microsoft.AspNetCore.Identity
 @using Serilog
+@using DataAccess.Data
 @attribute [IgnoreAntiforgeryToken]
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<Contact> SignInManager
 
 @functions{
 

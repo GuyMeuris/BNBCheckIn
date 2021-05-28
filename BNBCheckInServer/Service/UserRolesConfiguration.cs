@@ -16,12 +16,12 @@ namespace BNBCheckInServer.Service
     {
         private readonly BnBDbContext _context;
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Contact> _userManager;
 
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public UserRolesConfiguration(BnBDbContext context, 
-                            UserManager<IdentityUser> userManager, 
+                            UserManager<Contact> userManager, 
                                     RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -44,23 +44,36 @@ namespace BNBCheckInServer.Service
                 throw;
             }
 
-            if (_context.Roles.Any()) 
+            if (!_context.Roles.Any(x => x.Name == RoleDefinition.Role_Admin))
             {
                 _roleManager.CreateAsync(new IdentityRole(RoleDefinition.Role_Admin.ToString())).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(RoleDefinition.Role_User.ToString())).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(RoleDefinition.Role_Visitor.ToString())).GetAwaiter().GetResult();
-            };
+            }
 
-            _userManager.CreateAsync(new IdentityUser
+            if (!_context.Roles.Any(x => x.Name == RoleDefinition.Role_User))
             {
-                UserName = "bnbadmin@gmail.com",
-                Email = "bnbadmin@gmail.com",
-                EmailConfirmed = true
-                
-            }, "BbAdmin123+").GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(RoleDefinition.Role_User.ToString())).GetAwaiter().GetResult();
+            }
 
-            IdentityUser user = _context.Users.FirstOrDefault(u => u.Email == "bnbadmin@gmail.com");
-            _userManager.AddToRoleAsync(user, RoleDefinition.Role_Admin).GetAwaiter().GetResult();
+            if (!_context.Roles.Any(x => x.Name == RoleDefinition.Role_Visitor))
+            {
+                _roleManager.CreateAsync(new IdentityRole(RoleDefinition.Role_Visitor.ToString())).GetAwaiter().GetResult();
+            }
+
+            var adminRole = _context.Roles.FirstOrDefault(r => r.Name == RoleDefinition.Role_Admin);
+
+            if (!_context.UserRoles.Any(ur => ur.RoleId == adminRole.Id))
+            {
+                _userManager.CreateAsync(new Contact
+                {
+                    UserName = "bnbadmin@gmail.com",
+                    Email = "bnbadmin@gmail.com",
+                    EmailConfirmed = true
+
+                }, "BbAdmin123+").GetAwaiter().GetResult();
+
+                Contact user = _context.Users.FirstOrDefault(u => u.Email == "bnbadmin@gmail.com");
+                _userManager.AddToRoleAsync(user, RoleDefinition.Role_Admin).GetAwaiter().GetResult();
+            }
         }
     }
 }
