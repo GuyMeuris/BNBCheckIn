@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BnBCheckIn_Api.Helper;
 using Business.Mapper;
 using Business.Repository;
 using Business.Repository.IRepository;
@@ -40,6 +41,10 @@ namespace BnBCheckIn_Api
             services.AddIdentity<Contact, IdentityRole>()
                     .AddEntityFrameworkStores<BnBDbContext>()
                     .AddDefaultTokenProviders();
+
+            var appSettingsSection = Configuration.GetSection("APISettings");
+            services.Configure<APISettings>(appSettingsSection);
+
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
