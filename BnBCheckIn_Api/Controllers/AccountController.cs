@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using BnBCheckIn_Api.Helper;
 using Common;
 using DataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using ModelsDTO;
 
 namespace BnBCheckIn_Api.Controllers
@@ -19,12 +25,14 @@ namespace BnBCheckIn_Api.Controllers
         private readonly SignInManager<Contact> _signInManager;
         private readonly UserManager<Contact> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly APISettings _aPISettings;
 
-        public AccountController(SignInManager<Contact> signInManager, UserManager<Contact> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(SignInManager<Contact> signInManager, UserManager<Contact> userManager, RoleManager<IdentityRole> roleManager, IOptions<APISettings> options)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            _aPISettings = options.Value;
         }
 
         [HttpPost]
@@ -60,6 +68,82 @@ namespace BnBCheckIn_Api.Controllers
                 return BadRequest(new RegistrationResponseDTO { Errors = errors, IsRegistrationSuccessful = false });
             }
             return StatusCode(201);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> SignIn([FromBody] AuthenticationDTO authenticationDTO)
+        {
+            var result = await _signInManager.PasswordSignInAsync(authenticationDTO.ContactName, authenticationDTO.Password, false, false);
+            if (result.Succeeded)
+            {
+                var contact = await _userManager.FindByNameAsync(authenticationDTO.ContactName);
+                if (contact == null)
+                {
+                    return Unauthorized(new AuthenticationResponseDTO
+                    {
+                        IsAuthenticationSuccessful = false,
+                        ErrorMessage = "Invalid Authentication!"
+                    });
+                }
+
+                //everything is valid and we need to login the user.
+
+                var signingCredentials = GetSigningCredentials();
+                var claims = await GetClaims(contact);
+
+                var tokenOptions = new JwtSecurityToken(
+                    issuer: _aPISettings.ValidIssuer,
+                    audience: _aPISettings.ValidAudience,
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(90),
+                    signingCredentials: signingCredentials);
+
+                var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+                return Ok(new AuthenticationResponseDTO
+                {
+                    IsAuthenticationSuccessful = true,
+                    Token = token,
+                    contactDTO = new ContactDTO
+                    {
+                        ContactName = contact.ContactName,
+                        Email = contact.Email,
+                        PhoneNumber = contact.PhoneNumber,
+                    }
+                });
+            }
+            else
+            {
+                return Unauthorized(new AuthenticationResponseDTO
+                {
+                    IsAuthenticationSuccessful = false,
+                    ErrorMessage = "Invalid Authentication"
+                });
+            }
+        }
+
+        private SigningCredentials GetSigningCredentials()
+        {
+            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_aPISettings.SecretKey));
+            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
+        }
+
+        private async Task<List<Claim>> GetClaims(Contact contact)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, contact.Email),
+                new Claim(ClaimTypes.Email, contact.Email),
+                new Claim("Id", contact.Id),
+            };
+            var roles = await _userManager.GetRolesAsync(await _userManager.FindByEmailAsync(contact.Email));
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            return claims;
         }
     }
 }
