@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using BnBCheckIn_Api.Helper;
 using Business.Mapper;
@@ -9,6 +10,7 @@ using Business.Repository.IRepository;
 using Business.UnitOfWorkPattern;
 using Business.UnitOfWorkPattern.IUnitOfWorkPattern;
 using DataAccess.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 
@@ -45,8 +48,37 @@ namespace BnBCheckIn_Api
             var appSettingsSection = Configuration.GetSection("APISettings");
             services.Configure<APISettings>(appSettingsSection);
 
+            var apiSettings = appSettingsSection.Get<APISettings>();
+            var key = Encoding.ASCII.GetBytes(apiSettings.SecretKey);
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+                opt.RequireHttpsMetadata = false;
+                opt.SaveToken = true;
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidAudience = apiSettings.ValidAudience,
+                    ValidIssuer = apiSettings.ValidIssuer,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddCors(opt => opt.AddPolicy("BnBCheckIn", builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }));
 
             services.AddRouting(option => option.LowercaseUrls = true);
             services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.PropertyNamingPolicy = null)
@@ -58,6 +90,26 @@ namespace BnBCheckIn_Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BnBCheckIn_Api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please Bearer and then token in the field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                   {
+                     new OpenApiSecurityScheme
+                     {
+                       Reference = new OpenApiReference
+                       {
+                         Type = ReferenceType.SecurityScheme,
+                         Id = "Bearer"
+                       }
+                      },
+                      new string[] { }
+                    }
+                });
             });
         }
 
@@ -73,7 +125,11 @@ namespace BnBCheckIn_Api
 
             app.UseHttpsRedirection();
 
+            app.UseCors("BnBCheckIn");
+
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.UnitOfWorkPattern.IUnitOfWorkPattern;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsDTO;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace BnBCheckIn_Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ModelsDTO;
+using Serilog;
 
 namespace BnBCheckIn_Api.Controllers
 {
@@ -27,7 +28,10 @@ namespace BnBCheckIn_Api.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly APISettings _aPISettings;
 
-        public AccountController(SignInManager<Contact> signInManager, UserManager<Contact> userManager, RoleManager<IdentityRole> roleManager, IOptions<APISettings> options)
+        public AccountController(SignInManager<Contact> signInManager, 
+                                    UserManager<Contact> userManager, 
+                                        RoleManager<IdentityRole> roleManager, 
+                                            IOptions<APISettings> options)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -41,6 +45,7 @@ namespace BnBCheckIn_Api.Controllers
         {
             if (userRequestDTO == null || !ModelState.IsValid)
             {
+                Log.Information("Invalid sign up.");
                 return BadRequest();
             }
 
@@ -59,14 +64,17 @@ namespace BnBCheckIn_Api.Controllers
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(e => e.Description);
+                Log.Error("The registration was unsuccessful.");
                 return BadRequest(new RegistrationResponseDTO { Errors = errors, IsRegistrationSuccessful = false });
             }
             var roleResult = await _userManager.AddToRoleAsync(user, RoleDefinition.Role_User);
             if (!roleResult.Succeeded)
             {
                 var errors = result.Errors.Select(e => e.Description);
+                Log.Error("The registration was unsuccessful.");
                 return BadRequest(new RegistrationResponseDTO { Errors = errors, IsRegistrationSuccessful = false });
             }
+            Log.Information("Successful sign up!");
             return StatusCode(201);
         }
 
@@ -74,12 +82,13 @@ namespace BnBCheckIn_Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn([FromBody] AuthenticationDTO authenticationDTO)
         {
-            var result = await _signInManager.PasswordSignInAsync(authenticationDTO.ContactName, authenticationDTO.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(authenticationDTO.Email, authenticationDTO.Password, false, false);
             if (result.Succeeded)
             {
-                var contact = await _userManager.FindByNameAsync(authenticationDTO.ContactName);
+                var contact = await _userManager.FindByEmailAsync(authenticationDTO.Email);
                 if (contact == null)
                 {
+                    Log.Error("Invalid authentication.");
                     return Unauthorized(new AuthenticationResponseDTO
                     {
                         IsAuthenticationSuccessful = false,
@@ -101,6 +110,7 @@ namespace BnBCheckIn_Api.Controllers
 
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
+                Log.Information("User successfully signed in!");
                 return Ok(new AuthenticationResponseDTO
                 {
                     IsAuthenticationSuccessful = true,
@@ -115,6 +125,7 @@ namespace BnBCheckIn_Api.Controllers
             }
             else
             {
+                Log.Error("Invalid authentication.");
                 return Unauthorized(new AuthenticationResponseDTO
                 {
                     IsAuthenticationSuccessful = false,

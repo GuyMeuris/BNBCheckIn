@@ -6,6 +6,8 @@ using AutoMapper;
 using Business.Repository.IRepository;
 using Business.UnitOfWorkPattern;
 using Business.UnitOfWorkPattern.IUnitOfWorkPattern;
+using Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ModelsDTO;
@@ -43,6 +45,7 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
+        [Authorize(Roles = RoleDefinition.Role_Admin)]
         [HttpGet("byProvince")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
