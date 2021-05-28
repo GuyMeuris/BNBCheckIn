@@ -5,35 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataAccess.Data
 {
-    public class Contact
-    {
-        [Key]
-        public int ContactId { get; set; }
-
-        [Required]
+    public class Contact : IdentityUser
+    {        
         public string ContactName { get; set; }
-
-        [Required]
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public string UserName { get; set; }
-
-        public string Password { get; set; }
-
-        public string CreatedBy { get; set; }
-
         public DateTime CreatedOn { get; set; } = DateTime.Now;
-
-        public string UpdatedBy { get; set; } 
-
-        public DateTime UpdatedOn { get; set; }
-      
-        //public virtual BnB bnb { get; set; }
+        public DateTime UpdatedOn { get; set; }      
+        public int? BnBId { get; set; }
 
     }
 }

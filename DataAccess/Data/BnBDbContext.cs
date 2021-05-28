@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
-    public class BnBDbContext : IdentityDbContext<User>
+    public class BnBDbContext : IdentityDbContext<Contact>
     {
         public BnBDbContext(DbContextOptions<BnBDbContext> options) : base(options)
         {
