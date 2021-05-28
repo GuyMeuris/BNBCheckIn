@@ -37,7 +37,7 @@ namespace BNBCheckInServer
             
             services.AddDbContext<BnBDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<Contact, IdentityRole>()
                     .AddEntityFrameworkStores<BnBDbContext>()
                     .AddDefaultTokenProviders()
                     .AddDefaultUI();

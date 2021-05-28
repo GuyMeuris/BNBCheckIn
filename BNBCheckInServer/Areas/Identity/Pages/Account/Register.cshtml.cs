@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using DataAccess.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,13 +21,13 @@ namespace BNBCheckInServer.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<Contact> _signInManager;
+        private readonly UserManager<Contact> _userManager;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<Contact> userManager,
+            SignInManager<Contact> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -72,7 +73,7 @@ namespace BNBCheckInServer.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new Contact { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

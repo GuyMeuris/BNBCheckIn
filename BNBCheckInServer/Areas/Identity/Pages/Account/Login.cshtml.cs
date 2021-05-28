@@ -12,17 +12,18 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using DataAccess.Data;
 
 namespace BNBCheckInServer.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<Contact> _userManager;
+        private readonly SignInManager<Contact> _signInManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
-            UserManager<IdentityUser> userManager)
+        public LoginModel(SignInManager<Contact> signInManager, 
+            UserManager<Contact> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

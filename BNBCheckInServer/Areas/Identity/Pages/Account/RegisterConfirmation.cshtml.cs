@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using DataAccess.Data;
 
 namespace BNBCheckInServer.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Contact> _userManager;
         private readonly IEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<Contact> userManager, IEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;

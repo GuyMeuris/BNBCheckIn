@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +12,12 @@ namespace BNBCheckInServer.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<Contact> _userManager;
+        private readonly SignInManager<Contact> _signInManager;
 
         public ExternalLoginsModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<Contact> userManager,
+            SignInManager<Contact> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
