@@ -6,76 +6,46 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h4>Gebruik een admin-account om in te loggen.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Input.Email">E-mail</label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+<div class="row mb-5">
+    <div class="col-sm-4 text-center abc">
+        <!-- Default form login -->
+        <form id="account" method="post">
+            <p class="h4 mb-4 text-left">Log in als admin om verder te gaan</p>
+            <p class="text-left">Enkele admins zijn bevoegd om B&B's te creëren en aan te passen</p>
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <!-- Email -->
+            <div class="form-group">
+                <label asp-for="Input.Email">E-mail</label>
+                <input asp-for="Input.Email" class="form-control mb-4" id="defaultLoginFormEmail" placeholder="Typ hier uw emailadres" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <!-- Password -->
+            <div class="form-group">
+                <label asp-for="Input.Password" class="in">Paswoord</label>
+                <input asp-for="Input.Password" class="form-control" id="defaultLoginFormPassword" placeholder="Typ hier uw paswoord" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <!-- Remember me -->
+            <div class="d-flex justify-content-left">
+                <div class="custom-control custom-checkbox text-left">
+                    <label asp-for="Input.RememberMe" for="defaultLoginFormRemember">
+                        <input asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        logingegevens onthouden?
+                    </label>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Input.Password">Paswoord</label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe">
-                            <input asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Log in</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Paswoord vergeten?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registreer als nieuwe admin.</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Herzend bevestigings e-mail</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+            </div>
+            <!-- Sign in button -->
+            <div class="form-group">
+                <button type="submit" class="btn-admin btn-info btn-block ">Log in</button>
+            </div>
+        </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Gebruik een andere dienst om in te loggen.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                                    <p>
-                                        Er zijn nog geen externe diensten geconfigureerd om de identiteit te controleren. Lees <a href="https://go.microsoft.com/fwlink/?LinkID=532715">dit artikel</a> voor meer informatie omtrent het configureren van "inloggen via externe diensten" in deze ASP.NET applicatie.
-                                    </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+    <div class="col-sm-8 xyz text-center" style="background-image: url(../../../../../images/BedBreakfast2.jpg)">
+        <h1 class="account-text">Welkom op de B&ampB Admin pagina!</h1>
+        <h3 class="account-description">Doe hier het volledig beheer van de B&B's</h3>
     </div>
 </div>
 
