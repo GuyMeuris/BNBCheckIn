@@ -18,7 +18,6 @@ namespace Business.Mapper
             CreateMap<RoomDTO, Room>().ReverseMap();
             CreateMap<CreateRoomDTO, Room>().ReverseMap();
             CreateMap<ContactDTO, Contact>().ReverseMap();
-            CreateMap<CreateContactDTO, Contact>().ReverseMap();
             CreateMap<AmenityDTO, Amenity>().ReverseMap();
             CreateMap<CreateAmenityDTO, Amenity>().ReverseMap();
             CreateMap<RoomImageDTO, RoomImage>().ReverseMap();

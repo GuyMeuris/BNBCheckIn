@@ -37,7 +37,7 @@ namespace BnBCheckIn_Api
         {
             services.AddDbContext<BnBDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<Contact, IdentityRole>()
                     .AddEntityFrameworkStores<BnBDbContext>()
                     .AddDefaultTokenProviders();
             services.AddAutoMapper(typeof(MappingProfile));
