@@ -1,5 +1,9 @@
 ﻿@page "/"
 @using BnBCheckIn_Client.Model.ViewModel
+@using Serilog
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IJSRuntime jsRuntime
+@inject NavigationManager navManager
 
 <div class="row p-0 m-0">
     <div class="jumbotron jumbotron-fluid">
@@ -9,20 +13,22 @@
         </div>
     </div>
 </div>
-<EditForm Model="HomeModel">
+<EditForm Model="HomeModel" OnValidSubmit="SaveInitialData">
     <div class="row p-0 mx-0 mt-4 mb-4">
 
         <div class="col-8 col-md-3  offset-md-1 pl-2  pr-2 pr-md-0">
             <div class="form-group">
                 <label>Incheck Datum</label>
-                <InputDate min="@DateTime.Now.ToString("yyyy-MM-dd")" @bind-Value="HomeModel.StartDate" type="text" class="form-control" />
+                <InputDate min="@DateTime.Now.ToString("yyyy-MM-dd")" @bind-Value="HomeModel.StartDate"
+                           type="text" class="form-control" />
             </div>
         </div>
 
         <div class="col-8 col-md-3 offset-md-1 pl-2 pl-2 pr-2">
             <div class="form-group">
                 <label>Uitcheck Datum</label>
-                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")" @bind-Value="HomeModel.EndDate"  type="text" class="form-control" />
+                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")"        
+                                    @bind-Value="HomeModel.EndDate"  type="text" class="form-control" />
             </div>
         </div>
 
@@ -40,4 +46,22 @@
 
 @code{
     public HomeVM HomeModel { get; set; } = new HomeVM();
+
+    private async Task SaveInitialData()
+    {
+        try
+        {
+            HomeModel.NoOfNights = (HomeModel.EndDate - HomeModel.StartDate).Days;
+
+            await localStorage.SetItemAsync(LocalStorage.LS_InitialBooking, HomeModel);
+
+            navManager.NavigateTo("bnbs", forceLoad: true);
+
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Something went wrong saving the initial booking data");
+            await jsRuntime.SweetAlertError("Er is iets misgegaan bij het ingeven van jouw voorkeurdata. Probeer opnieuw.");
+        }
+    }
 }
