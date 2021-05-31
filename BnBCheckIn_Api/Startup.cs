@@ -24,6 +24,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using Serilog;
 
 namespace BnBCheckIn_Api
 {
@@ -124,6 +125,10 @@ namespace BnBCheckIn_Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSerilogIngestion();
+
+            app.UseSerilogRequestLogging();
 
             app.UseCors("BnBCheckIn");
 

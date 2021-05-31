@@ -18,6 +18,7 @@ using Business.Repository;
 using BNBCheckInServer.Service;
 using BNBCheckInServer.Service.IService;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
 
 namespace BNBCheckInServer
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BNBCheckIn_Client.Helper
+namespace BnBCheckIn_Client.Helper
 {
     public static class IJSRuntimeExtension
     {
