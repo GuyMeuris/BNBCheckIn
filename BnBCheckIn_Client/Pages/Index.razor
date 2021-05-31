@@ -14,6 +14,7 @@
     </div>
 </div>
 <EditForm Model="HomeModel" OnValidSubmit="SaveInitialData">
+    <DataAnnotationsValidator />
     <div class="row p-0 mx-0 mt-4 mb-4">
 
         <div class="col-8 col-md-3  offset-md-1 pl-2  pr-2 pr-md-0">
@@ -21,14 +22,16 @@
                 <label>Incheck Datum</label>
                 <InputDate min="@DateTime.Now.ToString("yyyy-MM-dd")" @bind-Value="HomeModel.StartDate"
                            type="text" class="form-control" />
+                <ValidationMessage For="()=>HomeModel.StartDate" />
             </div>
         </div>
 
         <div class="col-8 col-md-3 offset-md-1 pl-2 pl-2 pr-2">
             <div class="form-group">
                 <label>Uitcheck Datum</label>
-                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")"        
-                                    @bind-Value="HomeModel.EndDate"  type="text" class="form-control" />
+                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")"
+                           @bind-Value="HomeModel.EndDate" type="text" class="form-control" />
+                <ValidationMessage For="()=>HomeModel.EndDate" />
             </div>
         </div>
 
