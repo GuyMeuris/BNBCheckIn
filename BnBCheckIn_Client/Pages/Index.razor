@@ -1,7 +1,43 @@
 ﻿@page "/"
+@using BnBCheckIn_Client.Model.ViewModel
 
-<h1>Hello, world!</h1>
+<div class="row p-0 m-0">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4 texthero">B&ampB Check In</h1>
+            <h3>Boek hier de mooiste B&ampB's uit Vlaanderen.</h3>
+        </div>
+    </div>
+</div>
+<EditForm Model="HomeModel">
+    <div class="row p-0 mx-0 mt-4 mb-4">
 
-Welcome to your new app.
+        <div class="col-8 col-md-3  offset-md-1 pl-2  pr-2 pr-md-0">
+            <div class="form-group">
+                <label>Incheck Datum</label>
+                <InputDate min="@DateTime.Now.ToString("yyyy-MM-dd")" @bind-Value="HomeModel.StartDate" type="text" class="form-control" />
+            </div>
+        </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+        <div class="col-8 col-md-3 offset-md-1 pl-2 pl-2 pr-2">
+            <div class="form-group">
+                <label>Uitcheck Datum</label>
+                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")" @bind-Value="HomeModel.EndDate"  type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="col-4 col-md-2 p-0 pr-2">
+            <div class="form-group">
+                <label>&nbsp;</label>
+
+                <input type="submit" value="Go" class="btn btn-success btn-block" />
+
+            </div>
+        </div>
+
+    </div>
+</EditForm>
+
+@code{
+    public HomeVM HomeModel { get; set; } = new HomeVM();
+}
