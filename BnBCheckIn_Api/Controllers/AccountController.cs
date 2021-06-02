@@ -20,7 +20,6 @@ namespace BnBCheckIn_Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
     public class AccountController : Controller
     {
         private readonly SignInManager<Contact> _signInManager;

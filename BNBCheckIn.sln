@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnBCheckIn_Api", "BnBCheckI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnBCheckIn_Client", "BnBCheckIn_Client\BnBCheckIn_Client.csproj", "{87BF474C-F75B-440D-9D79-C919B19245F3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logs", "Logs", "{30B61A40-953F-4387-8460-C67C3F895EE1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -24,8 +24,9 @@ namespace BnBCheckIn_Client.Service
 
         public async Task<IEnumerable<RoomDTO>> GetBnBRooms(string checkInDate, string checkOutDate)
         {
-            var response = await _client.GetAsync($"api/roomcontroller?checkInDate={checkInDate}&checkOutDate={checkOutDate}");
+            var response = await _client.GetAsync($"api/room?checkInDate={checkInDate}&checkOutDate={checkOutDate}");
             var content = await response.Content.ReadAsStringAsync();
+            //response.EnsureSuccessStatusCode();
             var rooms = JsonConvert.DeserializeObject<IEnumerable<RoomDTO>>(content);
             return rooms;
         }

@@ -45,7 +45,6 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [Authorize(Roles = RoleDefinition.Role_Admin)]
         [HttpGet("byProvince")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -53,7 +52,10 @@ namespace BnBCheckIn_Api.Controllers
         {
             try
             {
-                var bnbs = await _unitOfWork.BnBRepository.GetAll(x => x.Province == province, null, new List<string> { "Rooms"}, new List<string> { "BnBImages" }, new List<string> { "Amenities" }, new List<string> { "Contacts" });
+                var bnbs = await _unitOfWork.BnBRepository.GetAll(x => x.Province == province, 
+                    null, null, null, new List<string> { "Rooms"}, 
+                            new List<string> { "BnBImages" }, new List<string> { "Amenities" }, 
+                                    new List<string> { "Contacts" });
                 var result = _mapper.Map<IList<BnBDTO>>(bnbs);
                 return Ok(result);
             }
