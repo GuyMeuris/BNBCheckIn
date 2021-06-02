@@ -30,7 +30,11 @@ namespace ModelsDTO
         public string RoomDetails { get; set; }
 
         public int BnBId { get; set; }
-       
+
+        public double TotalDays { get; set; }
+
+        public double TotalAmount { get; set; }
+
     }
 
     public class RoomDTO : CreateRoomDTO

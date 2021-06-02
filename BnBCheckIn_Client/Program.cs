@@ -1,10 +1,10 @@
 using Blazored.LocalStorage;
+using BnBCheckIn_Client.Service;
+using BnBCheckIn_Client.Service.IService;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -18,35 +18,18 @@ namespace BnBCheckIn_Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            var levelSwitch = new LoggingLevelSwitch();
-            Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.ControlledBy(levelSwitch)
-            .Enrich.WithProperty("InstanceId", Guid.NewGuid().ToString("n"))
-            .WriteTo.BrowserHttp($"{builder.HostEnvironment.BaseAddress}ingest", controlLevelSwitch: levelSwitch)
-            .WriteTo.BrowserConsole()
-            .CreateLogger();
-
-            try
-            {
-                Log.Information("BNBCheckIn browser starting");
                
-                builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<App>("#app");
 
-                builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = 
+                new Uri(builder.Configuration.GetValue<string>("BaseAPIUrl")) });
 
-                builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredLocalStorage();
 
-                await builder.Build().RunAsync();
-            }
-            catch (Exception ex)
-            {
+            builder.Services.AddScoped<IBnBRoomService, BnBRoomService>();
 
-                Log.Fatal(ex, "BNBCheckIn browser failed to start.");
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+            await builder.Build().RunAsync();
+  
         }
     }
 }

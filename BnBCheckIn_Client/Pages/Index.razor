@@ -1,6 +1,4 @@
 ﻿@page "/"
-@using BnBCheckIn_Client.Model.ViewModel
-@using Serilog
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime jsRuntime
 @inject NavigationManager navManager
@@ -19,18 +17,18 @@
 
         <div class="col-8 col-md-3  offset-md-1 pl-2  pr-2 pr-md-0">
             <div class="form-group">
-                <label>Incheck Datum</label>
-                <InputDate min="@DateTime.Now.ToString("yyyy-MM-dd")" @bind-Value="HomeModel.StartDate"
-                           type="text" class="form-control" />
+                <label>Incheckdatum</label>
+                <InputDate min="@DateTime.Now.ToString("dd-MM-yyyy")" @bind-Value="HomeModel.StartDate"
+                             class="form-control" />
                 <ValidationMessage For="()=>HomeModel.StartDate" />
             </div>
         </div>
 
         <div class="col-8 col-md-3 offset-md-1 pl-2 pl-2 pr-2">
             <div class="form-group">
-                <label>Uitcheck Datum</label>
-                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")"
-                           @bind-Value="HomeModel.EndDate" type="text" class="form-control" />
+                <label>Uitcheckdatum</label>
+                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("dd-MM-yyyy")"
+                           @bind-Value="HomeModel.EndDate" class="form-control" />
                 <ValidationMessage For="()=>HomeModel.EndDate" />
             </div>
         </div>
@@ -55,15 +53,22 @@
         try
         {
             HomeModel.NoOfNights = (HomeModel.EndDate - HomeModel.StartDate).Days;
+            if (HomeModel.NoOfNights < 0 )
+            {
+                await jsRuntime.SweetAlertError("Aantal nachten kan niet negatief zijn. Probeer opnieuw.");
+                return;
+            }
+            else
+            {
+                await localStorage.SetItemAsync(LocalStorage.LS_InitialBooking, HomeModel);
 
-            await localStorage.SetItemAsync(LocalStorage.LS_InitialBooking, HomeModel);
+                navManager.NavigateTo("bnb/rooms", forceLoad: true);
+            }
 
-            navManager.NavigateTo("bnbs", forceLoad: true);
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Log.Error(ex, "Something went wrong saving the initial booking data");
             await jsRuntime.SweetAlertError("Er is iets misgegaan bij het ingeven van jouw voorkeurdata. Probeer opnieuw.");
         }
     }

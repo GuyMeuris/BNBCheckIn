@@ -76,7 +76,7 @@ namespace BnBCheckIn_Api
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddCors(opt => opt.AddPolicy("BnBCheckIn", builder =>
+            services.AddCors(opt => opt.AddPolicy("BnBCheckInPolicy", builder =>
             {
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             }));
@@ -130,7 +130,7 @@ namespace BnBCheckIn_Api
 
             app.UseSerilogRequestLogging();
 
-            app.UseCors("BnBCheckIn");
+            app.UseCors("BnBCheckInPolicy");
 
             app.UseRouting();
 

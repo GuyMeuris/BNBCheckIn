@@ -29,8 +29,9 @@ namespace Business.Repository.IRepository
 
                 Expression<Func<T, bool>> expression = null,
                 string checkInDate = null,
-                string checkOutDate = null,//todo: volgorde ter preventie van error.
-                Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                string checkOutDate = null,
+                Func<IQueryable<T>, 
+                IOrderedQueryable<T>> orderBy = null,
                 List<string> includes = null,
                 List<string> includes2 = null,
                 List<string> includes3 = null,
@@ -39,12 +40,13 @@ namespace Business.Repository.IRepository
 
             // Then we will have a follow up function 'Get', where only the second parameter
             // is optional. This action will only get ONE instance!
-            Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null,
+            Task<T> Get(Expression<Func<T, bool>> expression,
+                string checkInDate = null,
+                string checkOutDate = null,
+                List<string> includes = null,
                 List<string> includes2 = null,
                 List<string> includes3 = null,
-                List<string> includes4 = null,
-                string checkInDate = null, 
-                string checkOutDate = null
+                List<string> includes4 = null     
             );
 
             //****************************************************************************************

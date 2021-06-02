@@ -40,7 +40,10 @@ namespace Business.Repository
             _db.RemoveRange(entities);
         }
 
-        public async Task<T> Get(System.Linq.Expressions.Expression<System.Func<T, bool>> expression, List<string> includes = null, List<string> includes2 = null, List<string> includes3 = null, List<string> includes4 = null, string checkInDate = null, string checkOutDate = null)
+        public async Task<T> Get(System.Linq.Expressions.Expression<System.Func<T, bool>> expression,
+            string checkInDate = null, string checkOutDate = null,
+                List<string> includes = null, List<string> includes2 = null, 
+                    List<string> includes3 = null, List<string> includes4 = null)
         {
             IQueryable<T> query = _db;
 
@@ -76,7 +79,11 @@ namespace Business.Repository
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<IList<T>> GetAll(System.Linq.Expressions.Expression<System.Func<T, bool>> expression = null, System.Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, List<string> includes2 = null, List<string> includes3 = null, List<string> includes4 = null, string checkInDate = null, string checkOutDate = null)
+        public async Task<IList<T>> GetAll(System.Linq.Expressions.Expression<System.Func<T, bool>> expression = null,
+                string checkInDate = null, string checkOutDate = null,
+                    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                        List<string> includes = null, List<string> includes2 = null, 
+                            List<string> includes3 = null, List<string> includes4 = null)
         {
             IQueryable<T> query = _db;
 
@@ -84,7 +91,6 @@ namespace Business.Repository
             {
                 query = query.Where(expression);
             }
-
             if (includes is not null)
             {
                 foreach (var includeProperty in includes)
@@ -113,8 +119,6 @@ namespace Business.Repository
                     query = query.Include(includeProperty);
                 }
             }
-
-
             if (orderBy is not null)
             {
                 query = orderBy(query);
@@ -132,8 +136,6 @@ namespace Business.Repository
         {
             _db.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
-
         }
-
     }
 }
