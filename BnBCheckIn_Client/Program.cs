@@ -28,6 +28,8 @@ namespace BnBCheckIn_Client
 
             builder.Services.AddScoped<IBnBRoomService, BnBRoomService>();
 
+            builder.Services.AddScoped<IAmenityService, AmenityService>();
+
             await builder.Build().RunAsync();
   
         }
