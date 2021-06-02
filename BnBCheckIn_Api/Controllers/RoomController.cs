@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BNBCheckInServer.Areas.Identity.Pages;
 using Business.UnitOfWorkPattern.IUnitOfWorkPattern;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using ModelsDTO;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,11 +31,28 @@ namespace BnBCheckIn_Api.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllRooms()
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAllRooms(string checkInDate = null, string checkOutDate = null)
         {
             try
             {
-                var allRooms = await _unitOfWork.RoomRepository.GetAll();
+                if (string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetAllRooms)}");
+                    return StatusCode(400, "All parameters need to be supplied.");
+                }
+                if (!DateTime.TryParseExact(checkInDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetAllRooms)}");
+                    return StatusCode(400, "Date needs to be in format dd/MM/yyyy.");
+                }
+                if (!DateTime.TryParseExact(checkOutDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckOutDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetAllRooms)}");
+                    return StatusCode(400, "Date needs to be in format dd/MM/yyyy.");
+                }
+
+                var allRooms = await _unitOfWork.RoomRepository.GetAll(null, checkInDate, checkOutDate);
                 var result = _mapper.Map<IList<RoomDTO>>(allRooms);
                 return Ok(result);
             }
@@ -47,12 +66,28 @@ namespace BnBCheckIn_Api.Controllers
         [HttpGet("byBnBId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetRoomsByBnBId(int bnbId)
+        public async Task<IActionResult> GetRoomsByBnBId(int bnbId, string checkInDate = null, string checkOutDate = null)
         {
             try
             {
+                if (string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
+                    return StatusCode(400, "All parameters need to be supplied.");
+                }
+                if (!DateTime.TryParseExact(checkInDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
+                    return StatusCode(400, "Date needs to be in format dd/MM/yyyy.");
+                }
+                if (!DateTime.TryParseExact(checkOutDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckOutDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
+                    return StatusCode(400, "Date needs to be in format dd/MM/yyyy.");
+                }
+
                 var rooms = await _unitOfWork.RoomRepository.GetAll
-                        (x => x.BnBId == bnbId, null,
+                        (x => x.BnBId == bnbId, checkInDate, checkOutDate,null,
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
@@ -73,7 +108,7 @@ namespace BnBCheckIn_Api.Controllers
             try
             {
                 var rooms = await _unitOfWork.RoomRepository.GetAll
-                        (x => x.IsVacant == isVacant, null,
+                        (x => x.IsVacant == isVacant, null, null, null,
                                 new List<string> { "RoomImages" },
                                             new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
@@ -94,7 +129,7 @@ namespace BnBCheckIn_Api.Controllers
             try
             {
                 var rooms = await _unitOfWork.RoomRepository.GetAll
-                        (x => x.PetsAllowed == petsAllowed, null,
+                        (x => x.PetsAllowed == petsAllowed, null,null, null,
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);

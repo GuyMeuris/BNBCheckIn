@@ -40,7 +40,7 @@ namespace Business.Repository
             _db.RemoveRange(entities);
         }
 
-        public async Task<T> Get(System.Linq.Expressions.Expression<System.Func<T, bool>> expression, List<string> includes = null, List<string> includes2 = null, List<string> includes3 = null, List<string> includes4 = null)
+        public async Task<T> Get(System.Linq.Expressions.Expression<System.Func<T, bool>> expression, List<string> includes = null, List<string> includes2 = null, List<string> includes3 = null, List<string> includes4 = null, string checkInDate = null, string checkOutDate = null)
         {
             IQueryable<T> query = _db;
 
@@ -76,7 +76,7 @@ namespace Business.Repository
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<IList<T>> GetAll(System.Linq.Expressions.Expression<System.Func<T, bool>> expression = null, System.Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, List<string> includes2 = null, List<string> includes3 = null, List<string> includes4 = null)
+        public async Task<IList<T>> GetAll(System.Linq.Expressions.Expression<System.Func<T, bool>> expression = null, System.Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null, List<string> includes2 = null, List<string> includes3 = null, List<string> includes4 = null, string checkInDate = null, string checkOutDate = null)
         {
             IQueryable<T> query = _db;
 

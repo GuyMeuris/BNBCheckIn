@@ -26,7 +26,10 @@ namespace Business.Repository.IRepository
             // 'GetAll' we are returning a task<IList> of the generic class and adding three
             // optional parameters. This action will get a list of ALL instances!
             Task<IList<T>> GetAll(
+
                 Expression<Func<T, bool>> expression = null,
+                string checkInDate = null,
+                string checkOutDate = null,//todo: volgorde ter preventie van error.
                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
                 List<string> includes = null,
                 List<string> includes2 = null,
@@ -39,7 +42,9 @@ namespace Business.Repository.IRepository
             Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null,
                 List<string> includes2 = null,
                 List<string> includes3 = null,
-                List<string> includes4 = null
+                List<string> includes4 = null,
+                string checkInDate = null, 
+                string checkOutDate = null
             );
 
             //****************************************************************************************

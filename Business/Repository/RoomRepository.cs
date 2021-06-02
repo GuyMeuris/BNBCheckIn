@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using Business.Repository.IRepository;
 using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ namespace Business.Repository
     {
         
         // First we need to include our 'BnBDbContext'-object and
-        // 'IMapper'-object using depency injection.
+        // 'IMapper'-object using dependency injection.
         private readonly BnBDbContext _context;
 
         private readonly IMapper _mapper;
