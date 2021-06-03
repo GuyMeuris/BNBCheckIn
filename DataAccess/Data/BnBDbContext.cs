@@ -18,17 +18,19 @@ namespace DataAccess.Data
 
         //  Dummy data quantity:
 
-        public DbSet<Room> Rooms { get; set; }   // -->  At least 1 per B&B to start 
+        public DbSet<Room> Rooms { get; set; }   
 
-        public DbSet<BnB> BnBs { get; set; }     // -->   1 per province to start   *
+        public DbSet<BnB> BnBs { get; set; }    
 
         public DbSet<RoomImage> RoomImages { get; set; }  
         
         public DbSet<BnBImage> BnBImages { get; set; }  
 
-        public DbSet<Amenity> Amenities { get; set; }   // --> 5 to start
+        public DbSet<Amenity> Amenities { get; set; }  
 
-        public DbSet<Contact> Contacts { get; set; }    //  -->  At least 1 owner per B&B and 2 users to start
+        public DbSet<Contact> Contacts { get; set; }
+
+        public DbSet<RoomOrderDetails> RoomOrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

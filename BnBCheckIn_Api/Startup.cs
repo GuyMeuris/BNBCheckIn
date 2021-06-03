@@ -74,6 +74,7 @@ namespace BnBCheckIn_Api
             });
 
             services.AddAutoMapper(typeof(MappingProfile));
+            services.AddScoped<IRoomOrderDetailsRepository, RoomOrderDetailsRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddCors(opt => opt.AddPolicy("BnBCheckInPolicy", builder =>
