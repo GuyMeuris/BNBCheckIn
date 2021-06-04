@@ -16,7 +16,7 @@ namespace BnBCheckIn_Client.Model.ViewModel
 
         [Required(ErrorMessage = "Einddatum is een verplicht veld.")]
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);
-
+        public string Province { get; set; } = null;
         public int NoOfNights { get; set; } = 1;
     }
 }

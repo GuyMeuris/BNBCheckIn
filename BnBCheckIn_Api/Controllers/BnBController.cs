@@ -15,7 +15,7 @@ using Serilog;
 
 namespace BnBCheckIn_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class BnBController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -27,7 +27,7 @@ namespace BnBCheckIn_Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllBnBs()
@@ -45,19 +45,28 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [HttpGet("byProvince")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetBnBByProvince(string province)
+        public async Task<IActionResult> GetBnBByProvince(string province = null)
         {
             try
             {
-                var bnbs = await _unitOfWork.BnBRepository.GetAll(x => x.Province == province, 
-                    null, null, null, new List<string> { "Rooms"}, 
-                            new List<string> { "BnBImages" }, new List<string> { "Amenities" }, 
-                                    new List<string> { "Contacts" });
-                var result = _mapper.Map<IList<BnBDTO>>(bnbs);
-                return Ok(result);
+                if (province != null)
+                {
+                    var bnbs = await _unitOfWork.BnBRepository.GetAll(x => x.Province == province, 
+                        null, null, null, new List<string> { "Rooms"}, 
+                                new List<string> { "BnBImages" }, new List<string> { "Amenities" }, 
+                                        new List<string> { "Contacts" });
+                    var result = _mapper.Map<IList<BnBDTO>>(bnbs);
+                    return Ok(result);
+                }
+                else
+                {
+                    var allBnBs = await _unitOfWork.BnBRepository.GetAll();
+                    var result = _mapper.Map<IList<BnBDTO>>(allBnBs); 
+                    return Ok(result);
+                }
             }
             catch (Exception ex)
             {

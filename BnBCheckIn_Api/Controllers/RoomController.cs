@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BnBCheckIn_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class RoomController : ControllerBase
     {
@@ -109,10 +109,10 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [HttpGet("byBnBId")]
+        [HttpGet("{bnbId:int}", Name = "byBnBId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetRoomsByBnBId(int? bnbId)
+        public async Task<IActionResult> GetRoomsByBnBId(int? bnbId, string checkInDate = null, string checkOutDate = null)
         {
             try
             {
@@ -121,9 +121,25 @@ namespace BnBCheckIn_Api.Controllers
                     Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
                     return StatusCode(400, "No B&B Id was given");
                 }
-
+                if (string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
+                    return StatusCode(400, "All parameters need to be supplied.");
+                }
+                if (!DateTime.TryParseExact(checkInDate, "dd-MM-yyyy", CultureInfo.InvariantCulture,
+                                DateTimeStyles.None, out var dtCheckInDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
+                    return StatusCode(400, "Date needs to be in format dd-MM-yyyy in GetRoomsByBnBId.");
+                }
+                if (!DateTime.TryParseExact(checkOutDate, "dd-MM-yyyy", CultureInfo.InvariantCulture,
+                                DateTimeStyles.None, out var dtCheckOutDate))
+                {
+                    Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
+                    return StatusCode(400, "Date needs to be in format dd-MM-yyyy in GetRoomsByBnBId.");
+                }
                 var rooms = await _unitOfWork.RoomRepository.GetAll
-                        (x => x.BnBId == bnbId, null, null,null,
+                        (x => x.BnBId == bnbId, checkInDate, checkOutDate,null,
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
