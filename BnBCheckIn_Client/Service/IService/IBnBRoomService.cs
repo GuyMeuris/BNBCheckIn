@@ -11,5 +11,6 @@ namespace BnBCheckIn_Client.Service.IService
         public Task<IEnumerable<RoomDTO>> GetBnBRooms(string checkInDate, string checkOutDate);
 
         public Task<RoomDTO> GetBnBRoomDetail(int roomId, string checkInDate, string checkOutDate);
+        public Task<IEnumerable<RoomDTO>> GetRoomsByBnBId(int bnbId, string checkInDate, string checkOutDate);
     }
 }

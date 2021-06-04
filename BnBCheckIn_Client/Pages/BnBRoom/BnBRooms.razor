@@ -1,4 +1,4 @@
-﻿@page "/bnb/rooms"
+﻿@page "/bnb/rooms/{Id:int}"
 @inject ILocalStorageService localStorage
 @inject IJSRuntime jsRuntime
 @inject IBnBRoomService bnbRoomService
@@ -150,6 +150,8 @@ else
 @*-----------------------------------------------------------------------------------------------------------------------*@
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
 
     private HomeVM HomeModel { get; set; } = new HomeVM();
 
@@ -183,7 +185,7 @@ else
 
     private async Task LoadRooms()
     {
-        Rooms = await bnbRoomService.GetBnBRooms(HomeModel.StartDate.ToString("dd-MM-yyyy"), HomeModel.EndDate.ToString("dd-MM-yyyy"));
+        Rooms = await  bnbRoomService.GetRoomsByBnBId(Id, HomeModel.StartDate.ToString("dd-MM-yyyy"), HomeModel.EndDate.ToString("dd-MM-yyyy"));
 
         foreach (var room in Rooms)
         {

@@ -18,13 +18,13 @@
     <DataAnnotationsValidator />
     <div class="row p-0 mx-0 mt-4 mb-4">
 
-        <div class="col-4 col-md-2 p-0 pr-2" style="margin-left: 2%;">
+        <div class="col-4 col-md-2 p-0 pr-2">
             <div class="form-group">
                 <span class="badge bg-info">Maak hier uw keuze</span>
             </div>
         </div>
 
-        <div class="col-8 col-md-3 pl-2  pr-2 pr-md-0">
+        <div class="col-4 col-md-2">
             <div class="form-group">
                 <label>Incheckdatum</label>
                 <InputDate min="@DateTime.Now.ToString("dd-MM-yyyy")" @bind-Value="HomeModel.StartDate"
@@ -33,12 +33,25 @@
             </div>
         </div>
 
-        <div class="col-8 col-md-3 offset-md-1 pl-2 pl-2 pr-2">
+        <div class="col-4 col-md-2">
             <div class="form-group">
                 <label>Uitcheckdatum</label>
                 <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("dd-MM-yyyy")"
                            @bind-Value="HomeModel.EndDate" class="form-control" />
                 <ValidationMessage For="()=>HomeModel.EndDate" />
+            </div>
+        </div>
+
+        <div class=" col-4 col-md-2">
+            <div class="form-group">
+                <label>Provincie</label>
+                <select @bind="@HomeModel.Province" class="form-control" >
+                    <option  value="" disabled selected hidden  >Alle provincies</option>
+                    @foreach (var p in Provinces)
+                    {
+                        <option value="@p">@p</option>
+                    }
+                </select>
             </div>
         </div>
 
@@ -88,6 +101,8 @@
 
     public IEnumerable<AmenityDTO> Amenities { get; set; } = new List<AmenityDTO>();
 
+    public List<string> Provinces { get; set; } = new List<string>() { "Antwerpen", "Vlaams-Brabant", "West-Vlaanderen", "Oos-Vlaanderen", "Limburg" };
+
     //-----------------------------------------------------------------------------------------------------------------
 
     protected override async Task OnInitializedAsync()
@@ -109,7 +124,7 @@
             {
                 await localStorage.SetItemAsync(LocalStorage.LS_InitialBooking, HomeModel);
 
-                navManager.NavigateTo("bnb/rooms", forceLoad: true);
+                navManager.NavigateTo("/bnbs", forceLoad: true);
             }
 
 
