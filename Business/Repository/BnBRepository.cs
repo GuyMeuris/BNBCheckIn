@@ -14,13 +14,20 @@ namespace Business.Repository
 {
     public class BnBRepository : IBnBRepository
     {
+        // First we need to include our 'BnBDbContext'-object and
+        // 'IMapper'-object using depency injection.
         private readonly IMapper _mapper;
         private readonly BnBDbContext _context;
+
         public BnBRepository(IMapper mapper, BnBDbContext context)
         {
             _mapper = mapper;
             _context = context;
         }
+        //*************************************************************************************
+
+        // Here we can start detailing our 'CRUD'-operations in the form of actions (= methods).
+
         public async Task<BnBDTO> CreateBnB(CreateBnBDTO createBnBDTO) 
         {
             BnB bnb = _mapper.Map<CreateBnBDTO, BnB>(createBnBDTO);
@@ -30,6 +37,7 @@ namespace Business.Repository
             await _context.SaveChangesAsync();
             return _mapper.Map<BnB, BnBDTO>(addedBnb.Entity);
         }
+
         public async Task<BnBDTO> GetBnB(int bnbId)
         {
             try
@@ -44,6 +52,7 @@ namespace Business.Repository
                 return null;
             }
         }
+
         public async Task<IEnumerable<BnBDTO>> GetAllBnBs()
         {
             try
@@ -85,6 +94,7 @@ namespace Business.Repository
                 return null;
             }
         }
+
         public async Task<int> DeleteBnB(int bnbId)
         {
             var bnbDetails = await _context.BnBs.FindAsync(bnbId);
@@ -98,6 +108,7 @@ namespace Business.Repository
             }
             return 0;
         }
+
         public async Task<BnBDTO> IsBnBUnique(string bnbName, int bnbId = 0)
         {
             try

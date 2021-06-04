@@ -30,6 +30,8 @@ namespace BnBCheckIn_Client
             builder.Services.AddScoped<IBnBRoomService, BnBRoomService>();
             builder.Services.AddScoped<IAmenityService, AmenityService>();
 
+            builder.Services.AddScoped<IRoomOrderDetailsService, RoomOrderDetailsService>();
+
             await builder.Build().RunAsync();
   
         }

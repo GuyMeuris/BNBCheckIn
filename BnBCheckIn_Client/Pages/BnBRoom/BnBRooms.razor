@@ -107,12 +107,29 @@
                                 <span class="float-right">
                                     <span class="float-right">Max. bezetting : @room.Occupancy personen </span><br />
                                     <span class="float-right pt-1">Kameroppervlakte : @room.RoomSize m²</span><br />
+                                    @if (room.PetsAllowed == true)
+                                    {
+                                        <span class="float-right">Huisdieren toegelaten op de kamer</span><br />
+                                    }
+                                    else
+                                    {
+                                        <span class="float-right">Huisdieren NIET toegelaten op de kamer</span><br />
+                                    }
                                     <h4 class="text-warning font-weight-bold pt-4">
-                                        EUR 
+                                        EUR
                                         <span style="border-bottom:1px solid #ff6a00">
                                             @room.TotalAmount.ToString("C")
-                                        </span></h4>
-                                    <span class="float-right">Prijs voor @room.TotalDays nachten</span>
+                                        </span>
+                                    </h4>
+                                    @if (@room.TotalDays == 1)
+                                    {
+                                        <span class="float-right">Prijs voor @room.TotalDays nacht</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="float-right">Prijs voor @room.TotalDays nachten</span>
+                                    }
+
                                 </span>
                             </div>
                         </div>

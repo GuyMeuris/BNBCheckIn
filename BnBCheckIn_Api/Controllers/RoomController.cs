@@ -64,7 +64,7 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [HttpGet("byRoomId")]
+        [HttpGet("{roomId:int}", Name ="byRoomId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -95,11 +95,11 @@ namespace BnBCheckIn_Api.Controllers
                     return StatusCode(400, "Date needs to be in format dd-MM-yyyy in GetRoomByRoomId.");
                 }
 
-                var rooms = await _unitOfWork.RoomRepository.Get
+                var room = await _unitOfWork.RoomRepository.Get
                         (x => x.RoomId == roomId, checkInDate, checkOutDate,
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
-                var result = _mapper.Map<IList<RoomDTO>>(rooms);
+                var result = _mapper.Map<RoomDTO>(room);
                 return Ok(result);
             }
             catch (Exception ex)

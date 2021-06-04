@@ -43,7 +43,7 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [HttpGet("{id:int}", Name = "byBnBId")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -67,7 +67,7 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [HttpGet("{id:int}", Name = "byRoomId")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
