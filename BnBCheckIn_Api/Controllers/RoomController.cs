@@ -112,15 +112,10 @@ namespace BnBCheckIn_Api.Controllers
         [HttpGet("{bnbId:int}", Name = "byBnBId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetRoomsByBnBId(int? bnbId, string checkInDate = null, string checkOutDate = null)
+        public async Task<IActionResult> GetRoomsByBnBId(int bnbId, string checkInDate = null, string checkOutDate = null)
         {
             try
             {
-                if (bnbId is null)
-                {
-                    Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");
-                    return StatusCode(400, "No B&B Id was given");
-                }
                 if (string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
                 {
                     Log.Error($"Something went wrong in the {nameof(GetRoomsByBnBId)}");

@@ -11,12 +11,15 @@ namespace BnBCheckIn_Client.Model.ViewModel
     {
         [Required(ErrorMessage = "Startdatum is een verplicht veld.")]
         [DataType(DataType.DateTime, ErrorMessage = "Startdatum moet correct worden ingegeven.")]
-        [ValidDateRange(ErrorMessage = "Startdatum mag niet vroeger zijn dan vandaag.")]
         public DateTime StartDate { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Einddatum is een verplicht veld.")]
+        [DataType(DataType.DateTime, ErrorMessage = "Startdatum moet correct worden ingegeven.")]
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(1);
-        public string Province { get; set; } = null;
+
+        [Required(ErrorMessage = "Provincie is een verplicht veld.")]
+        public string Province { get; set; } = "alle provincies";
+
         public int NoOfNights { get; set; } = 1;
     }
 }

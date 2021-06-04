@@ -9,5 +9,7 @@ namespace BnBCheckIn_Client.Service.IService
     public interface IBnBService
     {
         public Task<IEnumerable<BnBDTO>> GetBnBs(string province);
+
+        public Task<IEnumerable<BnBDTO>> GetAllBnBs();
     }
 }

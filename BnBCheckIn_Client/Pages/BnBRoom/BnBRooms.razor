@@ -24,6 +24,132 @@
                         <ValidationMessage For="() => HomeModel.EndDate" />
                     </div>
                 </div>
+                <div class="col-8 col-md-2">
+                    <div class="form-group" style="margin-top: 1.9rem !important;">
+                        @if (IsProcessing)
+                        {
+                            <button class="btn btn-success btn-block form-control">
+                                <i class="fade fa-spin fa-spinner"></i>
+                                Even geduld... kamers zijn aan het uploaden...
+                            </button>
+                        }
+                        else
+                        {
+                            <input type="submit" value="Wijzigen" class="btn btn-success btn-block form-control" />
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+    <div class="mt-4 mx-4 px-0 px-md-5 mx-md-5">
+
+        @foreach (var room in Rooms)
+        {
+            <div class="row p-2 my-3 " style="border-radius:20px; border: 1px solid #333">
+                <div class="col-12 col-lg-3 col-md-4">
+                    <div id="carouselExampleIndicators" class="carousel slide mb-4 m-md-3 m-0 pt-3 pt-md-0" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="images/HeroImageBnB.jpg" alt="First slide">
+                            </div>
+                            @*<div class="carousel-item">
+                                    <img class="d-block w-100" src="images/slide2.jpg" alt="Second slide">
+                                </div>*@
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Vorige</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Volgende</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-9 col-md-8">
+                    <div class="row pt-3">
+                        <div class="col-12 col-lg-8">
+                            <p class="card-title text-warning" style="font-size:xx-large">@room.RoomName</p>
+                            <p class="card-text">
+                                @((MarkupString)room.RoomDetails)
+                            </p>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="row pb-3 pt-2">
+                                <div class="col-12 col-lg-11 offset-lg-1">
+                                    <a href="@($"bnb/room-details/{room.RoomId}")" class="btn btn-success btn-block">Reserveer</a>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-12 pb-5">
+                                    <span class="float-right">
+                                        <span class="float-right">Max. bezetting : @room.Occupancy personen </span><br />
+                                        <span class="float-right pt-1">Kameroppervlakte : @room.RoomSize m²</span><br />
+                                        @if (room.PetsAllowed == true)
+                                        {
+                                            <span class="float-right">Huisdieren toegelaten op de kamer</span><br />
+                                        }
+                                        else
+                                        {
+                                            <span class="float-right">Huisdieren NIET toegelaten op de kamer</span><br />
+                                        }
+                                        <h4 class="text-warning font-weight-bold pt-4">
+                                            EUR
+                                            <span style="border-bottom:1px solid #ff6a00">
+                                                @room.TotalAmount.ToString("C")
+                                            </span>
+                                        </h4>
+                                        @if (@room.TotalDays == 1)
+                                        {
+                                            <span class="float-right">Prijs voor @room.TotalDays nacht</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="float-right">Prijs voor @room.TotalDays nachten</span>
+                                        }
+
+                                    </span>
+                                    <div class="col-12 col-lg-11 mt-3">
+                                        <NavLink href="bnbs" class="btn btn-success btn-block">Terug naar B&ampB.</NavLink>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <EditForm Model="HomeModel" OnValidSubmit="SaveBookingInfo" class="bg-light">
+
+        <div class="pt-3 pb-2 px-5 mx-1 mx-md-0 bg-secondary">
+            <DataAnnotationsValidator />
+            <div class="row px-3 mx-3">
+                <div class="col-6 col-md-4">
+                    <div class="form-group">
+                        <label class="text-warning">Incheckdatum</label>
+                        <InputDate @bind-Value="HomeModel.StartDate" class="form-control" />
+                        <ValidationMessage For="() => HomeModel.StartDate" />
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="form-group">
+                        <label class="text-warning">Uitcheckdatum</label>
+                        <InputDate @bind-Value="HomeModel.EndDate" class="form-control" />
+                        <ValidationMessage For="() => HomeModel.EndDate" />
+                    </div>
+                </div>
                 @*<div class=" col-4 col-md-2">
                         <div class="form-group">
                             <label class="text-warning">Aantal nachten</label>
@@ -57,95 +183,20 @@
             </div>
         </div>
     </EditForm>
-    <div class="mt-4 mx-4 px-0 px-md-5 mx-md-5">
+    <hr />
+    @if (IsProcessing)
+    {
+        <button class="btn btn-success btn-block form-control">
+            <i class="fade fa-spin fa-spinner"></i>
+            Even geduld... de kamers van deze B&ampB zijn aan het uploaden...
+        </button>
+    }
+    else
+    {
+        <h2>Er zijn geen kamers meer beschikbaar voor de geselecteerde data.</h2>
+        <h3>Geef bovenaan een andere verblijfsperiode in.</h3>
+    }
 
-        @foreach (var room in Rooms)
-        {
-        <div class="row p-2 my-3 " style="border-radius:20px; border: 1px solid #333">
-            <div class="col-12 col-lg-3 col-md-4">
-                <div id="carouselExampleIndicators" class="carousel slide mb-4 m-md-3 m-0 pt-3 pt-md-0" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img class="d-block w-100" src="images/HeroImageBnB.jpg" alt="First slide">
-                        </div>
-                        @*<div class="carousel-item">
-                                <img class="d-block w-100" src="images/slide2.jpg" alt="Second slide">
-                            </div>*@
-                    </div>
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Vorige</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Volgende</span>
-                    </a>
-                </div>
-            </div>
-            <div class="col-12 col-lg-9 col-md-8">
-                <div class="row pt-3">
-                    <div class="col-12 col-lg-8">
-                        <p class="card-title text-warning" style="font-size:xx-large">@room.RoomName</p>
-                        <p class="card-text">
-                            @((MarkupString)room.RoomDetails)
-                        </p>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <div class="row pb-3 pt-2">
-                            <div class="col-12 col-lg-11 offset-lg-1">
-
-                                <a href="@($"bnb/room-details/{room.RoomId}")" class="btn btn-success btn-block">Reserveer</a>
-
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <div class="col-12 pb-5">
-                                <span class="float-right">
-                                    <span class="float-right">Max. bezetting : @room.Occupancy personen </span><br />
-                                    <span class="float-right pt-1">Kameroppervlakte : @room.RoomSize m²</span><br />
-                                    @if (room.PetsAllowed == true)
-                                    {
-                                        <span class="float-right">Huisdieren toegelaten op de kamer</span><br />
-                                    }
-                                    else
-                                    {
-                                        <span class="float-right">Huisdieren NIET toegelaten op de kamer</span><br />
-                                    }
-                                    <h4 class="text-warning font-weight-bold pt-4">
-                                        EUR
-                                        <span style="border-bottom:1px solid #ff6a00">
-                                            @room.TotalAmount.ToString("C")
-                                        </span>
-                                    </h4>
-                                    @if (@room.TotalDays == 1)
-                                    {
-                                        <span class="float-right">Prijs voor @room.TotalDays nacht</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="float-right">Prijs voor @room.TotalDays nachten</span>
-                                    }
-
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        }
-    </div>
-}
-else
-{
-    <div style="position:fixed;top:50%;left:50%;margin-top:-50px;margin-left:-100px;">
-        <label id="app">Loading...</label>
-        <img src="images/ajax-loader.gif" />
-    </div>
 }
 @*-----------------------------------------------------------------------------------------------------------------------*@
 
@@ -165,7 +216,7 @@ else
     {
         try
         {
-
+            IsProcessing = true;
             if (await localStorage.GetItemAsync<HomeVM>(LocalStorage.LS_InitialBooking) is not null)
             {
                 HomeModel = await localStorage.GetItemAsync<HomeVM>(LocalStorage.LS_InitialBooking);
@@ -175,6 +226,7 @@ else
                 HomeModel.NoOfNights = 1;
             }
             await LoadRooms();
+            IsProcessing = false;
         }
         catch (Exception)
         {
@@ -185,7 +237,7 @@ else
 
     private async Task LoadRooms()
     {
-        Rooms = await  bnbRoomService.GetRoomsByBnBId(Id, HomeModel.StartDate.ToString("dd-MM-yyyy"), HomeModel.EndDate.ToString("dd-MM-yyyy"));
+        Rooms = await bnbRoomService.GetRoomsByBnBId(Id, HomeModel.StartDate.ToString("dd-MM-yyyy"), HomeModel.EndDate.ToString("dd-MM-yyyy"));
 
         foreach (var room in Rooms)
         {
