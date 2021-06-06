@@ -36,16 +36,20 @@ namespace ModelsDTO
         [Required(ErrorMessage = "Bankrekeningnr. is een verplicht veld.")]
         public string BankAccountNr { get; set; }
 
+        [Required(ErrorMessage = "Naam verhuurder is een verplicht veld.")]
+        public string NameOwner { get; set; }
+
+        [Required(ErrorMessage = "Emailadres is een verplicht veld.")]
+        public string BnBEmail { get; set; }
+
+        public string BnBPhone { get; set; }
+
         public string BnBDetails { get; set; }
         }
 
         public class BnBDTO : CreateBnBDTO
         {
             public int BnBId { get; set; }
-
-            public int ContactId { get; set; }
-
-            public ContactDTO Contacts { get; set; }
 
             public virtual List<string> BnBImageUrls { get; set; }
 

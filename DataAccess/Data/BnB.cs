@@ -28,6 +28,12 @@ namespace DataAccess.Data
         public string VATnr { get; set; }
         [Required]
         public string BankAccountNr { get; set; }
+        [Required]
+        public string NameOwner { get; set; }
+        [Required]
+        public string BnBEmail { get; set; }
+
+        public string BnBPhone { get; set; }
 
         public string BnBDetails { get; set; }
 
@@ -38,11 +44,6 @@ namespace DataAccess.Data
         public string UpdatedBy { get; set; }
 
         public DateTime UpdatedOn { get; set; }
-
-        [ForeignKey(nameof(Contact))]
-        public int ContactId { get; set; }
-
-        public Contact Contacts { get; set; }
 
         public virtual ICollection<Room> Rooms { get; set; }
 

@@ -23,9 +23,6 @@ namespace DataAccess.Data
 
         public int RoomSize { get; set; }
 
-        [Required]
-        public bool IsVacant { get; set; }
-
         public bool PetsAllowed { get; set; } 
 
         public string RoomDetails { get; set; }

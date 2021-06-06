@@ -1,9 +1,10 @@
 ﻿@page "/bnbs"
 @using ModelsDTO
 @using Business.Repository.IRepository
-@inject Service.IService.IFileUpload fileUpload 
-@inject IBnBRepository bnbRepository 
+@using BNBCheckInServer.Components
+@inject IBnBRepository bnbRepository
 @inject IJSRuntime jsRuntime
+@inject Service.IService.IFileUpload fileUpload
 @inject NavigationManager  navManager
 
 
@@ -38,13 +39,13 @@
                             <td>@bnb.Province</td>
                             @if (bnb.Rooms.Any())
                             {
-                            <td>
-                                @foreach (var room in bnb.Rooms)
-                                {
-                                    @room.RoomName;
-                                    <br />
-                                }
-                            </td>
+                                <td>
+                                    @foreach (var room in bnb.Rooms)
+                                    {
+                                        @room.RoomName;
+                                        <br />
+                                    }
+                                </td>
                             }
                             else
                             {
@@ -68,6 +69,8 @@
         </table>
     </div>
 </div>
+
+<DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
 @*-----------------------------------------------------------------------------------------------------------------------*@
 
@@ -99,12 +102,14 @@
     private async Task HandleDelete(int bnbId)
     {
         DeleteBnBId = bnbId;
+
         await jsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
     }
+
     public async Task ConfirmDelete_Click(bool isConfirmed)
     {
         IsProcessing = true;
-        if (isConfirmed && DeleteBnBId != null)
+        if (isConfirmed && DeleteBnBId is not null)
         {
             BnBDTO bnbDTO = await bnbRepository.GetBnB(DeleteBnBId.Value);
             foreach (var image in bnbDTO.BnBImages)
@@ -113,7 +118,7 @@
                 fileUpload.DeleteFile(imageName);
             }
             await bnbRepository.DeleteBnB(DeleteBnBId.Value);
-            await jsRuntime.SweetAlertSuccess("De kamer werd succesvol verwijderd!");
+            await jsRuntime.SweetAlertSuccess("De B&B werd succesvol verwijderd!");
             BnBs = await bnbRepository.GetAllBnBs();
         }
         await jsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");

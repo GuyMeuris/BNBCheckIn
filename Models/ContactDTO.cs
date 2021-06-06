@@ -20,8 +20,5 @@ namespace ModelsDTO
         
         [Phone]
         public string PhoneNumber { get; set; }
-
-        [Required]
-        public int? BnBId { get; set; }
     }
 }
