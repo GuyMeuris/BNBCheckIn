@@ -19,6 +19,7 @@ using BNBCheckInServer.Service;
 using BNBCheckInServer.Service.IService;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace BNBCheckInServer
 {
@@ -84,7 +85,7 @@ namespace BNBCheckInServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapBlazorHub();
+                endpoints.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1));
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

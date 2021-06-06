@@ -75,7 +75,7 @@
                                 </span>
                             </ToolbarContent>
                             <EditorContent>
-
+                                <span>@((MarkupString)RoomModel.RoomDetails)</span>
                             </EditorContent>
                         </BlazoredTextEditor>
                     </div>
@@ -213,7 +213,6 @@
             }
             catch
             {
-
                 await Task.Delay(10);
                 loading = true;
             }
@@ -238,7 +237,8 @@
                 //Update
                 RoomModel.RoomDetails = await QuillHtml.GetHTML();
                 var updatedRoomResult = await roomRepository.UpdateRoom(RoomModel.RoomId, RoomModel);
-                if (RoomModel.RoomImageUrls is not null && (RoomModel.RoomImageUrls.Any()))
+                if (RoomModel.RoomImageUrls is not null && RoomModel.RoomImageUrls.Any() ||
+                    (DeletedImageNames is not null && DeletedImageNames.Any()))
                 {
                     if (DeletedImageNames is not null && DeletedImageNames.Any())
                     {

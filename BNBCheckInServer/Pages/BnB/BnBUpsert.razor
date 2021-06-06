@@ -22,6 +22,7 @@
                     <div class="form-group">
                         <label>Naam B&B</label>
                         <InputText @bind-Value="bnbModel.BnBName" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.BnBName" />
                     </div>
                     <div class="form-group">
                         <label>Straatnaam</label>
@@ -41,18 +42,36 @@
                     <div class="form-group">
                         <label>Gemeente</label>
                         <InputText @bind-Value="bnbModel.Municipality" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.Municipality" />
                     </div>
                     <div class="form-group">
                         <label>Provincie</label>
                         <InputText @bind-Value="bnbModel.Province" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.Province" />
                     </div>
                     <div class="form-group">
                         <label>BTW-nummer</label>
                         <InputText @bind-Value="bnbModel.VATnr" class="form-control" />
+                        <ValidationMessage For="() => bnbModel.VATnr" />
                     </div>
                     <div class="form-group">
                         <label>Bankrekeningnummer</label>
                         <InputText @bind-Value="bnbModel.BankAccountNr" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.BankAccountNr" />
+                    </div>
+                    <div class="form-group">
+                        <label>Naam verhuurder</label>
+                        <InputText @bind-Value="bnbModel.NameOwner" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.NameOwner" />
+                    </div>
+                    <div class="form-group">
+                        <label>Emailadres B&B</label>
+                        <InputText @bind-Value="bnbModel.BnBEmail" class="form-control" />
+                        <ValidationMessage For="()=>bnbModel.BnBEmail" />
+                    </div>
+                    <div class="form-group">
+                        <label>Telefoonnummer B&B</label>
+                        <InputText @bind-Value="bnbModel.BnBPhone" class="form-control" />
                     </div>
                     <div class="form-group" style="height:200px;">
                         <label>Beschrijving B&B</label>
@@ -85,7 +104,7 @@
                                 </span>
                             </ToolbarContent>
                             <EditorContent>
-
+                                <span>@((MarkupString)bnbModel.BnBDetails)</span>
                             </EditorContent>
                         </BlazoredTextEditor>
                     </div>
@@ -210,6 +229,8 @@
         }
     }
 
+
+
     private async Task HandleBnBUpsert()
     {
         IsProcessingStart = true;
@@ -229,7 +250,8 @@
                 bnbModel.BnBDetails = await QuillHtml.GetHTML();
                 var updatedBnBResult = await BnBRepository.UpdateBnB(bnbModel.BnBId, bnbModel);
 
-                if (bnbModel.BnBImageUrls is not null && (bnbModel.BnBImageUrls.Any()))
+                if (bnbModel.BnBImageUrls is not null && (bnbModel.BnBImageUrls.Any() ||
+                    (DeletedImageNames is not null && DeletedImageNames.Any())))
                 {
                     if (DeletedImageNames is not null && DeletedImageNames.Any())
                     {

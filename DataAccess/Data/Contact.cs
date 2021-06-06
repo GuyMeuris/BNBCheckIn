@@ -12,9 +12,10 @@ namespace DataAccess.Data
     public class Contact : IdentityUser
     {        
         public string ContactName { get; set; }
+
         public DateTime CreatedOn { get; set; } = DateTime.Now;
+
         public DateTime UpdatedOn { get; set; }      
-        public int? BnBId { get; set; }
 
     }
 }

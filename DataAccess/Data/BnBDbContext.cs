@@ -16,8 +16,6 @@ namespace DataAccess.Data
 
         }
 
-        //  Dummy data quantity:
-
         public DbSet<Room> Rooms { get; set; }   
 
         public DbSet<BnB> BnBs { get; set; }    

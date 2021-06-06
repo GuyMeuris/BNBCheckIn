@@ -147,26 +147,26 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [HttpGet("byIsVacant")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetRoomsByIsVacant(bool isVacant)
-        {
-            try
-            {
-                var rooms = await _unitOfWork.RoomRepository.GetAll
-                        (x => x.IsVacant == isVacant, null, null, null,
-                                new List<string> { "RoomImages" },
-                                            new List<string> { "Amenities" });
-                var result = _mapper.Map<IList<RoomDTO>>(rooms);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, $"Something went wrong in the {nameof(GetRoomsByIsVacant)}");
-                return StatusCode(500, "Internal server error, please try again later.");
-            }
-        }
+        //[HttpGet("byIsVacant")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //public async Task<IActionResult> GetRoomsByIsVacant(bool isVacant)
+        //{
+        //    try
+        //    {
+        //        var rooms = await _unitOfWork.RoomRepository.GetAll
+        //                (x => x.IsVacant == isVacant, null, null, null,
+        //                        new List<string> { "RoomImages" },
+        //                                    new List<string> { "Amenities" });
+        //        var result = _mapper.Map<IList<RoomDTO>>(rooms);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error(ex, $"Something went wrong in the {nameof(GetRoomsByIsVacant)}");
+        //        return StatusCode(500, "Internal server error, please try again later.");
+        //    }
+        //}
 
         [HttpGet("byPetsAllowed")]
         [ProducesResponseType(StatusCodes.Status200OK)]

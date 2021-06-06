@@ -23,8 +23,6 @@ namespace ModelsDTO
         [Required(ErrorMessage = "De kameroppervlakte is een verplicht veld.")]
         public int RoomSize { get; set; }
 
-        public bool IsVacant { get; set; }
-
         public bool PetsAllowed { get; set; } = false;
 
         public string RoomDetails { get; set; }
