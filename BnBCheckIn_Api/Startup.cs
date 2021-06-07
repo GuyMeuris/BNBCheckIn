@@ -25,6 +25,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using Serilog;
+using Stripe;
 
 namespace BnBCheckIn_Api
 {
@@ -118,6 +119,8 @@ namespace BnBCheckIn_Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["APIKey"];
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -2,6 +2,8 @@
 @inject IJSRuntime jsRuntime
 @inject ILocalStorageService localStorage
 @inject IBnBRoomService bnbRoomService
+@inject IStripePaymentService stripePaymentService
+@inject IRoomOrderDetailsService roomOrderDetailsService
 
 
 @if (BnBRoomBooking?.OrderDetails?.BnBRoomDTO?.RoomImages is null)
@@ -58,7 +60,7 @@ else
                             <h4 class="text-warning font-weight-bold pt-5 pl-5">
                                 EUR
                                 <span style="border-bottom:1px solid #ff6a00">
-                                    @BnBRoomBooking.OrderDetails.BnBRoomDTO.Rate.ToString("C")
+                                    @BnBRoomBooking.OrderDetails.BnBRoomDTO.TotalAmount.ToString("C")
                                 </span>
                             </h4>
                             @if (@BnBRoomBooking.OrderDetails.BnBRoomDTO.TotalDays == 1)
@@ -113,7 +115,7 @@ else
                     </div>
                     <div class="form-group">
                         <label class="text-warning">Uitcheckdatum</label>
-                        <InputDate @bind-Value="BnBRoomBooking.OrderDetails.CheckInDate" type="date" disabled class="form-control" />
+                        <InputDate @bind-Value="BnBRoomBooking.OrderDetails.CheckOutDate" type="date" disabled class="form-control" />
                     </div>
                     <div class="form-group">
                         <label class="text-warning">Aantal nachten</label>
@@ -133,7 +135,14 @@ else
                         </select>
                     </div>
                     <div class="form-group mt-3">
-                        <button type="submit" class="btn btn-success form-control">Nu reserveren</button>
+                        @if (BnBRoomBooking.OrderDetails.BnBRoomDTO.IsBooked)
+                        {
+                            <input class="btn btn-danger form-control" value="Reeds verhuurd!" />
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-success form-control">Nu reserveren</button>
+                        }
                     </div>
                 </EditForm>
             </div>
@@ -212,6 +221,32 @@ else
         if (string.IsNullOrEmpty(BnBRoomBooking.OrderDetails.Name))
         {
             await jsRuntime.SweetAlertError("Naam is een verplicht veld. Gelieve zeker uw naam in te vullen.");
+            return;
+        }
+
+        try
+        {
+            var paymentDTO = new StripePaymentDTO
+            {
+                Amount = Convert.ToInt32(BnBRoomBooking.OrderDetails.BnBRoomDTO.TotalAmount * 100), // convertion from cents
+                BnBRoomProduct = BnBRoomBooking.OrderDetails.BnBRoomDTO.RoomName,
+                ReturnUrl = "/bnb/room-details/" + Id
+            };
+
+            var result = await stripePaymentService.CheckOut(paymentDTO);
+            BnBRoomBooking.OrderDetails.StripeSessionId = result.Data.ToString();
+            BnBRoomBooking.OrderDetails.RoomId = BnBRoomBooking.OrderDetails.BnBRoomDTO.RoomId;
+            BnBRoomBooking.OrderDetails.TotalCost = BnBRoomBooking.OrderDetails.BnBRoomDTO.TotalAmount;
+
+            var roomOrderDetailsSaved = await roomOrderDetailsService.SaveRoomOrderDetails(BnBRoomBooking.OrderDetails);
+
+            await localStorage.SetItemAsync(LocalStorage.LS_RoomOrderDetails, roomOrderDetailsSaved);
+
+            await jsRuntime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
+        }
+        catch (Exception)
+        {
+            await jsRuntime.SweetAlertError("De checkout van uw geselecteerde reservatie is niet gelukt. Probeer opnieuw.");
             return;
         }
 

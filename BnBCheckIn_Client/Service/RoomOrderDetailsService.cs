@@ -1,9 +1,11 @@
 ﻿using BnBCheckIn_Client.Service.IService;
 using ModelsDTO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BnBCheckIn_Client.Service
@@ -21,14 +23,31 @@ namespace BnBCheckIn_Client.Service
 
         // Here we can start detailing our 'CRUD'-operations in the form of actions (= methods).
 
-        public Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int id)
+        public async Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(RoomOrderDetailsDTO detailsDTO)
         {
-            throw new NotImplementedException();
+            var content = JsonConvert.SerializeObject(detailsDTO);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/bnbroomorder/paymentsuccessful", bodyContent);
+            var contentTemp = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            var result = JsonConvert.DeserializeObject<RoomOrderDetailsDTO>(contentTemp);
+            return result;
         }
 
-        public Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(CreateRoomOrderDetailsDTO createDetailsDTO)
+        public async Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(CreateRoomOrderDetailsDTO createDetailsDTO)
         {
-            throw new NotImplementedException();
+            createDetailsDTO.UserId = "dummy user";
+            var content = JsonConvert.SerializeObject(createDetailsDTO);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("api/bnbroomorder/create", bodyContent);
+
+            // Extra info while debugging, place a breakpoint here to see the response result
+            string res = response.Content.ReadAsStringAsync().Result;
+
+            var contentTemp = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            var result = JsonConvert.DeserializeObject<RoomOrderDetailsDTO>(contentTemp);
+            return result;
         }
     }
 }

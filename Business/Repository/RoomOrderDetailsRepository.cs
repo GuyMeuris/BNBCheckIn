@@ -83,26 +83,26 @@ namespace Business.Repository
             }
         }
 
-        public async Task<bool> IsRoomBooked(int roomId, DateTime checkInDate, DateTime checkOutDate)
-        {
-            var status = false;
-            var existingBooking = await _context.RoomOrderDetails.Where(x => x.RoomId == roomId && x.IsPaymentSuccessful &&
-            //Check if check-in date that user wants does not fall in between any dates for room that is booked
-            (checkInDate < x.CheckOutDate && checkInDate.Date > x.CheckInDate) ||
-            //Check if check-out date that user wants does not fall in between any dates for room that is booked
-            (checkOutDate.Date > x.CheckInDate.Date && checkInDate.Date < x.CheckInDate))
-                .FirstOrDefaultAsync();
+        
 
-            if (existingBooking is not null)
+        public async Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int id)
+        {
+            var data = await _context.RoomOrderDetails.FindAsync(id);
+            if (data is null)
             {
-                status = true;
+                Log.Error("No payment id found.");
+                return null;
             }
-            return status;
-        }
+            if (!data.IsPaymentSuccessful)
+            {
+                data.IsPaymentSuccessful = true;
+                data.OrderStatus = BookingStatusCodes.Status_Booked;
+                var markPaymentSuccessful = _context.RoomOrderDetails.Update(data);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<RoomOrderDetails, RoomOrderDetailsDTO>(markPaymentSuccessful.Entity);
+            }
+            return new RoomOrderDetailsDTO();
 
-        public Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<bool> UpdateOrderStatus(int roomOrderId, string status)

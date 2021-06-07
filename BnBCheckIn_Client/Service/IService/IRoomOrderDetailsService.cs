@@ -10,6 +10,6 @@ namespace BnBCheckIn_Client.Service.IService
     {
         public Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(CreateRoomOrderDetailsDTO createDetailsDTO);
 
-        public Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(int id);
+        public Task<RoomOrderDetailsDTO> MarkPaymentSuccessful(RoomOrderDetailsDTO detailsDTO);
     }
 }
