@@ -21,5 +21,6 @@ namespace Business.Repository.IRepository
         public Task<IEnumerable<RoomDTO>> GetRoomsbyBnBId(int bnbId);
 
         public Task<RoomDTO> IsRoomUnique(string name, int roomId = 0);
+
     }
 }

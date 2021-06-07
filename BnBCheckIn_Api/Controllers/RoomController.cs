@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BNBCheckInServer.Areas.Identity.Pages;
 using Business.UnitOfWorkPattern.IUnitOfWorkPattern;
+using DataAccess.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ModelsDTO;
 using Serilog;
 using System;
@@ -19,11 +21,13 @@ namespace BnBCheckIn_Api.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly BnBDbContext _context;
         private readonly IMapper _mapper;
 
-        public RoomController(IUnitOfWork unitOfWork, IMapper mapper)
+        public RoomController(IUnitOfWork unitOfWork, BnBDbContext context, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _context = context;
             _mapper = mapper;
         }
 
@@ -55,6 +59,13 @@ namespace BnBCheckIn_Api.Controllers
 
                 var allRooms = await _unitOfWork.RoomRepository.GetAll(null, checkInDate, checkOutDate);
                 var result = _mapper.Map<IList<RoomDTO>>(allRooms);
+
+                foreach (RoomDTO roomDTO in result)
+                {
+                    roomDTO.IsBooked = await IsRoomBooked(roomDTO.RoomId, checkInDate, checkOutDate);
+                }
+                
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -68,15 +79,15 @@ namespace BnBCheckIn_Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetRoomByRoomId(int? roomId, string checkInDate = null, string checkOutDate = null)
+        public async Task<IActionResult> GetRoomByRoomId(int roomId, string checkInDate = null, string checkOutDate = null)
         {
             try
             {
-                if (roomId is null)
-                {
-                    Log.Error($"Something went wrong in the {nameof(GetRoomByRoomId)}");
-                    return StatusCode(400, "No room Id was given");
-                }
+                //if (roomId is null)
+                //{
+                //    Log.Error($"Something went wrong in the {nameof(GetRoomByRoomId)}");
+                //    return StatusCode(400, "No room Id was given");
+                //}
                 if (string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
                 {
                     Log.Error($"Something went wrong in the {nameof(GetRoomByRoomId)}");
@@ -100,6 +111,9 @@ namespace BnBCheckIn_Api.Controllers
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<RoomDTO>(room);
+
+                result.IsBooked = await IsRoomBooked(roomId, checkInDate, checkOutDate);
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -138,6 +152,12 @@ namespace BnBCheckIn_Api.Controllers
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
+
+                foreach (RoomDTO roomDTO in result)
+                {
+                    roomDTO.IsBooked = await IsRoomBooked(roomDTO.RoomId, checkInDate, checkOutDate);
+                }
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -146,27 +166,6 @@ namespace BnBCheckIn_Api.Controllers
                 return StatusCode(500, "Internal server error, please try again later.");
             }
         }
-
-        //[HttpGet("byIsVacant")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> GetRoomsByIsVacant(bool isVacant)
-        //{
-        //    try
-        //    {
-        //        var rooms = await _unitOfWork.RoomRepository.GetAll
-        //                (x => x.IsVacant == isVacant, null, null, null,
-        //                        new List<string> { "RoomImages" },
-        //                                    new List<string> { "Amenities" });
-        //        var result = _mapper.Map<IList<RoomDTO>>(rooms);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Log.Error(ex, $"Something went wrong in the {nameof(GetRoomsByIsVacant)}");
-        //        return StatusCode(500, "Internal server error, please try again later.");
-        //    }
-        //}
 
         [HttpGet("byPetsAllowed")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -180,12 +179,44 @@ namespace BnBCheckIn_Api.Controllers
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
+
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 Log.Error(ex, $"Something went wrong in the {nameof(GetRoomsByPetsAllowed)}");
                 return StatusCode(500, "Internal server error, please try again later.");
+            }
+        }
+
+        private async Task<bool> IsRoomBooked(int roomId, string checkInDatestr, string checkOutDatestr)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(checkInDatestr) && !string.IsNullOrEmpty(checkOutDatestr))
+                {
+                    DateTime checkInDate = DateTime.ParseExact(checkInDatestr, "dd-MM-yyyy", null);
+                    DateTime checkOutDate = DateTime.ParseExact(checkOutDatestr, "dd-MM-yyyy", null);
+
+                    var existingBooking = await _context.RoomOrderDetails.Where(x => x.RoomId == roomId && x.IsPaymentSuccessful &&
+                    //Check if check-in date that user wants does not fall in between any dates for room that is booked
+                    ((checkInDate < x.CheckOutDate && checkInDate.Date >= x.CheckInDate) ||
+                    //Check if check-out date that user wants does not fall in between any dates for room that is booked
+                    (checkOutDate.Date > x.CheckInDate.Date && checkInDate.Date <= x.CheckInDate)))
+                        .FirstOrDefaultAsync();
+
+                    if (existingBooking is not null)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

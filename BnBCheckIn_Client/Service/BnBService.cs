@@ -11,12 +11,18 @@ namespace BnBCheckIn_Client.Service
 {
     public class BnBService : IBnBService
     {
+        // First we need to include our 'HttpClient'-object using depency injection.
         private readonly HttpClient _client;
 
         public BnBService(HttpClient client)
         {
             _client = client;
         }
+
+        //*************************************************************************************
+
+        // Here we can start detailing our 'CRUD'-operations in the form of actions (= methods).
+
         public async Task<IEnumerable<BnBDTO>> GetBnBs(string province)
         {
 

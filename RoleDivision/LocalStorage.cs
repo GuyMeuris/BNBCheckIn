@@ -9,5 +9,7 @@ namespace Common
     public static class LocalStorage
     {
         public const string LS_InitialBooking = "InitialBookingInfo";
+
+        public const string LS_RoomOrderDetails = "RoomOrderDetails";
     }
 }

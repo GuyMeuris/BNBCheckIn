@@ -39,6 +39,8 @@ namespace ModelsDTO
     {
         public int RoomId { get; set; }
 
+        public bool IsBooked { get; set; }
+
         public BnBDTO BnB { get; set; }
 
         public virtual ICollection<RoomImageDTO> RoomImages { get; set; }

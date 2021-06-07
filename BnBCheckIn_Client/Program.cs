@@ -27,8 +27,12 @@ namespace BnBCheckIn_Client
             builder.Services.AddBlazoredLocalStorage();
 
             builder.Services.AddScoped<IBnBService, BnBService>();
+
             builder.Services.AddScoped<IBnBRoomService, BnBRoomService>();
+
             builder.Services.AddScoped<IAmenityService, AmenityService>();
+
+            builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
 
             builder.Services.AddScoped<IRoomOrderDetailsService, RoomOrderDetailsService>();
 
