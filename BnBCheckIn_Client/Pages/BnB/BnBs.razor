@@ -100,14 +100,11 @@
                                 <div class="col-12 pb-5">
                                     <span class="float-right">
                                         <span class="float-right">Adres: <br /> @bnb.StreetName @bnb.HouseNumber <br /> @bnb.PostalCode @bnb.Municipality <br /> @bnb.Province </span><br />
-                                        @*<span class="float-right pt-1">BTWnr : @bnb.VATnr </span><br />*@
-                                        @*<h4 class="text-warning font-weight-bold pt-4">
-                                                EUR
-                                                <span style="border-bottom:1px solid #ff6a00">
-                                                    @room.TotalAmount.ToString("C")
-                                                </span>
-                                            </h4>*@
-                                        @*<span class="float-right">Bankrekeningnr: </span>*@
+                                    </span>
+                                </div>
+                                <div class="col-12 pb-5">
+                                    <span class="float-right">
+                                        <span class="float-right">Eigenaar: <br /> @bnb.NameOwner <br /> @bnb.BnBEmail <br /> @bnb.BnBPhone </span><br />
                                     </span>
                                 </div>
                             </div>
@@ -191,7 +188,7 @@ else
 
     private bool IsProcessing { get; set; } = false;
 
-    public List<string> Provinces { get; set; } = new List<string>() {"alle provincies", "Antwerpen", "Vlaams-Brabant", "West-Vlaanderen", "Oos-Vlaanderen", "Limburg" };
+    public List<string> Provinces { get; set; } = new List<string>() {"alle provincies", "Antwerpen", "Vlaams-Brabant", "West-Vlaanderen", "Oost-Vlaanderen", "Limburg" };
 
     //------------------------------------------------------------------------------------------------------------------------
 

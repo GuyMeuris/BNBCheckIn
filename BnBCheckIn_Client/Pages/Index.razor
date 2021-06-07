@@ -15,7 +15,6 @@
 </div>
 <hr />
 <EditForm Model="HomeModel" OnValidSubmit="SaveInitialData">
-    <DataAnnotationsValidator />
     <div class="row p-0 mx-0 mt-4 mb-4">
 
         <div class="col-4 col-md-2" style="margin-left: 5%;">
@@ -27,18 +26,16 @@
         <div class="col-4 col-md-2">
             <div class="form-group">
                 <label>Incheckdatum</label>
-                <InputDate min="@DateTime.Now.ToString("dd-MM-yyyy")" @bind-Value="HomeModel.StartDate"
+                <InputDate min="@DateTime.Now" @bind-Value="HomeModel.StartDate"
                            class="form-control" />
-                <ValidationMessage For="()=>HomeModel.StartDate" />
             </div>
         </div>
 
         <div class="col-4 col-md-2">
             <div class="form-group">
                 <label>Uitcheckdatum</label>
-                <InputDate min="@HomeModel.StartDate.AddDays(1).ToString("dd-MM-yyyy")"
-                           @bind-Value="HomeModel.EndDate" class="form-control" />
-                <ValidationMessage For="()=>HomeModel.EndDate" />
+                <InputDate  @bind-Value="HomeModel.EndDate" min="@HomeModel.StartDate.AddDays(1)"
+                           class="form-control" />
             </div>
         </div>
 
@@ -83,7 +80,7 @@
                     </div>
                     <div class="text-center justify-content-center">
                         <h5 class="text-info">@amenity.AmenityName</h5>
-                        <p>@amenity.AmenityDescription</p>
+                        <p>@((MarkupString)amenity.AmenityDescription)</p>
                     </div>
 
                 </div>
@@ -100,7 +97,7 @@
 
     public IEnumerable<AmenityDTO> Amenities { get; set; } = new List<AmenityDTO>();
 
-    public List<string> Provinces { get; set; } = new List<string>() { "alle provincies", "Antwerpen", "Vlaams-Brabant", "West-Vlaanderen", "Oos-Vlaanderen", "Limburg" };
+    public List<string> Provinces { get; set; } = new List<string>() { "alle provincies", "Antwerpen", "Vlaams-Brabant", "West-Vlaanderen", "Oost-Vlaanderen", "Limburg" };
 
     //-----------------------------------------------------------------------------------------------------------------
 
@@ -114,6 +111,8 @@
         try
         {
             HomeModel.NoOfNights = (HomeModel.EndDate - HomeModel.StartDate).Days;
+            
+
             if (HomeModel.NoOfNights < 0)
             {
                 await jsRuntime.SweetAlertError("Aantal nachten kan niet negatief zijn. Probeer opnieuw.");
