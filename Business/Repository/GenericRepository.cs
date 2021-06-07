@@ -41,7 +41,6 @@ namespace Business.Repository
         }
 
         public async Task<T> Get(System.Linq.Expressions.Expression<System.Func<T, bool>> expression,
-            string checkSomething = null, string checkSomethingElse = null,
                 List<string> includes = null, List<string> includes2 = null, 
                     List<string> includes3 = null, List<string> includes4 = null)
         {
@@ -82,7 +81,6 @@ namespace Business.Repository
         }
 
         public async Task<IList<T>> GetAll(System.Linq.Expressions.Expression<System.Func<T, bool>> expression = null,
-                string checkSomething = null, string checkSomethingElse = null,
                     Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
                         List<string> includes = null, List<string> includes2 = null, 
                             List<string> includes3 = null, List<string> includes4 = null)

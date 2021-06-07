@@ -57,7 +57,7 @@ namespace BnBCheckIn_Api.Controllers
                     return StatusCode(400, "Date needs to be in format dd-MM-yyyy in GetAllRooms.");
                 }
 
-                var allRooms = await _unitOfWork.RoomRepository.GetAll(null, checkInDate, checkOutDate);
+                var allRooms = await _unitOfWork.RoomRepository.GetAll();
                 var result = _mapper.Map<IList<RoomDTO>>(allRooms);
 
                 foreach (RoomDTO roomDTO in result)
@@ -83,11 +83,6 @@ namespace BnBCheckIn_Api.Controllers
         {
             try
             {
-                //if (roomId is null)
-                //{
-                //    Log.Error($"Something went wrong in the {nameof(GetRoomByRoomId)}");
-                //    return StatusCode(400, "No room Id was given");
-                //}
                 if (string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
                 {
                     Log.Error($"Something went wrong in the {nameof(GetRoomByRoomId)}");
@@ -107,7 +102,7 @@ namespace BnBCheckIn_Api.Controllers
                 }
 
                 var room = await _unitOfWork.RoomRepository.Get
-                        (x => x.RoomId == roomId, checkInDate, checkOutDate,
+                        (x => x.RoomId == roomId,
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<RoomDTO>(room);
@@ -148,7 +143,7 @@ namespace BnBCheckIn_Api.Controllers
                     return StatusCode(400, "Date needs to be in format dd-MM-yyyy in GetRoomsByBnBId.");
                 }
                 var rooms = await _unitOfWork.RoomRepository.GetAll
-                        (x => x.BnBId == bnbId, checkInDate, checkOutDate,null,
+                        (x => x.BnBId == bnbId,null,
                                 new List<string> { "RoomImages" },
                                            new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
