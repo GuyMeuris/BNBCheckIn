@@ -4,6 +4,7 @@
 @inject IBnBRoomService bnbRoomService
 @inject IStripePaymentService stripePaymentService
 @inject IRoomOrderDetailsService roomOrderDetailsService
+@attribute [Authorize(Roles = RoleDefinition.Role_User)]
 
 
 @if (BnBRoomBooking?.OrderDetails?.BnBRoomDTO?.RoomImages is null)
@@ -196,6 +197,15 @@ else
                 }
             }
 
+            if (await localStorage.GetItemAsync<ContactDTO>(LocalStorage.LS_UserDetails) is not null)
+            {
+                var userInfo = await localStorage.GetItemAsync<ContactDTO>(LocalStorage.LS_UserDetails);
+                BnBRoomBooking.OrderDetails.UserId = userInfo.Id;
+                BnBRoomBooking.OrderDetails.Name = userInfo.ContactName;
+                BnBRoomBooking.OrderDetails.Email = userInfo.Email;
+                BnBRoomBooking.OrderDetails.Phone = userInfo.PhoneNumber;
+            }
+
         }
         catch (Exception)
         {
@@ -246,7 +256,7 @@ else
         }
         catch (Exception)
         {
-            await jsRuntime.SweetAlertError("De checkout van uw geselecteerde reservatie is niet gelukt. Probeer opnieuw.");
+            await jsRuntime.SweetAlertError("Uw aangemaakte reservatie kon niet worden bevestigd. Probeer opnieuw.");
             return;
         }
 

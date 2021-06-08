@@ -10,6 +10,8 @@ namespace ModelsDTO
 {
     public class ContactDTO
     {
+        public string Id { get; set; }
+
         [Required(ErrorMessage = "Naam is een verplicht veld.")]
         [MaxLength(100, ErrorMessage = "Maximum toegelaten tekens is 100.")]
         public string ContactName { get; set; }

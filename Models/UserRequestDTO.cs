@@ -9,22 +9,22 @@ namespace ModelsDTO
 {
     public class UserRequestDTO
     {
-        [Required(ErrorMessage = "Name is required")]
+        [Required(ErrorMessage = "Naam is een verplicht veld.")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
-        [RegularExpression("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid email address")]
+        [Required(ErrorMessage = "Emailadres is een verplicht veld.")]
+        [RegularExpression("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$", ErrorMessage = "Emailadres is niet correct ingegeven.")]
         public string Email { get; set; }
 
         public string PhoneNo { get; set; }
 
-        [Required(ErrorMessage = "Password is required.")]
+        [Required(ErrorMessage = "Paswoord is een verplicht veld.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Confirm password is required")]
+        [Required(ErrorMessage = "Paswoord bevestigen is verplicht.")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Password and confirm password is not matched")]
+        [Compare("Password", ErrorMessage = "De paswoorden komen niet overeen.")]
         public string ConfirmPassword { get; set; }
     }
 }

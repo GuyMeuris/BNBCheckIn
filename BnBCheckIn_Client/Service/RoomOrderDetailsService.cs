@@ -36,13 +36,13 @@ namespace BnBCheckIn_Client.Service
 
         public async Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(CreateRoomOrderDetailsDTO createDetailsDTO)
         {
-            createDetailsDTO.UserId = "dummy user";
+            /*createDetailsDTO.UserId = "dummy user";*/      // Used this while we had no authentication functionality
             var content = JsonConvert.SerializeObject(createDetailsDTO);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("api/bnbroomorder/create", bodyContent);
 
             // Extra info while debugging, place a breakpoint here to see the response result
-            string res = response.Content.ReadAsStringAsync().Result;
+            //string res = response.Content.ReadAsStringAsync().Result;
 
             var contentTemp = await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();

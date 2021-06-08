@@ -36,8 +36,6 @@ namespace DataAccess.Data
 
             modelBuilder.ApplyConfiguration(new AmenityConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ContactConfiguration());
-
             modelBuilder.ApplyConfiguration(new BnBConfiguration());
 
             modelBuilder.ApplyConfiguration(new RoomConfiguration());

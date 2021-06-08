@@ -22,7 +22,7 @@ namespace BnBCheckIn_Api.Controllers
             _repository = repository;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "Create")]
         public async Task<IActionResult> Create([FromBody] RoomOrderDetailsDTO details)
         {
             if (ModelState.IsValid)
@@ -37,7 +37,7 @@ namespace BnBCheckIn_Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost(Name = "PaymentSuccessful")]
         public async Task<IActionResult> PaymentSuccessful([FromBody] RoomOrderDetailsDTO details)
         {
             // First we have to validate was really successful or not

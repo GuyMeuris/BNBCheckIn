@@ -1,0 +1,54 @@
+﻿@page "/login"
+
+<div class="row p-0 m-0">
+    <div class="jumbotron jumbotron-fluid">
+        <EditForm Model="AuthUser" OnValidSubmit="AuthenticateUser" class="pt-4">
+            <DataAnnotationsValidator />
+            <div class="py-4">
+                <div class=" row form-group ">
+                    <div class="col-6 offset-3 ">
+                        <div class="card border">
+                            <div class="card-body px-lg-5 pt-4" style="text-align:center;">
+                                <h3 class="col-12 text-success text-center py-2">
+                                    <strong>Log u hier in</strong>
+                                </h3>
+                                @if (AuthenticationError)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        <p class="text-danger text-center">@Error</p>
+                                    </div>
+                                }
+                                <div class="py-2">
+                                    <InputText @bind-Value="AuthUser.Email" id="email" class="form-control" placeholder="Emailadres" />
+                                    <ValidationMessage For="(()=>AuthUser.Email)" />
+                                </div>
+                                <div class="py-2">
+                                    <InputText @bind-Value="AuthUser.Password" type="password" id="password" placeholder="Paswoord" class="form-control" />
+                                    <ValidationMessage For="(()=>AuthUser.Password)" />
+                                </div>
+                                <div class="py-2">
+                                    @if (IsProcessing)
+                                    {
+                                        <button type="submit" class="btn btn-info btn-block disabled">
+                                            <i class="fade fa-spin fa-spinner"></i>     Even geduld...
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-sign-in-alt"></i>     Bevestig login</button>
+                                    }
+                                </div>
+                                <div class="py-2">
+                                    <a href="/registration"
+                                        class="btn btn-primary text-white mt-3"><i class="fas fa-user-plus"></i>     Registreer u als nieuwe gebruiker</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+
