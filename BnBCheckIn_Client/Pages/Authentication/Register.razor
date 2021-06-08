@@ -1,0 +1,75 @@
+﻿@page "/registration"
+
+
+
+    <div class="row p-0 m-0">
+        <div class="jumbotron jumbotron-fluid">
+            <EditForm Model="@RegisUser" OnValidSubmit="RegisterUser" class="pt-4">
+                <DataAnnotationsValidator />
+                <div class="py-4">
+                    <div class=" row form-group ">
+                        <div class="col-6 offset-3 ">
+                            <div class="card border">
+                                <div class="card-body px-lg-5 pt-4" style="text-align:center;">
+                                    <h3 class="col-12 text-success text-center py-2">
+                                        <strong>Schrijf u hier in als nieuwe gebruiker</strong>
+                                    </h3>
+                                    @if (RegistrationErrors)
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            @foreach (var error in Errors)
+                                            {
+                                                <p class="text-danger text-center"></p>
+                                            }
+                                        </div>
+                                    }
+                                    <div class="py-2">
+                                        <InputText @bind-Value="RegisUser.Name"  class="form-control" placeholder="Naam" />
+                                        <ValidationMessage For="(()=>RegisUser.Name)"/>
+                                    </div>
+                                    <div class="py-2">
+                                        <InputText @bind-Value="RegisUser.Email" class="form-control" placeholder="Emailadres" />
+                                        <ValidationMessage For="(()=>RegisUser.Email)" />
+                                    </div>
+                                    <div class="py-2 input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> +32</span>
+                                        </div>
+                                        <InputText @bind-Value="RegisUser.PhoneNo" class="form-control" placeholder="Telefoonnummer" />
+                                        <ValidationMessage For="(()=>RegisUser.PhoneNo)" />
+                                    </div>
+                                    <div class="form-row py-2">
+                                        <div class="col">
+                                            <InputText @bind-Value="RegisUser.Password" type="password"
+                                                       id="password" placeholder="Paswoord" class="form-control" />
+                                            <ValidationMessage For="(()=>RegisUser.Password)" />
+                                        </div>
+                                        <div class="col">
+                                            <InputText @bind-Value="RegisUser.ConfirmPassword" type="password"
+                                                       id="confirm" class="form-control" placeholder="Paswoord bevestigen" />
+                                            <ValidationMessage For="(()=>RegisUser.ConfirmPassword)" />
+                                        </div>
+
+                                    </div>
+                                    <div class="py-2">
+                                        @if (IsProcessing)
+                                        {
+                                            <button type="submit" class="btn btn-info btn-block disabled">
+                                                    <i class="fade fa-spin fa-spinner"></i>     Even geduld...</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-success btn-block"> 
+                                                    <i class="fas fa-sign-in-alt"></i>     Bevestig registratie</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+         </div>  
+    </div>
+
+

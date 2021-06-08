@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 using BnBCheckIn_Client.Service;
 using BnBCheckIn_Client.Service.IService;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,10 @@ namespace BnBCheckIn_Client
 
             builder.Services.AddBlazoredLocalStorage();
 
+            builder.Services.AddAuthorizationCore();
+
+            builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+
             builder.Services.AddScoped<IBnBService, BnBService>();
 
             builder.Services.AddScoped<IBnBRoomService, BnBRoomService>();
@@ -35,6 +40,8 @@ namespace BnBCheckIn_Client
             builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
 
             builder.Services.AddScoped<IRoomOrderDetailsService, RoomOrderDetailsService>();
+
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             await builder.Build().RunAsync();
   

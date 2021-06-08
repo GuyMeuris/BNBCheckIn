@@ -38,7 +38,7 @@ namespace BnBCheckIn_Api.Controllers
             _aPISettings = options.Value;
         }
 
-        [HttpPost]
+        [HttpPost(Name ="SignUp")]
         [AllowAnonymous]
         public async Task<IActionResult> SignUp([FromBody] UserRequestDTO userRequestDTO)
         {
@@ -77,7 +77,7 @@ namespace BnBCheckIn_Api.Controllers
             return StatusCode(201);
         }
 
-        [HttpPost]
+        [HttpPost(Name ="SignIn")]
         [AllowAnonymous]
         public async Task<IActionResult> SignIn([FromBody] AuthenticationDTO authenticationDTO)
         {

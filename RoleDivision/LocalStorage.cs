@@ -11,5 +11,9 @@ namespace Common
         public const string LS_InitialBooking = "InitialBookingInfo";
 
         public const string LS_RoomOrderDetails = "RoomOrderDetails";
+
+        public const string LS_Token = "JWT Token";
+
+        public const string LS_UserDetails = "User Details";
     }
 }
