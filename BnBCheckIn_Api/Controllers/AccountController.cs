@@ -116,6 +116,7 @@ namespace BnBCheckIn_Api.Controllers
                     Token = token,
                     contactDTO = new ContactDTO
                     {
+                        Id = contact.Id,
                         ContactName = contact.ContactName,
                         Email = contact.Email,
                         PhoneNumber = contact.PhoneNumber,
