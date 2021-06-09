@@ -12,6 +12,9 @@ namespace BnBCheckIn_Api.Helper
 {   
     public class EmailSender : IEmailSender
     {
+        // First we need to include our 'MailJetSettings'-object using depency injection
+        // in order to retrieve our MailJet keys.
+
         private readonly MailJetSettings _mailJetSettings;
 
         public EmailSender(IOptions<MailJetSettings> mailjetSettings)
@@ -23,30 +26,23 @@ namespace BnBCheckIn_Api.Helper
         {
             MailjetClient client = new MailjetClient(_mailJetSettings.PublicKey,
                 _mailJetSettings.PrivateKey);
-            //{
-            //    Version = ApiVersion.V3_1,
-            //};
+
             MailjetRequest request = new MailjetRequest
             {
                 Resource = Send.Resource,
             }
-                .Property(Send.Messages, new JArray {
-            new JObject {
-                {"From", new JObject {
-                {"Email", _mailJetSettings.Email},
-                {"Name", "Mailjet Pilot"}
-                }},
-                {"To", new JArray {
+               .Property(Send.FromEmail, _mailJetSettings.Email)
+               .Property(Send.FromName, "B&BCheckIn")
+               .Property(Send.Subject, subject)
+               .Property(Send.HtmlPart, htmlMessage)
+               .Property(Send.Recipients, new JArray {
                 new JObject {
-                {"Email", email},
-                {"Name", "Hello"}
-                }
-                }},
-                {"Subject", subject},
-                {"HTMLPart", htmlMessage}
-                }
-                    });
+                 {"Email", email}
+                 }
+                   });
+
             MailjetResponse response = await client.PostAsync(request);
+
         }
     }
     

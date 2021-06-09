@@ -17,7 +17,9 @@ namespace BnBCheckIn_Api.Controllers
     public class BnBRoomOrderController : ControllerBase
     {
         private readonly IRoomOrderDetailsRepository _repository;
+
         private readonly IEmailSender _emailSender;
+
         public BnBRoomOrderController(IRoomOrderDetailsRepository repository, IEmailSender emailSender)
         {
             _repository = repository;
@@ -54,7 +56,7 @@ namespace BnBCheckIn_Api.Controllers
                     Log.Error("The payment of the order was unsuccessful.");
                     return BadRequest(new ErrorResponseDTO { ErrorMessage = "Payment was unsuccesful." });
                 }
-                await _emailSender.SendEmailAsync(details.Email, "Bevestiging boeking B&B CheckIn", "Hierbij is Uw boeking bevestigd en Uw betaling aanvaard, met bestelnummer: " + details.OrderId + ".");
+                await _emailSender.SendEmailAsync(details.Email, "Bevestiging boeking B&B CheckIn", "Hierbij is uw boeking bevestigd en uw betaling aanvaard, met bestelnummer: " + details.OrderId + ".");
                 return Ok(result);
             }
             else
