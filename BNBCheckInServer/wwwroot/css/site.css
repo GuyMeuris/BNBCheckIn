@@ -49,9 +49,19 @@ a, .btn-link {
         top: 0.5rem;
     }
 
+.jumbotron {
+    color: white;
+    background-image: url("/images/HeroImageBnB.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 80vw;
+    min-height: 90vh;
+}
 
-
-
+.texthero {
+    margin-top: 5%;
+}
 
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 

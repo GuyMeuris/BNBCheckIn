@@ -1,9 +1,28 @@
 ﻿@page "/"
-<h3>Welkom op de admin-pagina van B&B Check-in!</h3>
-    <br />
-    <h5>Om de mogelijkheden van de admin pagina te benutten, dient men ingelogd te zijn met een geldige admin-account.</h5>
-    <br />
-    <p>Indien U reeds over een geldige admin-account beschikt, log dan <NavLink href="/Identity/Account/Login">hier</NavLink> in.</p>
-    <p>Indien U nog niet over een geldige admin-account beschikt, registreer U dan <NavLink href="/Identity/Account/Register">hier</NavLink>.</p>
-    <br />
+
+<div class="row p-0 m-0">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4 texthero">B&ampB Check In</h1>
+            <h3>Welkom op de admin-pagina van B&B Check-in!</h3>
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <hr />
+                    <h3 style="color:#0094ff">Welkom @context.User.Identity.Name!</h3>
+                    <hr />
+                    <br />
+                    <h4>Hier kan u B&B's, kamers en voorzieningen gaan<br/>toevoegen, wijzigen en verwijderen.</h4>
+                    <br />
+                    <h4>Tevens kan u hier alle B&ampB-reservaties opvolgen <br/>en zelfs aanpassen indien nodig.</h4>
+                </Authorized>
+                <NotAuthorized>
+                    <br />
+                    <h4>Om de mogelijkheden van de admin pagina te benutten,<br />dient men ingelogd te zijn met een geldige admin-account.</h4>
+                    <br />
+                    <h4>Indien U reeds over een geldige admin-account beschikt,<br/>log dan <NavLink href="/Identity/Account/Login">hier</NavLink> in.</h4>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
+</div>
 
