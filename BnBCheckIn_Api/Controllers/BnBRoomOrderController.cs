@@ -1,5 +1,6 @@
 ﻿using Business.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ModelsDTO;
 using Serilog;
@@ -16,10 +17,11 @@ namespace BnBCheckIn_Api.Controllers
     public class BnBRoomOrderController : ControllerBase
     {
         private readonly IRoomOrderDetailsRepository _repository;
-
-        public BnBRoomOrderController(IRoomOrderDetailsRepository repository)
+        private readonly IEmailSender _emailSender;
+        public BnBRoomOrderController(IRoomOrderDetailsRepository repository, IEmailSender emailSender)
         {
             _repository = repository;
+            _emailSender = emailSender;
         }
 
         [HttpPost(Name = "Create")]
@@ -40,7 +42,7 @@ namespace BnBCheckIn_Api.Controllers
         [HttpPost(Name = "PaymentSuccessful")]
         public async Task<IActionResult> PaymentSuccessful([FromBody] RoomOrderDetailsDTO details)
         {
-            // First we have to validate was really successful or not
+            // First we have to validate if payment was really successful or not
             var service = new SessionService();
             var sessionDetails = service.Get(details.StripeSessionId);
 
@@ -52,6 +54,7 @@ namespace BnBCheckIn_Api.Controllers
                     Log.Error("The payment of the order was unsuccessful.");
                     return BadRequest(new ErrorResponseDTO { ErrorMessage = "Payment was unsuccesful." });
                 }
+                await _emailSender.SendEmailAsync(details.Email, "Bevestiging boeking B&B CheckIn", "Hierbij is Uw boeking bevestigd en Uw betaling aanvaard, met bestelnummer: " + details.OrderId + ".");
                 return Ok(result);
             }
             else
