@@ -4,7 +4,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
-
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
@@ -20,7 +19,7 @@
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="bnb-room">
+                    <NavLink class="nav-link" href="bnb-room" Match="NavLinkMatch.All">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> B&B kamers
                     </NavLink>
                 </li>
@@ -29,14 +28,19 @@
                         <span class="oi oi-list-rich" aria-hidden="true"></span> Faciliteiten
                     </NavLink>
                 </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="bnb-room-booking">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Reservaties
+                    </NavLink>
+                </li>
             </Authorized>
             <NotAuthorized>
 
             </NotAuthorized>
         </AuthorizeView>
-        
     </ul>
 </div>
+
 
 @code {
     private bool collapseNavMenu = true;

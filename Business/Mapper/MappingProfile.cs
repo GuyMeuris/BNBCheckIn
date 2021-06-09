@@ -23,7 +23,8 @@ namespace Business.Mapper
             CreateMap<RoomImageDTO, RoomImage>().ReverseMap();
             CreateMap<BnBImageDTO, BnBImage>().ReverseMap();
             CreateMap<RoomOrderDetailsDTO, RoomOrderDetails>().ReverseMap();
-            CreateMap<CreateRoomOrderDetailsDTO, RoomOrderDetails>().ReverseMap();
+            CreateMap<RoomOrderDetails, RoomOrderDetailsDTO>().ForMember(x => x.BnBRoomDTO, opt => opt.MapFrom(c => c.BnBRoom));
+            CreateMap<RoomOrderDetailsDTO, RoomOrderDetails>();
         }
     }
 }
