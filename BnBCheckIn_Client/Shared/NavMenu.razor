@@ -1,10 +1,12 @@
-﻿<nav class="navbar navbar-expand-sm navbar-dark bg-primary p-0" >
+﻿@inject NavigationManager navManager
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary p-0">
     <a class="navbar-brand mx-4" href="#">B&ampBCheckIn</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse navbar-brand"  id="navbarSupportedContent" style="margin-left:65%;">
+    <div class="collapse navbar-collapse navbar-brand" id="navbarSupportedContent" style="margin-left:50%;">
         <ul class="navbar-nav mr-auto"></ul>
         <ul class="my-0 navbar-nav">
             <AuthorizeView>
@@ -16,6 +18,16 @@
                             </span>
                         </NavLink>
                     </li>
+                    @if (context.User.IsInRole(Common.RoleDefinition.Role_Admin))
+                    {
+                        <li class="nav-item p-0">
+                            <NavLink class="nav-link" @onclick="ToDashboard">
+                                <span class="p-1">
+                                    B&ampB Dashboard
+                                </span>
+                            </NavLink>
+                        </li>
+                    }
                     <li class="nav-item p-0">
                         <NavLink class="nav-link" href="logout">
                             <span class="p-1">
@@ -32,7 +44,7 @@
                             </span>
                         </NavLink>
                     </li>
-                    <li class="nav-item p-0">
+                    <li class="nav-item p-0" style="margin-left: 50px;">
                         <NavLink class="nav-link" href="login">
                             <span class="p-2">
                                 Log in
@@ -41,7 +53,15 @@
                     </li>
                 </NotAuthorized>
             </AuthorizeView>
-            
         </ul>
     </div>
 </nav>
+
+@*-------------------------------------------------------------------------------------------------------------*@
+
+@code{
+    void ToDashboard(MouseEventArgs e)
+    {
+        navManager.NavigateTo("https://localhost:44347");
+    }
+}
