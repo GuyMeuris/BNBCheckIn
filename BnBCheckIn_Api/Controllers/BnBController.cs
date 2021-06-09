@@ -34,7 +34,8 @@ namespace BnBCheckIn_Api.Controllers
         {
             try
             {
-                var allBnBs = await _unitOfWork.BnBRepository.GetAll();
+                var allBnBs = await _unitOfWork.BnBRepository.GetAll(null, null, new List<string> { "Rooms" },
+                                new List<string> { "BnBImages" }, new List<string> { "Amenities" });
                 var result = _mapper.Map<IList<BnBDTO>>(allBnBs);
                 return Ok(result);
             }

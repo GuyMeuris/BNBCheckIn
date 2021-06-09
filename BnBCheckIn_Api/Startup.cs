@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -50,6 +51,8 @@ namespace BnBCheckIn_Api
             var appSettingsSection = Configuration.GetSection("APISettings");
             services.Configure<APISettings>(appSettingsSection);
 
+            services.Configure<MailJetSettings>(Configuration.GetSection("MailJetSettings"));
+
             var apiSettings = appSettingsSection.Get<APISettings>();
             var key = Encoding.ASCII.GetBytes(apiSettings.SecretKey);
 
@@ -75,9 +78,9 @@ namespace BnBCheckIn_Api
             });
 
             services.AddAutoMapper(typeof(MappingProfile));
-            services.AddScoped<IRoomOrderDetailsRepository, RoomOrderDetailsRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IRoomOrderDetailsRepository, RoomOrderDetailsRepository>();
             services.AddCors(opt => opt.AddPolicy("BnBCheckInPolicy", builder =>
             {
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
