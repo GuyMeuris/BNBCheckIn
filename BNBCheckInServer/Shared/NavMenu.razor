@@ -4,7 +4,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 </div>
-
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item px-3">
@@ -12,23 +11,37 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Welkom, admin!
             </NavLink>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="bnbs">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> B&B's
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href=@("bnb-room")>
-            <span class="oi oi-list-rich" aria-hidden="true"></span> B&B kamers
-        </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="bnb-amenity">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Faciliteiten
-            </NavLink>
-        </li>
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="bnbs">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> B&B's
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="bnb-room" Match="NavLinkMatch.All">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> B&B kamers
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="bnb-amenity">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Faciliteiten
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="bnb-room-booking">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Reservaties
+                    </NavLink>
+                </li>
+            </Authorized>
+            <NotAuthorized>
+
+            </NotAuthorized>
+        </AuthorizeView>
+
     </ul>
 </div>
+
 
 @code {
     private bool collapseNavMenu = true;
