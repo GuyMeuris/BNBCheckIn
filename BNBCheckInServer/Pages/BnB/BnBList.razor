@@ -2,6 +2,7 @@
 @using ModelsDTO
 @using Business.Repository.IRepository
 @using BNBCheckInServer.Components
+@using Radzen
 @inject IBnBRepository bnbRepository
 @inject IJSRuntime jsRuntime
 @inject Service.IService.IFileUpload fileUpload
@@ -17,7 +18,26 @@
     </div>
 </div>
 <br />
-<div class="row mt-4">
+<RadzenGrid AllowFiltering="true"
+            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+            FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="8"
+            AllowSorting="true" Data="@BnBs" TItem="BnBDTO" ColumnWidth="60px">
+    <Columns>
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="BnBName" Title="Naam B&B" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="Municipality" Title="Gemeente" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="Province" Title="Provincie" />
+        @*<RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="Rooms" Title="Alle kamers">
+        </RadzenGridColumn>*@
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Title="" Width="100px" >
+            <Template Context="data">
+                <NavLink href="@($"/bnbs/edit/{data.BnBId}")" class="btn btn-primary">Wijzigen</NavLink>
+                <button class="btn btn-danger" @onclick="() => HandleDelete(data.BnBId)">Verwijderen</button>
+                <NavLink href="@($"bnb-roomsinbnb/{data.BnBId}")" class="btn btn-success">Bekijk alle kamers</NavLink>
+            </Template>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
+@*<div class="row mt-4">
     <div class="col-12">
         <table class="table table-bordered table-hover">
             <thead>
@@ -68,7 +88,7 @@
             </tbody>
         </table>
     </div>
-</div>
+</div>*@
 
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
