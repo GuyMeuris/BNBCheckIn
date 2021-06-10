@@ -2,6 +2,7 @@
 @using ModelsDTO
 @using Business.Repository.IRepository
 @using BNBCheckInServer.Components
+@using Radzen
 @inject IRoomRepository roomRepository
 @inject IJSRuntime jsRuntime
 @inject Service.IService.IFileUpload fileUpload
@@ -16,7 +17,24 @@
     </div>
 </div>
 <br />
-<div class="row mt-4">
+<RadzenGrid AllowFiltering="true"
+            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+            FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="8"
+            AllowSorting="true" Data="@Rooms" TItem="RoomDTO" ColumnWidth="100px">
+    <Columns>
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomName" Title="Naam kamer" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Width="50px" Property="Occupancy" Title="Bezetting" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Width="50px" Property="Rate" Title="Prijs per nacht" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Width="50px" Property="RoomSize" Title="Oppervlakte kamer" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomId" Title="" Width="50px">
+            <Template Context="data">
+                <NavLink href="@($"/bnb-room/edit/{data.RoomId}")" class="btn btn-primary">Wijzigen</NavLink>
+                <button class="btn btn-danger" @onclick="() => HandleDelete(data.RoomId)">Verwijderen</button>
+            </Template>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
+@*<div class="row mt-4">
     <div class="col-12">
         <table class="table table-bordered table-hover">
             <thead>
@@ -52,12 +70,12 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </table>*@
 
         <NavLink href="@("bnbs")" class="btn btn-success" style="margin-top:16px">Terug naar lijst B&B's</NavLink>
-    </div>
+    @*</div>
     
-</div>
+</div>*@
 
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
