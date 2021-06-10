@@ -20,7 +20,8 @@ namespace Business.Mapper
             CreateMap<ContactDTO, Contact>().ReverseMap();
             CreateMap<AmenityDTO, Amenity>().ReverseMap();
             CreateMap<CreateAmenityDTO, Amenity>().ReverseMap();
-            CreateMap<CreateAmenityDTO, Amenity>().ReverseMap();
+            CreateMap<Amenity, AmenityDTO>().ForMember(x => x.BnBs, opt => opt.MapFrom(c => c.BnBs));
+            CreateMap<Amenity, AmenityDTO>().ForMember(x => x.Rooms, opt => opt.MapFrom(c => c.Rooms));
             CreateMap<RoomImageDTO, RoomImage>().ReverseMap();
             CreateMap<BnBImageDTO, BnBImage>().ReverseMap();
             CreateMap<RoomOrderDetailsDTO, RoomOrderDetails>().ReverseMap();

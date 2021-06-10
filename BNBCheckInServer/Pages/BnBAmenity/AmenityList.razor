@@ -2,6 +2,7 @@
 @using ModelsDTO
 @using Business.Repository.IRepository
 @using BNBCheckInServer.Components
+@using Radzen
 @inject IAmenityRepository amenityRepository
 @inject IJSRuntime jsRuntime
 @inject NavigationManager navManager
@@ -14,7 +15,23 @@
         <NavLink href="@($"bnb-amenity/create")" class="btn btn-info form-control">Voeg faciliteit toe</NavLink>
     </div>
 </div>
-<div class="row mt-4">
+<RadzenGrid AllowFiltering="true"
+            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+            FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="8"
+            AllowSorting="true" Data="@HotelAmenities" TItem="AmenityDTO" ColumnWidth="100px" >
+    <Columns>
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="AmenityDTO" Property="AmenityName" Title="Naam faciliteit" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="AmenityDTO" Width="50px" Property="AmenityRate" Title="Prijs/persoon" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="AmenityDTO" Width="50px" Property="AmenityIcon" Title="Icon"/>
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="AmenityDTO" Property="AmenityId" Title="" Width="50px">
+            <Template Context="data">
+                <NavLink href="@($"bnb-amenity/edit/{data.AmenityId}")" class="btn btn-primary">Wijzigen</NavLink>
+                <button class="btn btn-danger" @onclick="() => HandleDelete(data.AmenityId)">Verwijderen</button>
+            </Template>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
+@*<div class="row mt-4">
 
     <div class="col-md-12">
 
@@ -55,7 +72,7 @@
         </table>
 
     </div>
-</div>
+</div>*@
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
 @*-----------------------------------------------------------------------------------------------------------------------*@
@@ -99,7 +116,7 @@
             try
             {
                 var result = await amenityRepository.DeleteAmenity(DeleteAmenityId.Value, "");
-                await jsRuntime.InvokeVoidAsync("Window.ShowSwal", "success", "The hotel amenity was deleted successfully!");
+                await jsRuntime.InvokeVoidAsync("Window.ShowSwal", "success", "Deze faciliteit werd succesvol verwijderd.");
             }
             catch (Exception ex)
             {
