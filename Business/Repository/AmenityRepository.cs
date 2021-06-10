@@ -40,7 +40,7 @@ namespace Business.Repository
             return _mapper.Map<Amenity, AmenityDTO>(addedAmenity.Entity);
         }
 
-        public async Task<int> DeleteAmenity(int amenityId, string userId)
+        public async Task<int> DeleteAmenity(int amenityId)
         {
             var amenityDetails = await _context.Amenities.FindAsync(amenityId);
             if (amenityDetails != null)
@@ -60,6 +60,16 @@ namespace Business.Repository
         public async Task<AmenityDTO> GetAmenity(int amenityId)
         {
             var amenity = await _context.Amenities.FirstOrDefaultAsync(x => x.AmenityId == amenityId);
+            if (amenity == null)
+            {
+                return null;
+            }
+            return _mapper.Map<Amenity, AmenityDTO>(amenity);
+        }
+
+        public async Task<AmenityDTO> GetAmenityByName(string amenityName)
+        {
+            var amenity = await _context.Amenities.FirstOrDefaultAsync(x => x.AmenityName == amenityName);
             if (amenity == null)
             {
                 return null;

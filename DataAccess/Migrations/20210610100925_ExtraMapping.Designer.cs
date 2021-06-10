@@ -4,14 +4,16 @@ using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(BnBDbContext))]
-    partial class BnBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210610100925_ExtraMapping")]
+    partial class ExtraMapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,7 +228,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "We don't charge you for using our wifi.",
                             AmenityName = "free wifi",
                             AmenityRate = 0.0,
-                            CreatedOn = new DateTime(2021, 6, 10, 12, 17, 3, 564, DateTimeKind.Local).AddTicks(267),
+                            CreatedOn = new DateTime(2021, 6, 10, 12, 9, 24, 681, DateTimeKind.Local).AddTicks(4101),
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -235,7 +237,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "We don't swim in your toilet, so please don't pee in our pool.",
                             AmenityName = "pool",
                             AmenityRate = 20.0,
-                            CreatedOn = new DateTime(2021, 6, 10, 12, 17, 3, 566, DateTimeKind.Local).AddTicks(4218),
+                            CreatedOn = new DateTime(2021, 6, 10, 12, 9, 24, 683, DateTimeKind.Local).AddTicks(8961),
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -244,7 +246,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "For people who like to sweat",
                             AmenityName = "sauna",
                             AmenityRate = 25.0,
-                            CreatedOn = new DateTime(2021, 6, 10, 12, 17, 3, 566, DateTimeKind.Local).AddTicks(4251),
+                            CreatedOn = new DateTime(2021, 6, 10, 12, 9, 24, 683, DateTimeKind.Local).AddTicks(8995),
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -253,7 +255,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "The relaxing kind, not the Japanese maffia.",
                             AmenityName = "jacuzzi",
                             AmenityRate = 33.0,
-                            CreatedOn = new DateTime(2021, 6, 10, 12, 17, 3, 566, DateTimeKind.Local).AddTicks(4256),
+                            CreatedOn = new DateTime(2021, 6, 10, 12, 9, 24, 683, DateTimeKind.Local).AddTicks(8999),
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
@@ -262,7 +264,7 @@ namespace DataAccess.Migrations
                             AmenityDescription = "For rainy days.",
                             AmenityName = "pingpongtafelke",
                             AmenityRate = 0.0,
-                            CreatedOn = new DateTime(2021, 6, 10, 12, 17, 3, 566, DateTimeKind.Local).AddTicks(4259),
+                            CreatedOn = new DateTime(2021, 6, 10, 12, 9, 24, 683, DateTimeKind.Local).AddTicks(9002),
                             UpdatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -344,7 +346,7 @@ namespace DataAccess.Migrations
                             BnBEmail = "jos@mail",
                             BnBName = "Boerenhol",
                             BnBPhone = "0123",
-                            CreatedOn = new DateTime(2021, 6, 10, 12, 17, 3, 567, DateTimeKind.Local).AddTicks(7350),
+                            CreatedOn = new DateTime(2021, 6, 10, 12, 9, 24, 685, DateTimeKind.Local).AddTicks(2880),
                             HouseNumber = "4",
                             Municipality = "Reningelst",
                             NameOwner = "Jos",
@@ -362,7 +364,7 @@ namespace DataAccess.Migrations
                             BnBEmail = "jos@mail",
                             BnBName = "Boskant",
                             BnBPhone = "0123",
-                            CreatedOn = new DateTime(2021, 6, 10, 12, 17, 3, 568, DateTimeKind.Local).AddTicks(2911),
+                            CreatedOn = new DateTime(2021, 6, 10, 12, 9, 24, 685, DateTimeKind.Local).AddTicks(8541),
                             HouseNumber = "8",
                             Municipality = "Helchteren",
                             NameOwner = "Jos",
@@ -526,7 +528,7 @@ namespace DataAccess.Migrations
                         {
                             RoomId = 1,
                             BnBId = 1,
-                            CreatedDate = new DateTime(2021, 6, 10, 12, 17, 3, 568, DateTimeKind.Local).AddTicks(7422),
+                            CreatedDate = new DateTime(2021, 6, 10, 12, 9, 24, 686, DateTimeKind.Local).AddTicks(3074),
                             Occupancy = 2,
                             PetsAllowed = false,
                             Rate = 105.0,
@@ -539,7 +541,7 @@ namespace DataAccess.Migrations
                         {
                             RoomId = 2,
                             BnBId = 1,
-                            CreatedDate = new DateTime(2021, 6, 10, 12, 17, 3, 569, DateTimeKind.Local).AddTicks(514),
+                            CreatedDate = new DateTime(2021, 6, 10, 12, 9, 24, 686, DateTimeKind.Local).AddTicks(6233),
                             Occupancy = 2,
                             PetsAllowed = false,
                             Rate = 100.0,
@@ -552,7 +554,7 @@ namespace DataAccess.Migrations
                         {
                             RoomId = 3,
                             BnBId = 1,
-                            CreatedDate = new DateTime(2021, 6, 10, 12, 17, 3, 569, DateTimeKind.Local).AddTicks(529),
+                            CreatedDate = new DateTime(2021, 6, 10, 12, 9, 24, 686, DateTimeKind.Local).AddTicks(6249),
                             Occupancy = 3,
                             PetsAllowed = false,
                             Rate = 115.0,
@@ -565,7 +567,7 @@ namespace DataAccess.Migrations
                         {
                             RoomId = 4,
                             BnBId = 2,
-                            CreatedDate = new DateTime(2021, 6, 10, 12, 17, 3, 569, DateTimeKind.Local).AddTicks(532),
+                            CreatedDate = new DateTime(2021, 6, 10, 12, 9, 24, 686, DateTimeKind.Local).AddTicks(6252),
                             Occupancy = 1,
                             PetsAllowed = false,
                             Rate = 97.0,
@@ -578,7 +580,7 @@ namespace DataAccess.Migrations
                         {
                             RoomId = 5,
                             BnBId = 2,
-                            CreatedDate = new DateTime(2021, 6, 10, 12, 17, 3, 569, DateTimeKind.Local).AddTicks(535),
+                            CreatedDate = new DateTime(2021, 6, 10, 12, 9, 24, 686, DateTimeKind.Local).AddTicks(6255),
                             Occupancy = 4,
                             PetsAllowed = false,
                             Rate = 124.0,
@@ -591,7 +593,7 @@ namespace DataAccess.Migrations
                         {
                             RoomId = 6,
                             BnBId = 2,
-                            CreatedDate = new DateTime(2021, 6, 10, 12, 17, 3, 569, DateTimeKind.Local).AddTicks(538),
+                            CreatedDate = new DateTime(2021, 6, 10, 12, 9, 24, 686, DateTimeKind.Local).AddTicks(6258),
                             Occupancy = 2,
                             PetsAllowed = false,
                             Rate = 116.0,

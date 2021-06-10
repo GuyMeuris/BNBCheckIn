@@ -13,11 +13,13 @@ namespace Business.Repository.IRepository
 
         public Task<AmenityDTO> UpdateAmenity(int amenityId, AmenityDTO hotelAmenity);
 
-        public Task<int> DeleteAmenity(int amenityId, string userId);
+        public Task<int> DeleteAmenity(int amenityId);
 
         public Task<IEnumerable<AmenityDTO>> GetAllAmenities();
 
         public Task<AmenityDTO> GetAmenity(int amenityId);
+
+        public Task<AmenityDTO> GetAmenityByName(string amenityName);
 
         public Task<AmenityDTO> IsAmenityUnique(string name, int amenityId = 0);
     }

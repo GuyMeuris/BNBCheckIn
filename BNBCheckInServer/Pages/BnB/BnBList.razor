@@ -25,6 +25,7 @@
                     <th>Naam B&B</th>
                     <th>Gemeente</th>
                     <th>Provincie</th>
+                    <th>Faciliteiten</th>
                     <th>Alle kamers</th>
                 </tr>
             </thead>
@@ -33,30 +34,43 @@
                 {
                     foreach (var bnb in BnBs)
                     {
-                        <tr>
-                            <td>@bnb.BnBName</td>
-                            <td>@bnb.Municipality</td>
-                            <td>@bnb.Province</td>
-                            @if (bnb.Rooms.Any())
-                            {
-                                <td>
-                                    @foreach (var room in bnb.Rooms)
-                                    {
-                                        @room.RoomName;
-                                        <br />
-                                    }
-                                </td>
-                            }
-                            else
-                            {
-                                <td>Nog geen kamers toegevoegd.</td>
-                            }
+                    <tr>
+                        <td>@bnb.BnBName</td>
+                        <td>@bnb.Municipality</td>
+                        <td>@bnb.Province</td>
+                        @if (bnb.Amenities.Any())
+                        {
                             <td>
-                                <NavLink href="@($"bnbs/edit/{bnb.BnBId}")" class="btn btn-primary">Wijzigen</NavLink>
-                                <button class="btn btn-danger" @onclick="()=>HandleDelete(bnb.BnBId)">Verwijderen</button>
-                                <NavLink href="@($"bnb-roomsinbnb/{bnb.BnBId}")" class="btn btn-success">Bekijk alle kamers</NavLink>
+                                @foreach (var amenity in bnb.Amenities)
+                                {
+                                    @amenity.AmenityName  <br />
+                                }
                             </td>
-                        </tr>
+                        }
+                        else
+                        {
+                            <td>Nog geen faciliteiten toegevoegd.</td>
+                        }
+                        @if (bnb.Rooms.Any())
+                        {
+                            <td>
+                                @foreach (var room in bnb.Rooms)
+                                {
+                                    @room.RoomName;
+                                    <br />
+                                }
+                            </td>
+                        }
+                        else
+                        {
+                            <td>Nog geen kamers toegevoegd.</td>
+                        }
+                        <td>
+                            <NavLink href="@($"bnbs/edit/{bnb.BnBId}")" class="btn btn-primary">Wijzigen</NavLink>
+                            <button class="btn btn-danger" @onclick="()=>HandleDelete(bnb.BnBId)">Verwijderen</button>
+                            <NavLink href="@($"bnb-roomsinbnb/{bnb.BnBId}")" class="btn btn-success">Bekijk alle kamers</NavLink>
+                        </td>
+                    </tr>
                     }
                 }
                 else

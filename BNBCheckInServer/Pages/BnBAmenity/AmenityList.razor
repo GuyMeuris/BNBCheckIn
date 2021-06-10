@@ -98,7 +98,7 @@
         {
             try
             {
-                var result = await amenityRepository.DeleteAmenity(DeleteAmenityId.Value, "");
+                var result = await amenityRepository.DeleteAmenity(DeleteAmenityId.Value);
                 await jsRuntime.InvokeVoidAsync("Window.ShowSwal", "success", "The hotel amenity was deleted successfully!");
             }
             catch (Exception ex)

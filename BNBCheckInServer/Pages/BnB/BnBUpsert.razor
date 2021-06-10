@@ -2,12 +2,14 @@
 @page "/bnbs/edit/{Id:int}"
 @using ModelsDTO
 @using System.IO
+@using System.Linq
 @using DataAccess.Data
 @using BNBCheckInServer.Service.IService
 @using Business.Repository.IRepository
 @using Serilog
 @inject IBnBRepository BnBRepository
 @inject IBnBImageRepository bnbImageRepository
+@inject IAmenityRepository bnbAmenityRepository
 @inject NavigationManager navManager
 @inject IJSRuntime jsRuntime
 @inject IFileUpload fileUpload
@@ -108,7 +110,32 @@
                             </EditorContent>
                         </BlazoredTextEditor>
                     </div>
+
+
                     <div class="form-group" style="padding-top:70px;">
+                        <label>Duidt de passende voorzieningen bij deze B&B aan</label>
+                        <br />
+                        @if (AmenityList != null)
+                        {
+                            foreach (var amenity in AmenityList)
+                            {
+                                bool Checked = false;
+                                 if (bnbModel.Amenities.Any(a => a.AmenityName == amenity.AmenityName))
+                                 {
+                                     Checked = true;
+                                 }
+                                 <input type="checkbox" checked=@Checked
+                                 @onchange="eventArgs => { CheckboxClicked(amenity.AmenityName, eventArgs.Value); }" />
+                                 @:&nbsp; @amenity.AmenityName <br />
+                            }
+
+                        }
+                    </div>
+
+
+
+
+                    <div class="form-group">
                         <label>Foto's van de B&ampB:</label>
                         <br />
                         <InputFile OnChange="HandleImageUpload" multiple></InputFile>
@@ -166,6 +193,16 @@
 
     private string Title { get; set; } = "Maak nieuwe";
 
+    public List<AmenityDTO> AmenityList = new List<AmenityDTO>();
+
+    // The field to be shown adjacent to checkbox  
+    [Parameter] public Func<AmenityDTO, string> TextField { get; set; }
+    // The Value which checkbox will return when checked   
+    [Parameter] public Func<AmenityDTO, object> ValueField { get; set; }
+
+    // The array which contains the list of selected checkboxs   
+    [Parameter] public List<string> SelectedAmenities { get; set; }
+
     private List<string> DeletedImageNames { get; set; } = new List<string>();
 
     private bool IsImageUploadProcesStarted { get; set; } = false;
@@ -187,6 +224,8 @@
             var uri = new Uri(navManager.Uri);
             navManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}", forceLoad: true);
         }
+
+        AmenityList = (await bnbAmenityRepository.GetAllAmenities()).ToList();
 
         if (Id != null)
         {
@@ -386,4 +425,27 @@
             await jsRuntime.SweetAlertError("Het verwijderen van de afbeelding is niet gelukt. Probeer opnieuw.");
         }
     }
+
+    //Method to update the selected value on click on checkbox   
+    public async void CheckboxClicked(string aSelectedId, object aChecked)
+    {
+        if ((bool)aChecked)
+        {
+            if (!bnbModel.Amenities.Any(a => a.AmenityName == aSelectedId))
+            {
+                var addedAmenity = await bnbAmenityRepository.GetAmenityByName(aSelectedId);
+                bnbModel.Amenities.Add(addedAmenity);
+                
+            }
+        }
+        else
+        {
+            if (bnbModel.Amenities.Any(a => a.AmenityName == aSelectedId))
+            {
+                var removedAmenity = await bnbAmenityRepository.GetAmenityByName(aSelectedId);
+                bnbModel.Amenities.Remove(removedAmenity);
+            }
+        }
+        //StateHasChanged();
+}
 }
