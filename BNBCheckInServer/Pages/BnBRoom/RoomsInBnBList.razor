@@ -20,13 +20,13 @@
 <RadzenGrid AllowFiltering="true"
             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
             FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="8"
-            AllowSorting="true" Data="@Rooms" TItem="RoomDTO" ColumnWidth="100px">
+            AllowSorting="true" Data="@Rooms" TItem="RoomDTO" ColumnWidth="50px">
     <Columns>
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomName" Title="Naam kamer" />
-        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Width="50px" Property="Occupancy" Title="Bezetting" />
-        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Width="50px" Property="Rate" Title="Prijs per nacht" />
-        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Width="50px" Property="RoomSize" Title="Oppervlakte kamer" />
-        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomId" Title="" Width="50px">
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO"Property="Occupancy" Title="Bezetting" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="Rate" Title="Prijs per nacht" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomSize" Title="Oppervlakte kamer" />
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomId" Title="" Width="100px">
             <Template Context="data">
                 <NavLink href="@($"/bnb-room/edit/{data.RoomId}")" class="btn btn-primary">Wijzigen</NavLink>
                 <button class="btn btn-danger" @onclick="() => HandleDelete(data.RoomId)">Verwijderen</button>
