@@ -4,15 +4,15 @@
 @inject IAmenityService amenityService
 @inject NavigationManager navManager
 
-
+@*@todo: refactoring*@
 @*<AuthorizeView>
-    <Authorized>
-        <p>Welkom, @context.User.Identity.Name</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Nog niet ingelogd</p>
-    </NotAuthorized>
-</AuthorizeView>*@
+        <Authorized>
+            <p>Welkom, @context.User.Identity.Name</p>
+        </Authorized>
+        <NotAuthorized>
+            <p>Nog niet ingelogd</p>
+        </NotAuthorized>
+    </AuthorizeView>*@
 <div class="row p-0 m-0">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -35,7 +35,7 @@
         <div class="col-4 col-md-2">
             <div class="form-group">
                 <label>Incheckdatum</label>
-                <InputDate min="@DateTime.Now" @bind-Value="HomeModel.StartDate"
+                <InputDate min="@DateTime.Now.ToString("yyyy-MM-dd")" @bind-Value="HomeModel.StartDate"
                            class="form-control" />
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="col-4 col-md-2">
             <div class="form-group">
                 <label>Uitcheckdatum</label>
-                <InputDate  @bind-Value="HomeModel.EndDate" min="@HomeModel.StartDate.AddDays(1)"
+                <InputDate @bind-Value="HomeModel.EndDate" min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")"
                            class="form-control" />
             </div>
         </div>
@@ -51,7 +51,7 @@
         <div class=" col-4 col-md-2">
             <div class="form-group">
                 <label>Provincie</label>
-                <select @bind="HomeModel.Province" class="form-control" >
+                <select @bind="HomeModel.Province" class="form-control">
                     @foreach (var p in Provinces)
                     {
                         <option value="@p">@p</option>
@@ -120,7 +120,7 @@
         try
         {
             HomeModel.NoOfNights = (HomeModel.EndDate - HomeModel.StartDate).Days;
-            
+
 
             if (HomeModel.NoOfNights < 0)
             {
