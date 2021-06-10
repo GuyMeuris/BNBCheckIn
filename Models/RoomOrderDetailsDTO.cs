@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace ModelsDTO
 {
     public class CreateRoomOrderDetailsDTO
-    {
-        //public int Id { get; set; }
+    {        
         [Required]
         public string UserId { get; set; }
 
