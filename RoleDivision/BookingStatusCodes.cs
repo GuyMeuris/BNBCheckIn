@@ -8,17 +8,17 @@ namespace Common
 {
     public static class BookingStatusCodes
     {
-        public const string Status_Pending = "Pending";
+        public const string Status_Pending = "In Behandeling";
         
-        public const string Status_Booked = "Booked";
+        public const string Status_Booked = "Gereserveerd";
         
-        public const string Status_CheckedIn = "CheckedIn";
+        public const string Status_CheckedIn = "Ingechecked";
         
-        public const string Status_CheckedOut_Completed = "CheckedOut";
+        public const string Status_CheckedOut_Completed = "Uitgechecked";
         
-        public const string Status_NoShow = "NoShow";
+        public const string Status_NoShow = "Niet Aangekomen";
         
-        public const string Status_Cancelled = "Cancelled";
+        public const string Status_Cancelled = "Geannulleerd";
 
     }
 }
