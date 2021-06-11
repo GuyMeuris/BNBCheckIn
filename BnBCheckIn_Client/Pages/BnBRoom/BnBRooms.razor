@@ -13,14 +13,16 @@
                 <div class="col-6 col-md-4">
                     <div class="form-group">
                         <label class="text-warning">Incheckdatum</label>
-                        <InputDate @bind-Value="HomeModel.StartDate" class="form-control" />
+                        <InputDate min="@DateTime.Now.ToString("yyyy-MM-dd")" @bind-Value="HomeModel.StartDate"
+                                   class="form-control" />
                         <ValidationMessage For="() => HomeModel.StartDate" />
                     </div>
                 </div>
                 <div class="col-6 col-md-4">
                     <div class="form-group">
                         <label class="text-warning">Uitcheckdatum</label>
-                        <InputDate @bind-Value="HomeModel.EndDate" class="form-control" />
+                        <InputDate @bind-Value="HomeModel.EndDate" min="@HomeModel.StartDate.AddDays(1).ToString("yyyy-MM-dd")"
+                                   class="form-control" />
                         <ValidationMessage For="() => HomeModel.EndDate" />
                     </div>
                 </div>
