@@ -38,9 +38,7 @@ namespace DataAccess.Data
 
             modelBuilder.ApplyConfiguration(new BnBConfiguration());
 
-            modelBuilder.ApplyConfiguration(new RoomConfiguration());
-
-   
+            modelBuilder.ApplyConfiguration(new RoomConfiguration());   
         }
     }
 }
