@@ -40,39 +40,6 @@ namespace DataAccess.Data
 
             modelBuilder.ApplyConfiguration(new RoomConfiguration());
 
-            modelBuilder.SharedTypeEntity<Dictionary<string, object>>("AmenityBnB")
-                .HasData(
-                    new { AmenitiesAmenityId = 1, BnBsBnBId = 1 },
-                    new { AmenitiesAmenityId = 1, BnBsBnBId = 5 },
-                    new { AmenitiesAmenityId = 1, BnBsBnBId = 3 },
-                    new { AmenitiesAmenityId = 1, BnBsBnBId = 4 },
-                    new { AmenitiesAmenityId = 2, BnBsBnBId = 3 },
-                    new { AmenitiesAmenityId = 3, BnBsBnBId = 1 },
-                    new { AmenitiesAmenityId = 3, BnBsBnBId = 3 },
-                    new { AmenitiesAmenityId = 4, BnBsBnBId = 1 },
-                    new { AmenitiesAmenityId = 4, BnBsBnBId = 3 },
-                    new { AmenitiesAmenityId = 4, BnBsBnBId = 5 },
-                    new { AmenitiesAmenityId = 5, BnBsBnBId = 2 },
-                    new { AmenitiesAmenityId = 5, BnBsBnBId = 4 }
-                );
-
-            modelBuilder.SharedTypeEntity<Dictionary<string, object>>("AmenityRoom")
-                .HasData(
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 1 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 2 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 3 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 7 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 8 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 9 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 10 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 11 },
-                    new { AmenitiesAmenityId = 1, RoomsRoomId = 12 },
-                    new { AmenitiesAmenityId = 3, RoomsRoomId = 7 },
-                    new { AmenitiesAmenityId = 3, RoomsRoomId = 10 },
-                    new { AmenitiesAmenityId = 3, RoomsRoomId = 11 },
-                    new { AmenitiesAmenityId = 4, RoomsRoomId = 11 },
-                    new { AmenitiesAmenityId = 4, RoomsRoomId = 5 }
-                );
    
         }
     }
