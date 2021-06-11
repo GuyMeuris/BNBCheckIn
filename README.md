@@ -20,13 +20,13 @@ Nederlandstalige webapplicatie die B&B's toelaat hun kamers online te laten aanb
 ### 1. Het dashboard voor de admin
 
 Het inlogscherm van de admin-page:
-<img src="screenshots/adminlogin.jpg" width="600">
+<img src="screenshots/adminlogin.jpg" width="800">
 
 * Enkel de admin heeft de juiste privileges om de alle menu-items te bekijken en te bewerken.
 ---
 
 Overzicht van gemaakte B&B's in de admin-pagina:
-<img src="screenshots/adminbnblijst.jpg" width="600">
+<img src="screenshots/adminbnblijst.jpg" width="800">
 
 * Hier kan de admin B&B's gaan toevoegen, wijzigen en verwijderen. 
 * Tevens is er een upload-module voor foto's toe te voegen aan de B&B. 
@@ -35,14 +35,14 @@ Overzicht van gemaakte B&B's in de admin-pagina:
 ---
 
 "Wijzig Kamer" in de admin-pagina:
-<img src="screenshots/adminwijzigkamer.jpg" width="600">
+<img src="screenshots/adminwijzigkamer.jpg" width="800">
 
 * Admin kan hier alle gegevens van de kamer aanpassen, foto's toevoegen en/of verwijderen.
 * Hier ook een RichTextField voor de beschrijving.
 ---
 
 "Reservatiedetails" in de admin-pagina:
-<img src="screenshots/adminreservatiedetails.jpg" width="600">
+<img src="screenshots/adminreservatiedetails.jpg" width="800">
 
 * Voorbeeld van een B&B-reservatie-formulier: hier kan de admin nog wijzigen gaan toepassen en zelfs de volledige reservatie gaan annuleren of aangeven dat de klant niet is komen opdagen.
 ---
@@ -50,13 +50,13 @@ Overzicht van gemaakte B&B's in de admin-pagina:
 ### 2. De WebAPI
 
 Overzicht van alle calls in de WebAPI:
-<img src="screenshots/webapicalls.jpg" width="600">
+<img src="screenshots/webapicalls.jpg" width="800">
 
 * Overzicht van alle methodes die in de APi zitten gecodeerd. Ongeveer de helft worden effectief aangesproken, de andere helft zijn voor toekomstige functionaliteiten.
 ---
 
 "BnBGetAll"-call in de WebAPI:
-<img src="screenshots/webapibnbgetall.jpg" width="600">
+<img src="screenshots/webapibnbgetall.jpg" width="800">
 
 * Voorbeeldje van de API in werking bij het opvragen van een lijst van alle B&B's.
 ---
@@ -64,37 +64,37 @@ Overzicht van alle calls in de WebAPI:
 ### 3. De frontend voor de eindgebruiker
 
 "User Login" in de Client-side:
-<img src="screenshots/clientlogin.jpg" width="600">
+<img src="screenshots/clientlogin.jpg" width="800">
 
 ---
 
 "Filtering zoekresultaten" in de Client-side:
-<img src="screenshots/clientfilteringbnb.jpg" width="600">
+<img src="screenshots/clientfilteringbnb.jpg" width="800">
 
 ---
 
 "Zoekresultaat B&B" in de Client-side:
-<img src="screenshots/clientbnbdetails.jpg" width="600">
+<img src="screenshots/clientbnbdetails.jpg" width="800">
 
 ---
 
 "Overzicht kamers bij specifieke B&B" in de Client-side:
-<img src="screenshots/clientkamerlijst.jpg" width="600">
+<img src="screenshots/clientkamerlijst.jpg" width="800">
 
 ---
 
 "Kamerdetails" in de Client-side:
-<img src="screenshots/clientkamerdetails.jpg" width="600">
+<img src="screenshots/clientkamerdetails.jpg" width="800">
 
 ---
 
 "User Stripe betaling" in de Client-side:
-<img src="screenshots/clientbetaling.jpg" width="600">
+<img src="screenshots/clientbetaling.jpg" width="800">
 
 ---
 
 "E-mail payment confirmation" in de Client-side:
-<img src="screenshots/email.jpg" width="600">
+<img src="screenshots/email.jpg" width="800">
 
 ---
 
