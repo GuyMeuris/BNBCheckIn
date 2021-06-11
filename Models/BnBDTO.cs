@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModelsDTO
 {
+    // The 'Create...DTO' will handle all non-ID-required actions!
     public class CreateBnBDTO
     {
         [Required(ErrorMessage ="B&B naam is een verplicht veld.")]
@@ -45,18 +46,20 @@ namespace ModelsDTO
         public string BnBPhone { get; set; }
 
         public string BnBDetails { get; set; }
-        }
+    }
 
-        public class BnBDTO : CreateBnBDTO
-        {
-            public int BnBId { get; set; }
+    // Usually new classes get their own file, but because it is just a small application
+    // we keep all the '...DTO'-classes in this file.
+    public class BnBDTO : CreateBnBDTO
+    {
+        public int BnBId { get; set; }
 
-            public virtual List<string> BnBImageUrls { get; set; }
+        public virtual List<string> BnBImageUrls { get; set; }
 
-            public virtual ICollection<BnBImageDTO> BnBImages { get; set; }
+        public virtual ICollection<BnBImageDTO> BnBImages { get; set; }
 
-            public virtual ICollection<RoomDTO> Rooms { get; set; }
+        public virtual ICollection<RoomDTO> Rooms { get; set; }
 
-            public virtual ICollection<AmenityDTO> Amenities { get; set; }
-        }
+        public virtual ICollection<AmenityDTO> Amenities { get; set; }
+    }
 }

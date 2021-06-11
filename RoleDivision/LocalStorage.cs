@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common
 {
+    // Constant values used in the local storage
     public static class LocalStorage
     {
         public const string LS_InitialBooking = "InitialBookingInfo";

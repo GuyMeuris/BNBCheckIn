@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Configurations
 {
+    // Class for seeding starting data in the server app
     public class BnBConfiguration : IEntityTypeConfiguration<BnB>
     {
         public void Configure(EntityTypeBuilder<BnB> builder)

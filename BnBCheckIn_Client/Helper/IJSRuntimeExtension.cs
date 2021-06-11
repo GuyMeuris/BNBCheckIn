@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BnBCheckIn_Client.Helper
 {
+    //  Class to simplify the 2 kinds of 'SweetAlert'-message methods
     public static class IJSRuntimeExtension
     {
         public static async ValueTask SweetAlertSuccess(this IJSRuntime jsRuntime, string message )

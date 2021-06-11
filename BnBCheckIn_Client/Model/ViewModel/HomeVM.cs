@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace BnBCheckIn_Client.Model.ViewModel
 {
+    // Class to centralize the input data from the B&B main page
     public class HomeVM
     {
         public DateTime StartDate { get; set; } = DateTime.Now;

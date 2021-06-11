@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace BnBCheckIn_Client.Helper
 {
+    // Class to get the claims out of the Jwt token from the API
     public static class JwtParser
     {
         public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)

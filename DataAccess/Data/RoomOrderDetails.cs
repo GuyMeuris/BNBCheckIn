@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data
 {
+    // Class for handling the booking orders
     public class RoomOrderDetails
     {
         [Key]

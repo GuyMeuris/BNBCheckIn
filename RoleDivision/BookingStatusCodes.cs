@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Common
 {
+    // Constant values for the booking order status codes
     public static class BookingStatusCodes
     {
         public const string Status_Pending = "In Behandeling";

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModelsDTO
 {
+    // class that 'built' upon the identity user
     public class ContactDTO
     {
         public string Id { get; set; }

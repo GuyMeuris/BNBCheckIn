@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModelsDTO
 {
+    // Class for the client registration authentication 
     public class UserRequestDTO
     {
         [Required(ErrorMessage = "Naam is een verplicht veld.")]

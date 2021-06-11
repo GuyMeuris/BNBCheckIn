@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace BNBCheckInServer.Service
 {
+    // class for handling the image uploading to the 'images'-folder
     public class FileUpload : IFileUpload
     {
         // In order to find the relative path for 'wwwroot'-folder we have to

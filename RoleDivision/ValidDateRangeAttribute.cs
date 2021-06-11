@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Common
 {
+    // Class with a custom validation to validate an input date
     public class ValidDateRangeAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
