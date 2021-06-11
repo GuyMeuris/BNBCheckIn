@@ -35,46 +35,6 @@
         </RadzenGridColumn>
     </Columns>
 </RadzenGrid>
-@*<div class="row mt-4">
-    <div class="col-12">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Naam kamer</th>
-                    <th>Bezetting</th>
-                    <th>Prijs per nacht</th>
-                    <th>Oppervlakte kamer</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Rooms.Any())
-                {
-                    foreach (var room in Rooms)
-                    {
-                        <tr>
-                            <td>@room.RoomName</td>
-                            <td>@room.Occupancy</td>
-                            <td>@room.Rate.ToString("C")</td>
-                            <td>@room.RoomSize</td>
-                            <td>
-                                <NavLink href="@($"bnb-room/edit/{room.RoomId}")" class="btn btn-primary">Wijzigen</NavLink>
-                                <button class="btn btn-danger" @onclick="()=>HandleDelete(room.RoomId)">Verwijderen</button>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="5">Geen kamers gevonden in de lijst.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>*@
-
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
 @*-----------------------------------------------------------------------------------------------------------------------*@
