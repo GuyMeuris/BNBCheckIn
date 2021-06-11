@@ -58,7 +58,7 @@ Overzicht van alle calls in de WebAPI:
 "BnBGetAll"-call in de WebAPI:
 <img src="screenshots/webapibnbgetall.jpg" width="800">
 
-* Voorbeeldje van de API in werking bij het opvragen van een lijst van alle B&B's.
+* Voorbeeld van de API in werking bij het opvragen van een lijst van alle B&B's.
 ---
 
 ### 3. De frontend voor de eindgebruiker
@@ -66,36 +66,56 @@ Overzicht van alle calls in de WebAPI:
 "User Login" in de Client-side:
 <img src="screenshots/clientlogin.jpg" width="800">
 
+* Inlogscherm voor de eindgebruiker (die zich ook eerst dient te registreren op de registratiepagina als hij/zij nog geen inlogcode heeft).
+* Net zoals bij de inlogpagina voor de admin hebben we hier gebruikt gemaakt van de in ASP.Net ingebouwde Identity Account voor de de authenticatie en authorisatie.
+* Vervolgens hebben we ook 'roles' toebedeeld: 'admin', 'user' en 'visitor' (de laatste momenteel nog niet in gebruik).
 ---
 
 "Filtering zoekresultaten" in de Client-side:
 <img src="screenshots/clientfilteringbnb.jpg" width="800">
 
+* De eindgebruiker kan B&B's zoeken op datum en op (Vlaamse) provincie. Onderaan het beeld staat een overzicht van de aangeboden faciliteiten.
+* Dit is bedoeld als visuele ondersteuning bij het gebruik van de pictogrammen doorheen de applicatie. (Plan voor de volgende versie is om de faciliteiten aan specifieke B&B's en kamers te linken, zodat de pictogrammen zichtbaar worden op de desbetreffende detail-pagina's. Wegens tijdsgebrek hebben we dit niet in deze eerste versie volledig kunnen uitwerken.)
 ---
 
 "Zoekresultaat B&B" in de Client-side:
 <img src="screenshots/clientbnbdetails.jpg" width="800">
 
+* Na de eerste filtering krijgt de eindgebruiker het zoekresultaat te zien van alle B&B's die vrije kamers hebben in die periode en die in die specifieke provincie gelegen zijn. (Er kan ook gezocht worden op 'alle provincies'.) 
+* Naast de B&B-details is er ook een caroussel met alle foto's die bij die specifieke B&B horen.
+* Je kan van hier ook makkelijk doorklikken naar de lijst van kamers die bij deze B&B horen.
+* Bovenaan kan je de provincie nog aanpassen indien gewenst. (De data zijn op deze pagina niet manipuleerbaar, aangezien dit (in deze versie) geen effect heeft op welke B&B's je te zien krijgt. Je krijgt steeds alle B&B's uit de gekozen provincie te zien.) 
 ---
 
 "Overzicht kamers bij specifieke B&B" in de Client-side:
 <img src="screenshots/clientkamerlijst.jpg" width="800">
 
+* Vervolgens krijgt de eindgebruiker een gedetailleerd overzicht van alle kamers die bij een specifieke B&B horen met alle informatie over elke kamer apart.
+* De aangegeven prijs past zich aan ten opzichte van de opgegeven data 'Incheckdatum' en 'Uitcheckdatum'. De data zijn op deze pagina WEL te wijzigen, want als een bepaalde kamer reeds verhuurd is op een specifieke datum, moet de eindgebruiker nu wel de verblijfsdata kunnen aanpassen naar een vrij moment. 
+* Naast de kamer-details is er ook een caroussel met alle foto's die bij die specifieke kamer horen.
+* Je kan van hier ook makkelijk doorklikken naar het reservatieformulier of je kan teruggaan naar de lijst van kamers. 
+* !Opgelet: indien de eindgebruiker nog niet is ingelogd, zal de eindgebruiker worden gevraagd om eerst in te loggen en/of te registreren. Enkel INGELOGDE gebruikers zijn gemachtigd om een kamer te boeken!
 ---
 
 "Kamerdetails" in de Client-side:
 <img src="screenshots/clientkamerdetails.jpg" width="800">
 
+* Op het reservatieformulier ziet de eindgebruiker nog eens alle details van de kamer die hij/zij wenst te boeken.
+* Aan de rechterzijde staat vervolgens het invulformulier: dit zal alle gegevens van de klant reeds bevatten als die is ingelogd ondertussen.
+* Wanneer de eindgebruiker op 'Reserveren' drukt, wordt hij/zij naar de betalingspagina geleid.
 ---
 
 "User Stripe betaling" in de Client-side:
 <img src="screenshots/clientbetaling.jpg" width="800">
+
+* Hier moet de eindgebruiker zijn/haar betalingsgegevens invoeren om de reservatie te bevestigen. (Voorlopig een dummy-module!) Pas na bevestiging van betaling zal de orderstatus van de reservatie veranderen naar "Gereserveerd" en zal de kamer tijdens die data in de lijst staan als 'verhuurd'.
 
 ---
 
 "E-mail payment confirmation" in de Client-side:
 <img src="screenshots/email.jpg" width="800">
 
+* Na bevestiging van de betaling (en dus de reservatie.) wordt er in naam van B&BCheckIn automatisch een bevestigingsmail verstuurd naar de klant.
 ---
 
 
