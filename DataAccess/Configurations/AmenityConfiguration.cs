@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Configurations
 {
+    // Class for seeding starting data in the server app
     public class AmenityConfiguration : IEntityTypeConfiguration<Amenity>
     {
         public void Configure(EntityTypeBuilder<Amenity> builder)

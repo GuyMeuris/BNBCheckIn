@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModelsDTO
 {
+    // The 'Create...DTO' will handle all non-ID-required actions!
     public class CreateRoomOrderDetailsDTO
     {        
         [Required]
@@ -45,6 +46,8 @@ namespace ModelsDTO
         public int RoomId { get; set; } 
     }
 
+    // Usually new classes get their own file, but because it is just a small application
+    // we keep all the '...DTO'-classes in this file.
     public class RoomOrderDetailsDTO : CreateRoomOrderDetailsDTO
     {
         public int OrderId { get; set; }

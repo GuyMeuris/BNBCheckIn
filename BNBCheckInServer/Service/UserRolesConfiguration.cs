@@ -12,6 +12,7 @@ using DataAccess.Data;
 
 namespace BNBCheckInServer.Service
 {
+    // Class for seeding the client user roles and creating an admin user (hard coded)
     public class UserRolesConfiguration : IUserRolesConfiguration
     {
         private readonly BnBDbContext _context;

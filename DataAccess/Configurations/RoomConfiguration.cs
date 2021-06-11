@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Configurations
 {
+    // Class for seeding starting data in the server app
     public class RoomConfiguration : IEntityTypeConfiguration<Room>
     {
         public void Configure(EntityTypeBuilder<Room> modelBuilder)

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModelsDTO
 {
+    // The 'Create...DTO' will handle all non-ID-required actions!
     public class CreateAmenityDTO
     {
         [Required (ErrorMessage ="Naam is een verplicht veld.")]
@@ -21,6 +22,8 @@ namespace ModelsDTO
         public string AmenityDescription { get; set; }
     }
 
+    // Usually new classes get their own file, but because it is just a small application
+    // we keep all the '...DTO'-classes in this file.
     public class AmenityDTO : CreateAmenityDTO
     {
         public int AmenityId { get; set; }

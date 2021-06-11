@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModelsDTO
 {
+    // Class for the handling payment information
     public class StripePaymentDTO
     {
         public string BnBRoomProduct { get; set; }
