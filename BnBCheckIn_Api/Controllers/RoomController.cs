@@ -103,8 +103,7 @@ namespace BnBCheckIn_Api.Controllers
 
                 var room = await _unitOfWork.RoomRepository.Get
                         (x => x.RoomId == roomId,
-                                new List<string> { "RoomImages" },
-                                           new List<string> { "Amenities" });
+                                new List<string> { "RoomImages" });
                 var result = _mapper.Map<RoomDTO>(room);
 
                 result.IsBooked = await IsRoomBooked(roomId, checkInDate, checkOutDate);
@@ -144,8 +143,7 @@ namespace BnBCheckIn_Api.Controllers
                 }
                 var rooms = await _unitOfWork.RoomRepository.GetAll
                         (x => x.BnBId == bnbId,null,
-                                new List<string> { "RoomImages" },
-                                           new List<string> { "Amenities" });
+                                new List<string> { "RoomImages" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
 
                 foreach (RoomDTO roomDTO in result)
@@ -171,8 +169,7 @@ namespace BnBCheckIn_Api.Controllers
             {
                 var rooms = await _unitOfWork.RoomRepository.GetAll
                         (x => x.PetsAllowed == petsAllowed, null,null, null,
-                                new List<string> { "RoomImages" },
-                                           new List<string> { "Amenities" });
+                                new List<string> { "RoomImages" });
                 var result = _mapper.Map<IList<RoomDTO>>(rooms);
 
                 return Ok(result);
