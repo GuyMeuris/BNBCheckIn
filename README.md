@@ -15,13 +15,13 @@ Password = "BbAdmin123+"
 
 ### Gedetailleerd overzicht
 * Het inlogscherm van de admin-page:
-<img src="screenshots/adminlogin.jpg" width="600">
+<img src="AppInfo/screenshots/adminlogin.jpg" width="600">
 
 * Overzicht van gemaakte B&B's in de admin-pagina:
-<img src="screenshots/adminbnblijst.jpg" width="600">
+<img src="../screenshots/adminbnblijst.jpg" width="600">
 
 * "Wijzig Kamer" in de admin-pagina:
-<img src="screenshots/adminwijzigkamer.jpg" width="600">
+<img src="../../screenshots/adminwijzigkamer.jpg" width="600">
 
 * "Reservatiedetails" in de admin-pagina:
 <img src="screenshots/adminreservatiedetails.jpg" width="600">
