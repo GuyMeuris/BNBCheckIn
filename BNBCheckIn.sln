@@ -22,25 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppInfo", "AppInfo", "{186B
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "screenshots", "screenshots", "{60B1FAB1-D437-499A-BDFE-9B2089820FC6}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\OneDrive\Bureaublad\screenshots\adminbnblijst.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\adminbnblijst.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\adminfaciliteitenlijst.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\adminfaciliteitenlijst.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\adminkamerlijst.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\adminkamerlijst.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\adminlogin.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\adminlogin.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\adminreservatiedetails.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\adminreservatiedetails.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\adminwijzigkamer.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\adminwijzigkamer.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\clientbetaling.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\clientbetaling.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\clientbnbdetails.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\clientbnbdetails.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\clientfilteringbnb.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\clientfilteringbnb.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\clientkamerdetails.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\clientkamerdetails.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\clientkamerlijst.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\clientkamerlijst.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\clientlogin.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\clientlogin.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\email.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\email.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\webapibnbgetall.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\webapibnbgetall.jpg
-		..\..\..\OneDrive\Bureaublad\screenshots\webapicalls.jpg = ..\..\..\OneDrive\Bureaublad\screenshots\webapicalls.jpg
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,9 +59,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{60B1FAB1-D437-499A-BDFE-9B2089820FC6} = {186B831F-9AAE-4C2E-BC08-28DB6EE8F678}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30757C63-AF42-4D5A-A90E-0AEB0E9AF9F1}
