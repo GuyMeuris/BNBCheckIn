@@ -14,20 +14,20 @@
                 FilterMode="FilterMode.Advanced" AllowPaging="true" PageSize="8"
                 AllowSorting="true" Data="@HotelRoomOrders" TItem="RoomOrderDetailsDTO" ColumnWidth="160px">
         <Columns>
-            <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="Name" Title="Naam Klant" />
-            <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="Phone" Title="Tel. Klant" />
-            <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="Email" Title="Email Klant" />
+            <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="Name" Title="Naam klant" />
+            @*<RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="Phone" Title="Tel. klant" />*@
+            <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="Email" Title="E-mail klant" />
             <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="BnBRoomDTO.RoomName" Title="Kamer" />
             <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="OrderStatus" Title="Status" />
-            <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="CheckInDate" Title="Check in Date">
+            <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomOrderDetailsDTO" Property="CheckInDate" Title="Check in datum">
                 <Template Context="data">
                     @String.Format("{0:d}", data.CheckInDate)
                 </Template>
             </RadzenGridColumn>
 
-            <RadzenGridColumn TItem="RoomOrderDetailsDTO" Property="Id" Title="">
+            <RadzenGridColumn TextAlign="TextAlign.Center"  TItem="RoomOrderDetailsDTO" Property="Id" Title="">
                 <Template Context="data">
-                    <NavLink class="btn btn-primary" href="@($"bnb-room-booking/details/{data.OrderId}")">Details</NavLink>
+                    <NavLink class="btn btn-primary" href="@($"bnb-room-booking/details/{data.OrderId}")">Reservatiedetails</NavLink>
                 </Template>
             </RadzenGridColumn>
         </Columns>
@@ -48,4 +48,5 @@ else
         HotelRoomOrders = await roomOrderDetailsRepository.GetAllRoomOrderDetails();
         IsLoading = false;
     }
+
 }

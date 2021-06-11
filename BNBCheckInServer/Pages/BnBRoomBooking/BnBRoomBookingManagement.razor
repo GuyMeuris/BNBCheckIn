@@ -13,14 +13,14 @@
     {
         <div class="row p-2 my-3 bg-dark" style="border-radius:20px; ">
             <div class="col-6 pt-2 pl-4 text-info">
-                <h2>Reservatie Details : </h2>
+                <h2>Reservatiedetails : </h2>
             </div>
             <div class="col-6 pt-2 col-md-3 offset-md-3">
-                <a href="bnb-room-booking" class="btn btn-info form-control">Terug Naar Reservaties</a>
+                <a href="bnb-room-booking" class="btn btn-info form-control">Terug naar reservaties</a>
             </div>
             <div class="col-12 col-lg-8 p-4">
                 <div class="row px-2 text-success border-bottom">
-                    <div class="col-8 py-1"><p style="font-size:x-large;margin:0px;">Geselecteerde Kamer</p></div>
+                    <div class="col-8 py-1"><p style="font-size:x-large;margin:0px;">Geselecteerde kamer</p></div>
 
                 </div>
 
@@ -105,23 +105,23 @@
                     @if (BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_Booked || BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_Pending)
                     {
                         <div class="col-3">
-                            <button @onclick="CancelBooking" class="btn btn-danger form-control">Cancel Booking </button>
+                            <button @onclick="CancelBooking" class="btn btn-danger form-control">Annuleer</button>
                         </div>
                     }
 
                     @if (BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_Booked)
                     {
                         <div class="col-3 offset-1">
-                            <button @onclick="NoShowBooking" class="btn btn-warning form-control">No Show </button>
+                            <button @onclick="NoShowBooking" class="btn btn-warning form-control">Niet opgedaagd</button>
                         </div>
                     }
                 </div>
             </div>
 
             <div class="col-12 col-lg-4 p-4 2 mt-4 mt-md-0">
-                <div class="row px-2 text-success border-bottom"><div class="col-7 py-1"><p style="font-size:x-large;margin:0px;">Voer Details In</p></div></div>
+                <div class="row px-2 text-success border-bottom"><div class="col-7 py-1"><p style="font-size:x-large;margin:0px;">Wijzig details</p></div></div>
                 <div class="form-group pt-2">
-                    <label class="text-warning">Reservatie Status</label>
+                    <label class="text-warning">Reservatie status</label>
                     <input @bind-value="BnBRoomBooking.OrderStatus" type="text" disabled class="form-control" />
                 </div>
                 <div class="form-group pt-2">
@@ -137,25 +137,25 @@
                     <input @bind-value="BnBRoomBooking.Email" type="text" disabled class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label class="text-warning">Incheck Datum</label>
+                    <label class="text-warning">Incheck datum</label>
                     <input type="text" disabled value="@BnBRoomBooking.CheckInDate.ToShortDateString()" class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label class="text-warning">Uitcheck Datum</label>
+                    <label class="text-warning">Uitcheck datum</label>
                     <input type="text" disabled value="@BnBRoomBooking.CheckOutDate.ToShortDateString()" class="form-control" />
                 </div>
                 @if (BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_CheckedIn || BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_CheckedOut_Completed)
                 {
                     <div class="form-group">
-                        <label class="text-warning">Reële Incheck Datum</label>
+                        <label class="text-warning">Reële incheckdatum</label>
                         <input type="text" disabled value="@BnBRoomBooking.ActualCheckInDate.ToShortDateString()" class="form-control" />
                     </div>
                 }
                 @if (BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_CheckedOut_Completed)
                 {
                     <div class="form-group">
-                        <label class="text-warning">Reële Uitcheck Datum</label>
+                        <label class="text-warning">Reële uitcheckdatum</label>
                         <input type="text" disabled value="@BnBRoomBooking.ActualCheckOutDate.ToShortDateString()" class="form-control" />
                     </div>
                 }
@@ -163,12 +163,12 @@
 
                     @if (BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_Booked)
                     {
-                        <button @onclick="ConfirmCheckIn" class="btn btn-success">Bevestig Check In</button>
+                        <button @onclick="ConfirmCheckIn" class="btn btn-success">Bevestig check in</button>
                     }
 
                     @if (BnBRoomBooking.OrderStatus == BookingStatusCodes.Status_CheckedIn)
                     {
-                        <button @onclick="ConfirmCheckOut" class="btn btn-success">Bevestig Check Out </button>
+                        <button @onclick="ConfirmCheckOut" class="btn btn-success">Bevestig check uit </button>
                     }
                 </div>
             </div>

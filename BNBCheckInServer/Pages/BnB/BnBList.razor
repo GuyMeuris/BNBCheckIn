@@ -26,8 +26,6 @@
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="BnBName" Title="Naam B&B" />
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="Municipality" Title="Gemeente" />
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="Province" Title="Provincie" />
-        @*<RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Property="Rooms" Title="Alle kamers">
-        </RadzenGridColumn>*@
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="BnBDTO" Title="" Width="100px" >
             <Template Context="data">
                 <NavLink href="@($"/bnbs/edit/{data.BnBId}")" class="btn btn-primary">Wijzigen</NavLink>
@@ -37,59 +35,6 @@
         </RadzenGridColumn>
     </Columns>
 </RadzenGrid>
-@*<div class="row mt-4">
-    <div class="col-12">
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Naam B&B</th>
-                    <th>Gemeente</th>
-                    <th>Provincie</th>
-                    <th>Alle kamers</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (BnBs.Any())
-                {
-                    foreach (var bnb in BnBs)
-                    {
-                        <tr>
-                            <td>@bnb.BnBName</td>
-                            <td>@bnb.Municipality</td>
-                            <td>@bnb.Province</td>
-                            @if (bnb.Rooms.Any())
-                            {
-                                <td>
-                                    @foreach (var room in bnb.Rooms)
-                                    {
-                                        @room.RoomName;
-                                        <br />
-                                    }
-                                </td>
-                            }
-                            else
-                            {
-                                <td>Nog geen kamers toegevoegd.</td>
-                            }
-                            <td>
-                                <NavLink href="@($"bnbs/edit/{bnb.BnBId}")" class="btn btn-primary">Wijzigen</NavLink>
-                                <button class="btn btn-danger" @onclick="()=>HandleDelete(bnb.BnBId)">Verwijderen</button>
-                                <NavLink href="@($"bnb-roomsinbnb/{bnb.BnBId}")" class="btn btn-success">Bekijk alle kamers</NavLink>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="5">Geen B&B's gevonden in de lijst.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>*@
-
 <DeleteConfirmation IsParentComponentProcessing="IsProcessing" ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
 @*-----------------------------------------------------------------------------------------------------------------------*@
