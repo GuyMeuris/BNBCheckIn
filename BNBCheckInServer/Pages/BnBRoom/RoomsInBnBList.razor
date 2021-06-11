@@ -24,11 +24,7 @@
     <Columns>
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomName" Title="Naam kamer" />
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO"Property="Occupancy" Title="Bezetting" />
-        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="Rate" Title="Prijs per nacht">
-            <Template Context="data">
-                @String.Format(("#,#.00#;(#,#.00#)"), data.Rate.ToString())
-            </Template>
-        </RadzenGridColumn>
+        <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="Rate" Title="Prijs per nacht"/>
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomSize" Title="Oppervlakte kamer" />
         <RadzenGridColumn TextAlign="TextAlign.Center" TItem="RoomDTO" Property="RoomId" Title="" Width="100px">
             <Template Context="data">
